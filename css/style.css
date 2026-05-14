@@ -375,7 +375,7 @@
       background: var(--bg-color);
       padding: 1rem 2rem;
       width: 100%;
-      max-width: min(98rem, calc(100vw - 28rem));
+      max-width: min(90rem, calc(100vw - 34rem));
     }
 
     .trusted-text {
