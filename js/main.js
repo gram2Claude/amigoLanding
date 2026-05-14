@@ -48,6 +48,102 @@ const initPageInteractions = () => {
     window.addEventListener(moveEvent, handlePointerMove, { passive: true });
   };
 
+  const initChartHover = () => {
+    const chartArea = document.querySelector('.chart-area');
+    const hoverGuide = chartArea ? chartArea.querySelector('.chart-hover-guide') : null;
+    const hoverPoints = chartArea ? Array.from(chartArea.querySelectorAll('.chart-point')) : [];
+    const valueLabels = chartArea ? Array.from(chartArea.querySelectorAll('.chart-value-label')) : [];
+    const series = chartArea
+      ? Array.from(chartArea.querySelectorAll('[data-points]')).map((line) => {
+        return line.dataset.points.split(' ').map((point) => {
+          const [x, y] = point.split(',').map(Number);
+          return { x, y };
+        });
+      })
+      : [];
+
+    if (!chartArea || !hoverGuide) return;
+
+    const getInterpolatedY = (points, x) => {
+      if (x <= points[0].x) return points[0].y;
+      if (x >= points[points.length - 1].x) return points[points.length - 1].y;
+
+      for (let i = 1; i < points.length; i += 1) {
+        const prev = points[i - 1];
+        const next = points[i];
+
+        if (x <= next.x) {
+          const progress = (x - prev.x) / (next.x - prev.x);
+          return prev.y + ((next.y - prev.y) * progress);
+        }
+      }
+
+      return points[points.length - 1].y;
+    };
+
+    const getValueFromY = (y) => {
+      return Math.round(100 + ((80 - y) / 80) * 400);
+    };
+
+    const setGuidePosition = (clientX) => {
+      const rect = chartArea.getBoundingClientRect();
+      const relativeX = Math.min(Math.max(clientX - rect.left, 0), rect.width);
+      const svgX = (relativeX / rect.width) * 200;
+
+      hoverGuide.setAttribute('x1', svgX.toFixed(2));
+      hoverGuide.setAttribute('x2', svgX.toFixed(2));
+
+      hoverPoints.forEach((point) => {
+        const seriesIndex = Number(point.dataset.seriesIndex);
+        const y = getInterpolatedY(series[seriesIndex], svgX);
+
+        point.setAttribute('cx', svgX.toFixed(2));
+        point.setAttribute('cy', y.toFixed(2));
+        point.classList.add('is-active');
+      });
+
+      valueLabels.forEach((label) => {
+        const seriesIndex = Number(label.dataset.seriesIndex);
+        const y = getInterpolatedY(series[seriesIndex], svgX);
+        const labelX = Math.min(svgX + 5, 176);
+        const labelY = Math.max(y - 4, 5);
+
+        label.setAttribute('x', labelX.toFixed(2));
+        label.setAttribute('y', labelY.toFixed(2));
+        label.textContent = String(getValueFromY(y));
+        label.classList.add('is-active');
+      });
+    };
+
+    const clearActivePoints = () => {
+      hoverPoints.forEach((point) => {
+        point.classList.remove('is-active');
+      });
+      valueLabels.forEach((label) => {
+        label.classList.remove('is-active');
+      });
+    };
+
+    chartArea.addEventListener('pointerenter', (e) => {
+      chartArea.classList.add('is-active');
+      setGuidePosition(e.clientX);
+    });
+
+    chartArea.addEventListener('pointermove', (e) => {
+      setGuidePosition(e.clientX);
+    }, { passive: true });
+
+    chartArea.addEventListener('pointerleave', () => {
+      chartArea.classList.remove('is-active');
+      clearActivePoints();
+    });
+
+    chartArea.addEventListener('pointercancel', () => {
+      chartArea.classList.remove('is-active');
+      clearActivePoints();
+    });
+  };
+
   const getOrCreateSessionId = () => {
     let sessionId = sessionStorage.getItem('chatSessionId');
 
@@ -298,6 +394,7 @@ const initPageInteractions = () => {
 
   initMobileMenu();
   initCubeParallax();
+  initChartHover();
   initChatWidget();
 };
 

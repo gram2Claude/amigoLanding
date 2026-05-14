@@ -944,6 +944,7 @@
       flex: 1;
       display: flex;
       align-items: flex-end;
+      cursor: crosshair;
     }
 
     .chart-area svg {
@@ -951,6 +952,58 @@
       height: auto;
       overflow: visible;
       display: block;
+    }
+
+    .chart-hover-guide {
+      opacity: 0;
+      stroke: rgba(31, 41, 55, 0.35);
+      stroke-width: 0.6;
+      stroke-dasharray: 2 2;
+      pointer-events: none;
+      transition: opacity 0.16s ease;
+    }
+
+    .chart-point {
+      opacity: 0;
+      stroke: #fff;
+      stroke-width: 1.4;
+      pointer-events: none;
+      transition: opacity 0.16s ease, transform 0.16s ease;
+      transform: scale(0.8);
+      transform-origin: center;
+    }
+
+    .chart-point-blue {
+      fill: var(--guide-blue);
+    }
+
+    .chart-point-lavender {
+      fill: #C4B5FD;
+    }
+
+    .chart-point-green {
+      fill: #10B981;
+    }
+
+    .chart-value-label {
+      opacity: 0;
+      fill: var(--text-dark);
+      font-family: var(--font-mono);
+      font-size: 5px;
+      font-weight: 600;
+      paint-order: stroke;
+      pointer-events: none;
+      stroke: #fff;
+      stroke-linejoin: round;
+      stroke-width: 3px;
+      transition: opacity 0.16s ease;
+    }
+
+    .chart-area.is-active .chart-hover-guide,
+    .chart-area.is-active .chart-point.is-active,
+    .chart-area.is-active .chart-value-label.is-active {
+      opacity: 1;
+      transform: scale(1);
     }
 
     /* Card 5 Mockup */
