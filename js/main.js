@@ -178,10 +178,14 @@ const initPageInteractions = () => {
       }
     };
 
-    const renderClarification = ({ question, resumeUrl }) => {
+    const renderClarification = ({ question, context, resumeUrl }) => {
       const safeQuestion = renderMarkdown(question || 'Я правильно понял тему вашего вопроса?');
+      const topicHtml = context
+        ? `<div class="chat-clarification-topic">Тема: «${renderMarkdown(context)}»</div>`
+        : '';
       const html = `
         <div class="chat-clarification-text">${safeQuestion}</div>
+        ${topicHtml}
         <div class="chat-clarification">
           <button type="button" data-approved="true">Да</button>
           <button type="button" data-approved="false">Нет</button>
