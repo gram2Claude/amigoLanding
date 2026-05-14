@@ -1,0 +1,19 @@
+# Local secrets and deploy credentials
+.env.local
+.env.*.local
+
+# Local editor and OS files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Temporary verification artifacts
+.playwright-*.png
+screenshots/
+playwright-report/
+test-results/
+
+# Local dependencies and caches
+node_modules/
+.cache/

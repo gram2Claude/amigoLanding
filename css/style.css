@@ -373,9 +373,9 @@
       gap: 1.5rem;
       z-index: 5;
       background: var(--bg-color);
-      padding: 1rem;
+      padding: 1rem 2.5rem;
       width: 100%;
-      max-width: 60rem;
+      max-width: 42rem;
     }
 
     .trusted-text {
@@ -388,14 +388,14 @@
 
     .trusted-logos-wrapper {
       width: 100%;
-      max-width: 46rem;
+      max-width: 36rem;
       overflow: hidden;
       position: relative;
       contain: paint;
       clip-path: inset(0);
       /* Плавное растворение по краям */
-      mask-image: linear-gradient(to right, transparent, black 14%, black 86%, transparent);
-      -webkit-mask-image: linear-gradient(to right, transparent, black 14%, black 86%, transparent);
+      mask-image: linear-gradient(to right, transparent, black 18%, black 82%, transparent);
+      -webkit-mask-image: linear-gradient(to right, transparent, black 18%, black 82%, transparent);
     }
 
     .trusted-logos-track {
