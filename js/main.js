@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+const initPageInteractions = () => {
   const WEBHOOK_URL = 'https://s43202e8e.fastvps-server.com/webhook-test/66815567-30b4-41c4-b6c0-a2aa2f15dd97';
 
   const initMobileMenu = () => {
@@ -34,14 +34,17 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     };
 
-    document.addEventListener('mousemove', (e) => {
+    const handlePointerMove = (e) => {
       pointerX = (e.clientX / window.innerWidth) - 0.5;
       pointerY = (e.clientY / window.innerHeight) - 0.5;
 
       if (animationFrame === null) {
         animationFrame = window.requestAnimationFrame(render);
       }
-    });
+    };
+
+    const moveEvent = window.PointerEvent ? 'pointermove' : 'mousemove';
+    window.addEventListener(moveEvent, handlePointerMove, { passive: true });
   };
 
   const getOrCreateSessionId = () => {
@@ -154,4 +157,10 @@ document.addEventListener('DOMContentLoaded', () => {
   initMobileMenu();
   initCubeParallax();
   initChatWidget();
-});
+};
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initPageInteractions);
+} else {
+  initPageInteractions();
+}
