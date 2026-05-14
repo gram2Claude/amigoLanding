@@ -989,7 +989,7 @@
       opacity: 0;
       fill: var(--text-dark);
       font-family: var(--font-mono);
-      font-size: 3px;
+      font-size: 3.8px;
       font-weight: 600;
       paint-order: stroke;
       pointer-events: none;
