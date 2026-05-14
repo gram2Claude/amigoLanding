@@ -16,9 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const initCubeParallax = () => {
     const cubes = Array.from(document.querySelectorAll('.cube'));
-    const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-    if (!cubes.length || reduceMotionQuery.matches) return;
+    if (!cubes.length) return;
 
     let animationFrame = null;
     let pointerX = 0;
