@@ -1,21 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="theme-color" content="#ffffff">
   <meta name="description"
     content="Amigo - Единая система аналитики без рутины. Мы создаем инфраструктуру данных для маркетинговых агентств и команд.">
-  <meta property="og:title" content="Amigo - Manage Projects Inhumanly Fast">
+  <meta property="og:title" content="Amigo - единая система аналитики без рутины">
   <meta property="og:description" content="Единая система аналитики без рутины.">
   <meta property="og:type" content="website">
-  <title>Amigo - Manage Projects Inhumanly Fast</title>
+  <meta property="og:locale" content="ru_RU">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Amigo - единая система аналитики без рутины">
+  <meta name="twitter:description" content="Единая система аналитики без рутины.">
+  <title>Amigo - единая система аналитики без рутины</title>
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Space+Mono:wght@400;700&family=Reenie+Beanie&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Space+Mono:wght@400;700&family=Reenie+Beanie&display=swap"
     rel="stylesheet">
 
   <!-- Iconify Setup -->
@@ -43,17 +50,18 @@
     </div>
 
     <!-- Mobile Hamburger Button -->
-    <button class="mobile-menu-btn" aria-label="Toggle menu">
+    <button type="button" class="mobile-menu-btn" aria-label="Открыть меню" aria-controls="siteNav"
+      aria-expanded="false">
       <iconify-icon icon="solar:hamburger-menu-linear" aria-hidden="true"></iconify-icon>
     </button>
 
-    <div class="nav-wrapper">
+    <div class="nav-wrapper" id="siteNav">
       <nav>
         <a href="#about">О нас</a>
         <a href="#integrations">Услуги</a>
         <a href="#pricing">Цены</a>
       </nav>
-      <button class="btn btn-primary">Оставить заявку</button>
+      <button type="button" class="btn btn-primary">Оставить заявку</button>
     </div>
   </header>
 
@@ -93,8 +101,8 @@
       данных</p>
 
     <div class="cta-group">
-      <button class="btn btn-primary">Попробовать</button>
-      <button class="btn btn-outline">Оставить заявку</button>
+      <button type="button" class="btn btn-primary">Попробовать</button>
+      <button type="button" class="btn btn-outline">Оставить заявку</button>
     </div>
 
     <div class="trusted-by">
@@ -103,42 +111,62 @@
         <div class="trusted-logos-track">
           <div class="logos-group">
             <div class="t-logo"><img src="./assets/images/logos/01_yandex_direct.png" alt="Яндекс Директ"
-                class="partner-logo"></div>
+                class="partner-logo" width="1038" height="235" decoding="async"></div>
             <div class="t-logo"><img src="./assets/images/logos/02_yandex_metrika.png" alt="Яндекс Метрика"
-                class="partner-logo"></div>
-            <div class="t-logo"><img src="./assets/images/logos/04_vk_ads.png" alt="VK Реклама" class="partner-logo">
+                class="partner-logo" width="991" height="354" decoding="async"></div>
+            <div class="t-logo"><img src="./assets/images/logos/04_vk_ads.png" alt="VK Реклама" class="partner-logo"
+                width="643" height="122" decoding="async">
             </div>
-            <div class="t-logo"><img src="./assets/images/logos/power-bi-icon-7.png" alt="Power BI"
-                class="partner-logo"></div>
-            <div class="t-logo"><img src="./assets/images/logos/06_rtb_droid.png" alt="RTB Droid" class="partner-logo">
+            <div class="t-logo">
+              <picture>
+                <source srcset="./assets/images/logos/power-bi-icon-7.webp" type="image/webp">
+                <img src="./assets/images/logos/power-bi-icon-7.png" alt="Power BI" class="partner-logo" width="5339"
+                  height="1316" decoding="async">
+              </picture>
             </div>
-            <div class="t-logo"><img src="./assets/images/logos/05_my_target.png" alt="myTarget" class="partner-logo">
+            <div class="t-logo"><img src="./assets/images/logos/06_rtb_droid.png" alt="RTB Droid" class="partner-logo"
+                width="510" height="135" decoding="async">
             </div>
-            <div class="t-logo"><img src="./assets/images/logos/03_00_igronik.png" alt="Игроник" class="partner-logo"
-                style="transform: scale(0.9);"></div>
-            <div class="t-logo"><img src="./assets/images/logos/clickhouse.png" alt="ClickHouse" class="partner-logo">
+            <div class="t-logo"><img src="./assets/images/logos/05_my_target.png" alt="myTarget" class="partner-logo"
+                width="1023" height="278" decoding="async">
             </div>
-            <div class="t-logo"><img src="./assets/images/logos/00_ichance_logo.png" alt="Ichance" class="partner-logo">
+            <div class="t-logo"><img src="./assets/images/logos/03_00_igronik.png" alt="Игроник"
+                class="partner-logo partner-logo-igronik" width="569" height="110" decoding="async"></div>
+            <div class="t-logo"><img src="./assets/images/logos/clickhouse.png" alt="ClickHouse" class="partner-logo"
+                width="718" height="112" decoding="async">
+            </div>
+            <div class="t-logo"><img src="./assets/images/logos/00_ichance_logo.png" alt="Ichance" class="partner-logo"
+                width="433" height="96" decoding="async">
             </div>
           </div>
           <div class="logos-group" aria-hidden="true">
             <div class="t-logo"><img src="./assets/images/logos/01_yandex_direct.png" alt="Яндекс Директ"
-                class="partner-logo"></div>
+                class="partner-logo" width="1038" height="235" decoding="async"></div>
             <div class="t-logo"><img src="./assets/images/logos/02_yandex_metrika.png" alt="Яндекс Метрика"
-                class="partner-logo"></div>
-            <div class="t-logo"><img src="./assets/images/logos/04_vk_ads.png" alt="VK Реклама" class="partner-logo">
+                class="partner-logo" width="991" height="354" decoding="async"></div>
+            <div class="t-logo"><img src="./assets/images/logos/04_vk_ads.png" alt="VK Реклама" class="partner-logo"
+                width="643" height="122" decoding="async">
             </div>
-            <div class="t-logo"><img src="./assets/images/logos/power-bi-icon-7.png" alt="Power BI"
-                class="partner-logo"></div>
-            <div class="t-logo"><img src="./assets/images/logos/06_rtb_droid.png" alt="RTB Droid" class="partner-logo">
+            <div class="t-logo">
+              <picture>
+                <source srcset="./assets/images/logos/power-bi-icon-7.webp" type="image/webp">
+                <img src="./assets/images/logos/power-bi-icon-7.png" alt="Power BI" class="partner-logo" width="5339"
+                  height="1316" decoding="async">
+              </picture>
             </div>
-            <div class="t-logo"><img src="./assets/images/logos/05_my_target.png" alt="myTarget" class="partner-logo">
+            <div class="t-logo"><img src="./assets/images/logos/06_rtb_droid.png" alt="RTB Droid" class="partner-logo"
+                width="510" height="135" decoding="async">
             </div>
-            <div class="t-logo"><img src="./assets/images/logos/03_00_igronik.png" alt="Игроник" class="partner-logo"
-                style="transform: scale(0.9);"></div>
-            <div class="t-logo"><img src="./assets/images/logos/clickhouse.png" alt="ClickHouse" class="partner-logo">
+            <div class="t-logo"><img src="./assets/images/logos/05_my_target.png" alt="myTarget" class="partner-logo"
+                width="1023" height="278" decoding="async">
             </div>
-            <div class="t-logo"><img src="./assets/images/logos/00_ichance_logo.png" alt="Ichance" class="partner-logo">
+            <div class="t-logo"><img src="./assets/images/logos/03_00_igronik.png" alt="Игроник"
+                class="partner-logo partner-logo-igronik" width="569" height="110" decoding="async"></div>
+            <div class="t-logo"><img src="./assets/images/logos/clickhouse.png" alt="ClickHouse" class="partner-logo"
+                width="718" height="112" decoding="async">
+            </div>
+            <div class="t-logo"><img src="./assets/images/logos/00_ichance_logo.png" alt="Ichance" class="partner-logo"
+                width="433" height="96" decoding="async">
             </div>
           </div>
         </div>
@@ -160,18 +188,18 @@
         <div class="card-visual">
           <div class="mockup-list">
             <div class="mockup-item">
-              <span><iconify-icon icon="solar:box-minimalistic-linear"
-                  style="vertical-align: middle; margin-right: 8px;" aria-hidden="true"></iconify-icon> Получаем данные
+              <span><iconify-icon icon="solar:box-minimalistic-linear" class="mockup-inline-icon"
+                  aria-hidden="true"></iconify-icon> Получаем данные
                 по API</span>
               <iconify-icon icon="solar:shield-check-bold" class="text-green" aria-hidden="true"></iconify-icon>
             </div>
             <div class="mockup-item">
-              <span><iconify-icon icon="solar:pie-chart-2-linear" style="vertical-align: middle; margin-right: 8px;"
+              <span><iconify-icon icon="solar:pie-chart-2-linear" class="mockup-inline-icon"
                   aria-hidden="true"></iconify-icon> Нормализуем и структурируем</span>
               <iconify-icon icon="solar:shield-check-bold" class="text-green" aria-hidden="true"></iconify-icon>
             </div>
-            <div class="mockup-item" style="opacity: 0.6;">
-              <span><iconify-icon icon="solar:database-linear" style="vertical-align: middle; margin-right: 8px;"
+            <div class="mockup-item mockup-item-muted">
+              <span><iconify-icon icon="solar:database-linear" class="mockup-inline-icon"
                   aria-hidden="true"></iconify-icon> Сохраняем в единую БД</span>
               <iconify-icon icon="solar:shield-check-bold" class="text-green" aria-hidden="true"></iconify-icon>
             </div>
@@ -189,17 +217,16 @@
         <div class="card-visual">
           <div class="mockup-box">
             <div class="mockup-box-header">
-              <iconify-icon icon="solar:routing-2-linear" style="font-size: 16px;" aria-hidden="true"></iconify-icon>
+              <iconify-icon icon="solar:routing-2-linear" class="mockup-icon-sm" aria-hidden="true"></iconify-icon>
               api &rarr; conditions
               &rarr; database
             </div>
             <div class="mockup-box-desc">
-              Полная <span style="color: var(--guide-blue); font-weight: 600;">перезапись</span> данных <span
-                style="color: var(--guide-blue); font-weight: 600;">за период 1-30</span> дней <span
-                style="color: var(--guide-blue); font-weight: 600;">каждые сутки</span>
+              Полная <span class="text-accent">перезапись</span> данных <span class="text-accent">за период 1-30</span>
+              дней <span class="text-accent">каждые сутки</span>
             </div>
-            <button class="mockup-btn-yellow">
-              <iconify-icon icon="solar:play-circle-linear" style="font-size: 16px;" aria-hidden="true"></iconify-icon>
+            <button type="button" class="mockup-btn-yellow">
+              <iconify-icon icon="solar:play-circle-linear" class="mockup-icon-sm" aria-hidden="true"></iconify-icon>
               Запуск по кнопке
             </button>
           </div>
@@ -236,9 +263,9 @@
           <div class="mockup-chart-container">
             <div class="chart-tags">
               <span class="tag"><span class="dot blue"></span> Директ</span>
-              <span class="tag" style="opacity: 0.5;"><span class="dot" style="background:#C4B5FD"></span>
+              <span class="tag tag-muted"><span class="dot dot-lavender"></span>
                 VK ads</span>
-              <span class="tag" style="opacity: 0.5;"><span class="dot green"></span> myTarget</span>
+              <span class="tag tag-muted"><span class="dot green"></span> myTarget</span>
             </div>
             <div class="chart-area">
               <svg viewBox="0 0 200 80">
@@ -247,7 +274,7 @@
                 <path d="M10,75 L50,65 L90,40 L130,50 L170,40 L190,45" fill="none" stroke="#C4B5FD" stroke-width="2"
                   stroke-linecap="round" stroke-linejoin="round" />
                 <path d="M10,80 L60,70 L100,65 L140,75 L180,60 L190,65" fill="none" stroke="#10B981" stroke-width="2"
-                  stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.6;" />
+                  stroke-linecap="round" stroke-linejoin="round" class="chart-line-muted" />
               </svg>
             </div>
           </div>
@@ -259,7 +286,7 @@
         <div class="card-horizontal-inner">
           <div class="card-text">
             <h3 class="card-title">Поддерживаемые источники</h3>
-            <p class="card-desc" style="margin-bottom: 24px;">Вы можете подключить неограниченное количество рекламных
+            <p class="card-desc card-desc-spaced">Вы можете подключить неограниченное количество рекламных
               аккаунтов и счетчиков, добавить любое количество целей</p>
             <div class="mockup-code-block">
               --Яндекс Директ - Гео / Площадки / Ключи ...
@@ -272,30 +299,28 @@
               --Weborama - Медиа Гео / Кампании
             </div>
           </div>
-          <div class="card-visual" style="background: transparent; border: none; padding: 0;">
+          <div class="card-visual card-visual-plain">
             <div class="mockup-panel">
               <div class="panel-header-bar">
-                <iconify-icon icon="solar:settings-linear" style="font-size: 16px;" aria-hidden="true"></iconify-icon>
+                <iconify-icon icon="solar:settings-linear" class="mockup-icon-sm" aria-hidden="true"></iconify-icon>
                 Оставьте заявку
                 &darr;
 
               </div>
               <div class="panel-body">
                 <div>
-                  <div
-                    style="font-size: 11px; color: var(--text-muted); margin-bottom: 8px; font-family: var(--font-sans);">
+                  <div class="panel-label">
                     получите доступ</div>
-                  <div class="panel-row"
-                    style="background: #FAFAFA; padding: 10px; border-radius: 6px; border: 1px solid var(--guide-gray);">
-                    <span><iconify-icon icon="solar:clock-circle-linear"
-                        style="vertical-align: middle; margin-right: 6px;" aria-hidden="true"></iconify-icon>
+                  <div class="panel-row panel-row-highlight">
+                    <span><iconify-icon icon="solar:clock-circle-linear" class="panel-row-icon"
+                        aria-hidden="true"></iconify-icon>
                       Подключение займет не более 1
                       минуты</span>
                     <iconify-icon icon="solar:check-circle-bold" class="text-green" aria-hidden="true"></iconify-icon>
                   </div>
                 </div>
-                <button class="btn-mockup-blue">
-                  <iconify-icon icon="solar:add-circle-linear" style="font-size: 16px;"
+                <button type="button" class="btn-mockup-blue">
+                  <iconify-icon icon="solar:add-circle-linear" class="mockup-icon-sm"
                     aria-hidden="true"></iconify-icon> Демо кабинет
                 </button>
               </div>
@@ -411,7 +436,7 @@
             Стандартная поддержка
           </li>
         </ul>
-        <a href="#" class="p-btn">Попробовать</a>
+        <a href="mailto:hello@amigo.com?subject=Заявка%20Amigo%20-%20Базовый" class="p-btn">Попробовать</a>
       </div>
 
       <!-- Popular (Pro) -->
@@ -438,7 +463,7 @@
             Приоритетная поддержка
           </li>
         </ul>
-        <a href="#" class="p-btn">Оформить подписку</a>
+        <a href="mailto:hello@amigo.com?subject=Заявка%20Amigo%20-%20Продвинутый" class="p-btn">Оформить подписку</a>
       </div>
 
       <!-- Premium -->
@@ -464,7 +489,7 @@
             Персональный менеджер
           </li>
         </ul>
-        <a href="#" class="p-btn">Заказать</a>
+        <a href="mailto:hello@amigo.com?subject=Заявка%20Amigo%20-%20Энтерпрайз" class="p-btn">Заказать</a>
       </div>
     </div>
   </section>
@@ -474,9 +499,8 @@
     <div class="foot-grid">
       <!-- Brand Col -->
       <div class="f-col-brand">
-        <div class="corner-logo" style="margin-left: 0; display: flex; align-items: center;">
-          <span
-            style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 600; color: #FFF; margin-left: 0;">Amigo</span>
+        <div class="corner-logo footer-logo">
+          <span class="footer-logo-text">Amigo</span>
         </div>
         <p>
           Единая система аналитики без рутины. Мы создаем инфраструктуру данных для маркетинговых агентств и команд.
@@ -487,10 +511,10 @@
       <div class="f-col">
         <h4>Продукт</h4>
         <ul class="f-links">
-          <li><a href="#">Аналитика</a></li>
-          <li><a href="#">Интеграции</a></li>
+          <li><a href="#about">Аналитика</a></li>
+          <li><a href="#integrations">Интеграции</a></li>
           <li><a href="#pricing">Цены</a></li>
-          <li><a href="#">Демо кабинет</a></li>
+          <li><a href="mailto:hello@amigo.com?subject=Демо%20кабинет%20Amigo">Демо кабинет</a></li>
         </ul>
       </div>
 
@@ -498,9 +522,9 @@
       <div class="f-col">
         <h4>Компания</h4>
         <ul class="f-links">
-          <li><a href="#">О нас</a></li>
-          <li><a href="#">Партнерам</a></li>
-          <li><a href="#">Кейсы</a></li>
+          <li><a href="#about">О нас</a></li>
+          <li><a href="mailto:hello@amigo.com?subject=Партнерство%20Amigo">Партнерам</a></li>
+          <li><a href="mailto:hello@amigo.com?subject=Кейсы%20Amigo">Кейсы</a></li>
         </ul>
       </div>
 
@@ -508,9 +532,9 @@
       <div class="f-col">
         <h4>Контакты</h4>
         <ul class="f-links">
-          <li><a href="#">Служба поддержки</a></li>
-          <li><a href="#">Telegram</a></li>
-          <li><a href="#">hello@amigo.com</a></li>
+          <li><a href="mailto:hello@amigo.com?subject=Поддержка%20Amigo">Служба поддержки</a></li>
+          <li><a href="mailto:hello@amigo.com?subject=Telegram%20Amigo">Telegram</a></li>
+          <li><a href="mailto:hello@amigo.com">hello@amigo.com</a></li>
         </ul>
       </div>
     </div>
@@ -526,10 +550,10 @@
 
   <!-- Chat Widget -->
   <div class="chat-widget-container">
-    <div class="chat-window hidden" id="chatWindow">
+    <div class="chat-window hidden" id="chatWindow" role="region" aria-labelledby="chatTitle" aria-hidden="true">
       <div class="chat-header">
-        <h4>Помощник</h4>
-        <button id="closeChatBtn" aria-label="Закрыть чат">
+        <h4 id="chatTitle">Помощник</h4>
+        <button type="button" id="closeChatBtn" aria-label="Закрыть чат">
           <iconify-icon icon="solar:close-circle-linear"></iconify-icon>
         </button>
       </div>
@@ -537,13 +561,14 @@
         <!-- Messages will appear here -->
       </div>
       <div class="chat-input-area">
-        <input type="text" id="chatInput" placeholder="Введите сообщение...">
-        <button id="sendChatBtn" aria-label="Отправить">
+        <input type="text" id="chatInput" aria-label="Сообщение помощнику" placeholder="Введите сообщение...">
+        <button type="button" id="sendChatBtn" aria-label="Отправить">
           <iconify-icon icon="solar:plain-2-linear"></iconify-icon>
         </button>
       </div>
     </div>
-    <button class="chat-fab" id="chatFab" aria-label="Открыть чат">
+    <button type="button" class="chat-fab" id="chatFab" aria-label="Открыть чат" aria-controls="chatWindow"
+      aria-expanded="false">
       <iconify-icon icon="solar:chat-round-dots-linear"></iconify-icon>
     </button>
   </div>
