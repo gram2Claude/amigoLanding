@@ -1,5 +1,6 @@
 const initPageInteractions = () => {
-  const WEBHOOK_URL = 'https://s43202e8e.fastvps-server.com/webhook-test/66815567-30b4-41c4-b6c0-a2aa2f15dd97';
+  const WEBHOOK_URL = 'https://s43202e8e.fastvps-server.com/webhook/66815567-30b4-41c4-b6c0-a2aa2f15dd97';
+  const REQUEST_TIMEOUT_MS = 60000;
 
   const initMobileMenu = () => {
     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
@@ -60,6 +61,22 @@ const initPageInteractions = () => {
     return sessionId;
   };
 
+  const escapeHtml = (s) => {
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  };
+
+  const renderMarkdown = (s) => {
+    const escaped = escapeHtml(s);
+    return escaped
+      .replace(/`([^`\n]+)`/g, '<code>$1</code>')
+      .replace(/\n/g, '<br>');
+  };
+
   const initChatWidget = () => {
     const chatFab = document.getElementById('chatFab');
     const chatWindow = document.getElementById('chatWindow');
@@ -71,6 +88,11 @@ const initPageInteractions = () => {
     if (!chatFab || !chatWindow || !closeChatBtn || !sendChatBtn || !chatInput || !chatMessages) return;
 
     const sessionId = getOrCreateSessionId();
+    let isSending = false;
+
+    const scrollToBottom = () => {
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    };
 
     const openChat = () => {
       chatWindow.classList.remove('hidden');
@@ -92,32 +114,148 @@ const initPageInteractions = () => {
       msgDiv.classList.add('chat-bubble', 'user');
       msgDiv.textContent = text;
       chatMessages.appendChild(msgDiv);
-      chatMessages.scrollTop = chatMessages.scrollHeight;
+      scrollToBottom();
+    };
+
+    const appendBotMessage = (content, opts = {}) => {
+      const msgDiv = document.createElement('div');
+      msgDiv.classList.add('chat-bubble', 'bot');
+      if (opts.error) msgDiv.classList.add('error');
+      if (opts.html) {
+        msgDiv.innerHTML = content;
+      } else {
+        msgDiv.innerHTML = renderMarkdown(content);
+      }
+      chatMessages.appendChild(msgDiv);
+      scrollToBottom();
+      return msgDiv;
+    };
+
+    let typingEl = null;
+    const appendTypingIndicator = () => {
+      if (typingEl) return;
+      typingEl = document.createElement('div');
+      typingEl.classList.add('chat-bubble', 'bot', 'chat-typing');
+      typingEl.setAttribute('aria-label', 'Помощник печатает');
+      typingEl.innerHTML = '<span></span><span></span><span></span>';
+      chatMessages.appendChild(typingEl);
+      scrollToBottom();
+    };
+
+    const removeTypingIndicator = () => {
+      if (typingEl && typingEl.parentNode) {
+        typingEl.parentNode.removeChild(typingEl);
+      }
+      typingEl = null;
+    };
+
+    const setInputEnabled = (enabled) => {
+      chatInput.disabled = !enabled;
+      sendChatBtn.disabled = !enabled;
+      if (enabled) chatInput.focus();
+    };
+
+    const postWithTimeout = async (url, payload, timeoutMs) => {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), timeoutMs);
+      try {
+        const resp = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+          signal: ctrl.signal,
+        });
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+        const text = await resp.text();
+        if (!text) return null;
+        try {
+          return JSON.parse(text);
+        } catch {
+          return { output: text };
+        }
+      } finally {
+        clearTimeout(timer);
+      }
+    };
+
+    const renderClarification = ({ question, resumeUrl }) => {
+      const safeQuestion = renderMarkdown(question || 'Я правильно понял тему вашего вопроса?');
+      const html = `
+        <div class="chat-clarification-text">${safeQuestion}</div>
+        <div class="chat-clarification">
+          <button type="button" data-approved="true">Да</button>
+          <button type="button" data-approved="false">Нет</button>
+        </div>
+      `;
+      const bubble = appendBotMessage(html, { html: true });
+      const buttons = bubble.querySelectorAll('.chat-clarification button');
+
+      buttons.forEach((btn) => {
+        btn.addEventListener('click', async () => {
+          buttons.forEach((b) => { b.disabled = true; });
+          const approved = btn.dataset.approved === 'true';
+          appendTypingIndicator();
+          try {
+            const resp = await postWithTimeout(resumeUrl, { approved }, REQUEST_TIMEOUT_MS);
+            removeTypingIndicator();
+            await handleResponse(resp);
+          } catch (e) {
+            removeTypingIndicator();
+            appendBotMessage('Не удалось получить ответ. Попробуйте ещё раз.', { error: true });
+          } finally {
+            setInputEnabled(true);
+            isSending = false;
+          }
+        }, { once: true });
+      });
+    };
+
+    const handleResponse = async (resp) => {
+      if (!resp) {
+        appendBotMessage('Получен пустой ответ.', { error: true });
+        return;
+      }
+      if (resp.type === 'clarification') {
+        renderClarification(resp);
+        return;
+      }
+      const text = typeof resp === 'string' ? resp : (resp.output || resp.text || resp.message);
+      if (text) {
+        appendBotMessage(text);
+      } else {
+        appendBotMessage('Получен ответ в неизвестном формате.', { error: true });
+      }
     };
 
     const sendMessage = async () => {
+      if (isSending) return;
       const text = chatInput.value.trim();
       if (!text) return;
 
       appendUserMessage(text);
       chatInput.value = '';
+      setInputEnabled(false);
+      isSending = true;
+      appendTypingIndicator();
 
-      const payload = {
-        chatInput: text,
-        sessionId
-      };
-
+      let isClarification = false;
       try {
-        await fetch(WEBHOOK_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(payload)
-        });
-      } catch (error) {
-        console.error('Error sending message to webhook:', error);
+        const resp = await postWithTimeout(WEBHOOK_URL, { chatInput: text, sessionId }, REQUEST_TIMEOUT_MS);
+        removeTypingIndicator();
+        isClarification = resp && resp.type === 'clarification';
+        await handleResponse(resp);
+      } catch (e) {
+        removeTypingIndicator();
+        const msg = e.name === 'AbortError'
+          ? 'Превышено время ожидания ответа. Попробуйте ещё раз.'
+          : 'Не удалось получить ответ. Попробуйте ещё раз.';
+        appendBotMessage(msg, { error: true });
+      } finally {
+        // Если ушли в clarification — оставляем input disabled до клика по кнопке.
+        if (!isClarification) {
+          setInputEnabled(true);
+          isSending = false;
+        }
       }
     };
 
