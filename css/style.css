@@ -1554,7 +1554,6 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .trusted-logos-track,
       .status-dot {
         animation: none;
       }
