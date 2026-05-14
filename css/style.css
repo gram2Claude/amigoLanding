@@ -1680,6 +1680,88 @@
       border-bottom-right-radius: 2px;
     }
 
+    .chat-bubble.bot {
+      align-self: flex-start;
+      background: var(--guide-gray, #f0f0f4);
+      color: var(--text-color, #1a1a1a);
+      border-bottom-left-radius: 2px;
+    }
+
+    .chat-bubble.bot.error {
+      background: #fdecec;
+      color: #8a1f1f;
+      border-left: 3px solid #d44;
+    }
+
+    .chat-bubble.bot code {
+      background: rgba(0, 0, 0, 0.08);
+      padding: 0.05rem 0.3rem;
+      border-radius: 4px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.85em;
+    }
+
+    .chat-bubble.bot.chat-typing {
+      display: inline-flex;
+      gap: 0.25rem;
+      padding: 0.65rem 0.85rem;
+      align-items: center;
+    }
+
+    .chat-bubble.bot.chat-typing span {
+      width: 0.4rem;
+      height: 0.4rem;
+      border-radius: 50%;
+      background: var(--guide-gray-dark, #888);
+      animation: chatTypingPulse 1.2s infinite ease-in-out;
+    }
+
+    .chat-bubble.bot.chat-typing span:nth-child(2) { animation-delay: 0.2s; }
+    .chat-bubble.bot.chat-typing span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes chatTypingPulse {
+      0%, 80%, 100% { opacity: 0.3; transform: scale(0.85); }
+      40% { opacity: 1; transform: scale(1); }
+    }
+
+    .chat-clarification-text {
+      margin-bottom: 0.5rem;
+    }
+
+    .chat-clarification {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.25rem;
+    }
+
+    .chat-clarification button {
+      padding: 0.35rem 0.9rem;
+      border: 1px solid var(--guide-blue);
+      background: #fff;
+      color: var(--guide-blue);
+      border-radius: 16px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      font-family: var(--font-chat);
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .chat-clarification button:hover:not(:disabled) {
+      background: var(--guide-blue);
+      color: #fff;
+    }
+
+    .chat-clarification button:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    #chatInput:disabled,
+    #sendChatBtn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
     .chat-input-area {
       display: flex;
       padding: 0.75rem;
