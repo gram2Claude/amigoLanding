@@ -1006,6 +1006,12 @@
       transform: scale(1);
     }
 
+    @media (min-width: 900px) {
+      .chart-value-label {
+        font-size: 4.8px;
+      }
+    }
+
     /* Card 5 Mockup */
     .advantage-card.span-2 {
       grid-column: span 2;
