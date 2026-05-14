@@ -989,13 +989,13 @@
       opacity: 0;
       fill: var(--text-dark);
       font-family: var(--font-mono);
-      font-size: 5px;
+      font-size: 3px;
       font-weight: 600;
       paint-order: stroke;
       pointer-events: none;
       stroke: #fff;
       stroke-linejoin: round;
-      stroke-width: 3px;
+      stroke-width: 1px;
       transition: opacity 0.16s ease;
     }
 
