@@ -497,12 +497,12 @@
 
     /* Radial positioning around the center text */
     .cube-1 {
-      top: 0%;
+      top: 3%;
       left: 32%;
     }
 
     .cube-2 {
-      top: 0%;
+      top: 3%;
       right: 32%;
     }
 
@@ -517,12 +517,12 @@
     }
 
     .cube-5 {
-      top: 98%;
+      top: 95%;
       left: 35%;
     }
 
     .cube-6 {
-      top: 98%;
+      top: 95%;
       right: 35%;
     }
 
