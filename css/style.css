@@ -12,16 +12,15 @@
       --guide-blue: #4AB4D9;
       --guide-gray: rgba(0, 0, 0, 0.2);
       --guide-gray-dark: rgba(0, 0, 0, 0.08);
-      /*
-      --font-serif: 'Playfair Display', serif;
-      --font-sans: 'Inter', sans-serif;
-      */
       /* Typography */
-      --font-display: 'Playfair Display', serif;
-      --font-body: 'Inter', sans-serif;
-      --font-chat: 'Manrope', 'Inter', sans-serif;
+      --font-serif: 'Onest', sans-serif;
+      --font-sans: 'Golos Text', sans-serif;
+      --font-display: 'Onest', sans-serif;
+      --font-body: 'Golos Text', sans-serif;
+      --font-ui: 'Onest', sans-serif;
+      --font-hero: 'Playfair Display', serif;
+      --font-chat: 'Manrope', 'Golos Text', sans-serif;
       --font-mono: 'Space Mono', monospace;
-      --font-hand: 'Reenie Beanie', cursive;
       /* Spacing */
       --spacing-xs: 0.5rem;
       /* 0.5rem */
@@ -198,6 +197,7 @@
       color: var(--text-dark);
       font-size: 0.875rem;
       font-weight: 500;
+      font-family: var(--font-ui);
       transition: opacity 0.2s ease;
     }
 
@@ -221,7 +221,7 @@
       cursor: pointer;
       border: none;
       transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
-      font-family: var(--font-sans);
+      font-family: var(--font-ui);
     }
 
     .btn-primary {
@@ -323,7 +323,7 @@
 
     /* Typography */
     .headline {
-      font-family: var(--font-display);
+      font-family: var(--font-hero);
       /*font-size: clamp(3rem, 8vw, 6rem);*/
       font-size: clamp(3rem, 5vw, 6rem);
       line-height: 0.9;
@@ -672,7 +672,7 @@
     }
 
     .section-headline {
-      font-family: var(--font-display);
+      font-family: var(--font-hero);
       font-size: clamp(2rem, 3vw, 3.5rem);
       text-align: center;
       margin-bottom: var(--spacing-sm);
@@ -718,7 +718,7 @@
     }
 
     .card-title {
-      font-family: var(--font-sans);
+      font-family: var(--font-ui);
       font-size: 1.125rem;
       font-weight: 600;
       margin-bottom: 0.75rem;
@@ -1017,7 +1017,7 @@
       font-size: 0.6875rem;
       color: var(--text-muted);
       margin-bottom: 0.5rem;
-      font-family: var(--font-sans);
+      font-family: var(--font-ui);
     }
 
     .panel-row {
@@ -1026,7 +1026,7 @@
       align-items: center;
       font-size: 0.75rem;
       color: var(--text-dark);
-      font-family: var(--font-sans);
+      font-family: var(--font-ui);
     }
 
     .panel-row-highlight {
@@ -1148,7 +1148,7 @@
     .int-circle {
       position: absolute;
       border-radius: 50%;
-      background: var(--guide-gray);
+      background: var(--guide-blue);
       animation: centerCirclePulse 4s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
     }
 
@@ -1270,7 +1270,7 @@
     }
 
     .int-item h3 {
-      font-family: var(--font-sans);
+      font-family: var(--font-ui);
       font-size: 1.125rem;
       font-weight: 600;
       margin-bottom: 0.5rem;
@@ -1349,7 +1349,7 @@
     }
 
     .p-title {
-      font-family: var(--font-sans);
+      font-family: var(--font-ui);
       font-size: 1.125rem;
       font-weight: 600;
       margin-bottom: 0.5rem;
@@ -1361,7 +1361,7 @@
       color: var(--text-muted);
       margin-bottom: 1.5rem;
       line-height: 1.4;
-      font-family: var(--font-sans);
+      font-family: var(--font-ui);
     }
 
     .p-price {
@@ -1555,7 +1555,6 @@
 
     @media (prefers-reduced-motion: reduce) {
       .trusted-logos-track,
-      .int-circle,
       .status-dot {
         animation: none;
       }
