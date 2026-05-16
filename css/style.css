@@ -508,12 +508,14 @@
 
     .cube-3 {
       top: 48%;
-      left: 15%;
+      /* Cube center on the inner edge of .pattern-col.left: (8% + 7.5rem) - 4.375rem/2 */
+      left: calc(8% + 5.3125rem);
     }
 
     .cube-4 {
       top: 48%;
-      right: 15%;
+      /* Cube center on the inner edge of .pattern-col.right: (8% + 7.5rem) - 4.375rem/2 */
+      right: calc(8% + 5.3125rem);
     }
 
     .cube-5 {
