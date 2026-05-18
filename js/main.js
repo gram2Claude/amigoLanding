@@ -631,6 +631,8 @@ const initPageInteractions = () => {
         if (resp.ok && data && data.ok) {
           resetForm();
           setStatus('Спасибо! Заявка отправлена, мы скоро свяжемся с вами.', 'success');
+          // briefly show the confirmation, then close the modal
+          setTimeout(closeModal, 1800);
         } else {
           setStatus('Не удалось отправить заявку. Попробуйте ещё раз позже.', 'error');
         }
