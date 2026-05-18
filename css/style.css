@@ -790,6 +790,12 @@
       font-family: var(--font-mono);
       box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.02);
       border: 1px solid var(--guide-gray);
+      transition: background-color 0.2s ease;
+    }
+
+    /* slight background darkening on hover of the respective row */
+    .mockup-item:hover {
+      background: #EDEFF2;
     }
 
     .mockup-item-muted {
