@@ -610,13 +610,26 @@ const initPageInteractions = () => {
       submitBtn.textContent = 'Отправляем…';
       setStatus('', null);
 
+      // Moscow time regardless of the visitor's timezone
+      const mskParts = new Intl.DateTimeFormat('en-GB', {
+        timeZone: 'Europe/Moscow',
+        hour: '2-digit', minute: '2-digit', second: '2-digit',
+        year: 'numeric', month: '2-digit', day: '2-digit',
+        hour12: false
+      }).formatToParts(new Date()).reduce((acc, p) => {
+        acc[p.type] = p.value;
+        return acc;
+      }, {});
+      const mskDate = `${mskParts.year}-${mskParts.month}-${mskParts.day}`;
+      const mskTime = `${mskParts.hour}:${mskParts.minute}:${mskParts.second}`;
+
       const text = [
         'Новая заявка с сайта Amigo',
         `Имя: ${result.name}`,
         `E-mail: ${result.email}`,
         `Телефон: ${result.phone}`,
-        `Источник: ${leadSource || '—'}, ${location.href}`,
-        `Время: ${new Date().toISOString()}`
+        `Дата: ${mskDate}`,
+        `Время: ${mskTime} (МСК)`
       ].join('\n');
 
       try {

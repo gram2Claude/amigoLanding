@@ -622,6 +622,12 @@
         width: 100%;
       }
 
+      /* The lead-form trigger is dropped from the burger menu on mobile —
+         the always-visible hero button covers this action. */
+      .nav-wrapper .js-lead-open {
+        display: none;
+      }
+
       .hero-section {
         padding: 6rem 5% 4rem;
       }
@@ -1661,6 +1667,16 @@
       display: flex;
       flex-direction: column;
       align-items: flex-end;
+      /* The hidden chat window still occupies layout (visibility:hidden, not
+         display:none, to keep the open/close transition). Let clicks pass
+         through the empty container area so it doesn't block CTAs beneath
+         it on narrow screens; children re-enable pointer events. */
+      pointer-events: none;
+    }
+
+    .chat-fab,
+    .chat-window {
+      pointer-events: auto;
     }
 
     .chat-fab {
@@ -1925,17 +1941,26 @@
 
     .lead-modal__dialog {
       position: relative;
+      display: flex;
+      flex-direction: column;
       width: 100%;
       max-width: 460px;
       max-height: calc(100vh - 2 * var(--spacing-sm));
-      overflow-y: auto;
+      max-height: calc(100dvh - 2 * var(--spacing-sm));
+      overflow: hidden;
       background: var(--bg-color);
       border-radius: 16px;
       box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
-      padding: var(--spacing-md);
       font-family: var(--font-sans);
       color: var(--text-dark);
       animation: leadModalIn 0.25s ease;
+    }
+
+    /* Inner scroll area — keeps the close button pinned to the dialog
+       (#1: close no longer scrolls away on short / landscape screens). */
+    .lead-modal__body {
+      overflow-y: auto;
+      padding: var(--spacing-md);
     }
 
     @keyframes leadModalIn {
@@ -1951,6 +1976,7 @@
 
     .lead-modal__close {
       position: absolute;
+      z-index: 1;
       top: 0.75rem;
       right: 0.75rem;
       width: 2rem;
@@ -2092,7 +2118,6 @@
 
     .lead-modal__dialog.is-submitted .lead-form__status {
       margin: 0;
-      padding: var(--spacing-md) var(--spacing-sm);
       font-size: 1.05rem;
     }
 
@@ -2100,8 +2125,9 @@
       .lead-modal {
         padding: var(--spacing-xs);
       }
-      .lead-modal__dialog {
-        max-width: 100%;
+      /* keep the dialog at a comfortable width on tablets/large phones;
+         on narrow phones the viewport itself caps it (#2). */
+      .lead-modal__body {
         padding: var(--spacing-md) var(--spacing-sm);
       }
     }
