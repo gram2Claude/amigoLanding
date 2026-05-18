@@ -1001,10 +1001,21 @@
       border-radius: 0.75rem;
       border: 1px solid var(--guide-gray);
       box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.02);
+      transition: opacity 0.2s ease;
     }
 
     .tag-muted {
       opacity: 0.5;
+    }
+
+    /* hovering the legend: hovered tag becomes active, the rest dim —
+       regardless of which one carries the static .tag-muted default */
+    .chart-tags:hover .tag {
+      opacity: 0.5;
+    }
+
+    .chart-tags:hover .tag:hover {
+      opacity: 1;
     }
 
     .dot {
