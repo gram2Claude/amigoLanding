@@ -1699,6 +1699,13 @@
       border-radius: 50%;
       box-shadow: 0 0 0.5rem #10B981;
       animation: pulseStatus 2s infinite;
+      transition: background-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    /* hover the status line → indicator turns yellow */
+    .sys-status:hover .status-dot {
+      background: #FDE047;
+      box-shadow: 0 0 0.5rem #FDE047;
     }
 
     @keyframes pulseStatus {
