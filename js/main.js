@@ -557,6 +557,7 @@ const initPageInteractions = () => {
       modal.setAttribute('aria-hidden', 'false');
       document.body.classList.add('modal-open');
       document.addEventListener('keydown', onKeydown);
+      dialog.classList.remove('is-submitted');
       setStatus('', null);
       syncSubmitState();
       nameInput.focus();
@@ -630,8 +631,9 @@ const initPageInteractions = () => {
 
         if (resp.ok && data && data.ok) {
           resetForm();
+          dialog.classList.add('is-submitted');
           setStatus('Спасибо! Заявка отправлена, мы скоро свяжемся с вами.', 'success');
-          // briefly show the confirmation, then close the modal
+          // show only the confirmation text, then close the modal
           setTimeout(closeModal, 1800);
         } else {
           setStatus('Не удалось отправить заявку. Попробуйте ещё раз позже.', 'error');

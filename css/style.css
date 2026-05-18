@@ -2083,6 +2083,19 @@
       color: var(--guide-red);
     }
 
+    /* Success state: hide the form, show only the confirmation text */
+    .lead-modal__dialog.is-submitted .lead-modal__title,
+    .lead-modal__dialog.is-submitted .lead-modal__subtitle,
+    .lead-modal__dialog.is-submitted .lead-form {
+      display: none;
+    }
+
+    .lead-modal__dialog.is-submitted .lead-form__status {
+      margin: 0;
+      padding: var(--spacing-md) var(--spacing-sm);
+      font-size: 1.05rem;
+    }
+
     @media (max-width: 768px) {
       .lead-modal {
         padding: var(--spacing-xs);
