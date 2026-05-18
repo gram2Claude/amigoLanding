@@ -1730,7 +1730,8 @@
       .int-item,
       .p-btn,
       .partner-logo,
-      .pricing-card,
+      /* .pricing-card intentionally kept animated even under
+         reduced-motion (Variant B, consistent with .advantage-card) */
       .t-logo {
         transition: none;
       }
