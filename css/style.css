@@ -2048,7 +2048,14 @@
       padding: var(--spacing-sm);
       background: rgba(17, 17, 17, 0.55);
       opacity: 1;
-      transition: opacity 0.25s ease;
+      /* backdrop fades in on open (display toggle can't transition,
+         so use a one-shot entrance animation) */
+      animation: leadOverlayIn 0.25s ease;
+    }
+
+    @keyframes leadOverlayIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
     }
 
     .lead-modal.hidden {
@@ -2316,13 +2323,9 @@
       font-size: 0.85rem;
     }
 
-    @media (prefers-reduced-motion: reduce) {
-      .lead-modal,
-      .lead-modal__dialog {
-        animation: none;
-        transition: none;
-      }
-    }
+    /* .lead-modal / .lead-modal__dialog entrance animation is intentionally
+       NOT suppressed under prefers-reduced-motion — Variant B site-wide
+       (smooth modal open kept by product choice despite the OS setting). */
 
     /* --- Cookie Consent Banner --- */
     .cookie-banner {
