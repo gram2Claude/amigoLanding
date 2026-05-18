@@ -15,22 +15,16 @@ fi
 
 cd "$REPO_DIR"
 git fetch --quiet origin master
-LOCAL="$(git rev-parse HEAD)"
-REMOTE="$(git rev-parse origin/master)"
-
-if [ "$LOCAL" = "$REMOTE" ]; then
-  echo "[deploy] already up to date ($LOCAL) — nothing to do"
-  exit 0
-fi
-
-echo "[deploy] updating $LOCAL -> $REMOTE"
 git reset --hard origin/master --quiet
 
-# Only the static site files are published; everything else stays out of webroot.
+# Always publish. rsync is idempotent (transfers only diffs), so this is a
+# cheap no-op when the web root is already in sync, and — unlike the old
+# "skip if git unchanged" logic — it also publishes on the very first run
+# right after a fresh clone (when HEAD already equals origin/master).
 for item in index.html privacy.html favicon.svg css js assets; do
   if [ -e "$REPO_DIR/$item" ]; then
     rsync -a --delete "$REPO_DIR/$item" "$WEBROOT/"
   fi
 done
 
-echo "[deploy] done: $(git rev-parse --short HEAD) -> $WEBROOT"
+echo "[deploy] published $(git rev-parse --short HEAD) -> $WEBROOT"

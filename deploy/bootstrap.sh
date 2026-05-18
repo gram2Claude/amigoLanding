@@ -71,9 +71,9 @@ printf 'WEBROOT=%s\n' "$WEBROOT" > "$CONF"
 chmod +x "$REPO_DIR/deploy/deploy.sh"
 WEBROOT="$WEBROOT" REPO_DIR="$REPO_DIR" "$REPO_DIR/deploy/deploy.sh"
 
-# 7. cron: auto-pull master every 3 minutes
-touch "$LOG"
-CRON_LINE="*/3 * * * * REPO_DIR=$REPO_DIR $REPO_DIR/deploy/deploy.sh >> $LOG 2>&1"
-( crontab -l 2>/dev/null | grep -v 'amigo-site/deploy/deploy.sh' ; echo "$CRON_LINE" ) | crontab -
+# 7. manual-only by design — no cron. Remove any leftover auto-deploy cron.
+( crontab -l 2>/dev/null | grep -v 'amigo-site/deploy/deploy.sh' ) | crontab - 2>/dev/null || true
 
-echo "== Done. Site auto-updates from GitHub master every 3 min. Log: $LOG =="
+echo "== Done. MANUAL deploy only (no auto-update). =="
+echo "To publish the latest master later, run on the server:"
+echo "  bash <(curl -fsSL https://raw.githubusercontent.com/gram2Claude/amigoLanding/master/deploy/deploy.sh)"
