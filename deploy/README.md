@@ -15,22 +15,23 @@ bash <(curl -fsSL https://raw.githubusercontent.com/gram2Claude/amigoLanding/mas
 - auto-detects the web root (nginx/apache config, else common paths),
 - backs up the current web root to `/var/backups/amigo-<timestamp>`,
 - publishes the static files,
-- installs a cron job that pulls `master` and re-publishes **every 3 minutes**.
+- **does NOT install any cron** — deploy is manual-only by design.
 
 Override the web root if detection is wrong:
 `WEBROOT=/your/web/root bash bootstrap.sh`
 
-## Ongoing
+## Deploying a new version (explicit, on demand)
 
-Nothing to do. Merging into `master` on GitHub propagates to the live site
-within ~3 minutes (cron → `deploy/deploy.sh`).
+There is **no auto-update**. The live site changes only when you explicitly
+run the deploy command on the server. After merging into `master`:
 
-Manual deploy / force now (on the server):
 ```
-REPO_DIR=/opt/amigo-site /opt/amigo-site/deploy/deploy.sh
+bash <(curl -fsSL https://raw.githubusercontent.com/gram2Claude/amigoLanding/master/deploy/deploy.sh)
 ```
 
-Log: `/var/log/amigo-deploy.log`
+This always pulls the latest `master` and republishes the static files to
+the web root (idempotent — safe to run anytime). `deploy.sh` reads the web
+root from `/etc/amigo-deploy.conf` written by `bootstrap.sh`.
 
 ## Security note
 
