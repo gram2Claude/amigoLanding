@@ -414,6 +414,10 @@ const initPageInteractions = () => {
     const consentInput = document.getElementById('leadConsent');
     const submitBtn = document.getElementById('leadSubmit');
     const statusEl = document.getElementById('leadStatus');
+    const titleEl = document.getElementById('leadModalTitle');
+    const subtitleEl = document.getElementById('leadModalSubtitle');
+    const defaultTitle = titleEl ? titleEl.textContent : '';
+    const defaultSubtitle = subtitleEl ? subtitleEl.textContent : '';
 
     let isSending = false;
     let lastTrigger = null;
@@ -553,6 +557,18 @@ const initPageInteractions = () => {
     const openModal = (trigger) => {
       lastTrigger = trigger || null;
       leadSource = (trigger && trigger.dataset.leadSource) || '';
+      // header/subheader vary per trigger (e.g. «Попробовать» → demo access)
+      if (titleEl) {
+        titleEl.textContent = (trigger && trigger.dataset.leadTitle) || defaultTitle;
+        // accent: bare data-lead-title-accent → amber; with a value (e.g.
+        // "teal") → lead-modal__title--accent-<value>; absent → no accent.
+        titleEl.classList.remove('lead-modal__title--accent', 'lead-modal__title--accent-teal');
+        const accent = trigger && trigger.dataset.leadTitleAccent;
+        if (accent !== undefined) {
+          titleEl.classList.add(accent ? `lead-modal__title--accent-${accent}` : 'lead-modal__title--accent');
+        }
+      }
+      if (subtitleEl) subtitleEl.textContent = (trigger && trigger.dataset.leadSubtitle) || defaultSubtitle;
       modal.classList.remove('hidden');
       modal.setAttribute('aria-hidden', 'false');
       document.body.classList.add('modal-open');
@@ -575,7 +591,10 @@ const initPageInteractions = () => {
     }
 
     triggers.forEach((btn) => {
-      btn.addEventListener('click', () => openModal(btn));
+      btn.addEventListener('click', (e) => {
+        e.preventDefault(); // allow <a href="#"> triggers without page jump
+        openModal(btn);
+      });
     });
 
     closeBtn.addEventListener('click', closeModal);
@@ -623,8 +642,11 @@ const initPageInteractions = () => {
       const mskDate = `${mskParts.year}-${mskParts.month}-${mskParts.day}`;
       const mskTime = `${mskParts.hour}:${mskParts.minute}:${mskParts.second}`;
 
+      const tgTitle = (lastTrigger && lastTrigger.dataset.leadTgTitle)
+        || 'Новая заявка с сайта Amigo';
+
       const text = [
-        'Новая заявка с сайта Amigo',
+        tgTitle,
         `Имя: ${result.name}`,
         `E-mail: ${result.email}`,
         `Телефон: ${result.phone}`,

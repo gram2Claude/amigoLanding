@@ -392,6 +392,9 @@
       overflow: hidden;
       position: relative;
       contain: paint;
+      /* vertical slack so the :hover translateY(-2px) lift isn't clipped
+         at the top by overflow/clip-path/contain (zero slack before) */
+      padding: 0.5rem 0;
       clip-path: inset(0);
       /* Плавное растворение по краям */
       mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
@@ -787,6 +790,12 @@
       font-family: var(--font-mono);
       box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.02);
       border: 1px solid var(--guide-gray);
+      transition: background-color 0.2s ease;
+    }
+
+    /* slight background darkening on hover of the respective row */
+    .mockup-item:hover {
+      background: #EDEFF2;
     }
 
     .mockup-item-muted {
@@ -888,9 +897,82 @@
     .flow-line {
       flex: 1;
       height: 1px;
+      position: relative;
       background: repeating-linear-gradient(90deg, var(--guide-blue) 0, var(--guide-blue) 0.25rem, transparent 0.25rem, transparent 8px);
       opacity: 0.5;
     }
+
+    /* Card 3 hover animation: one packet travels strictly in order —
+       icon1→icon2 (line 1), THEN icon2→icon3 (line 2), then repeats.
+       Single shared 4.4s cycle keeps packets and node pulses in phase.
+       Idle = static. */
+    .flow-line::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: -6px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #1E3A8A;
+      box-shadow: 0 0 6px 2px rgba(30, 58, 138, 0.75);
+      transform: translateY(-50%);
+      opacity: 0;
+    }
+
+    /* segment 1: travels during 0–38% of the cycle, hidden afterwards */
+    @keyframes flowSeg1 {
+      0%   { left: -6px; opacity: 0; }
+      3%   { opacity: 1; }
+      35%  { opacity: 1; }
+      38%  { left: calc(100% + 6px); opacity: 0; }
+      100% { left: calc(100% + 6px); opacity: 0; }
+    }
+
+    /* segment 2: stays hidden until segment 1 is done (45%), then travels */
+    @keyframes flowSeg2 {
+      0%   { left: -6px; opacity: 0; }
+      45%  { left: -6px; opacity: 0; }
+      48%  { opacity: 1; }
+      80%  { opacity: 1; }
+      83%  { left: calc(100% + 6px); opacity: 0; }
+      100% { left: calc(100% + 6px); opacity: 0; }
+    }
+
+    /* short highlight blip near the start of each icon's (delayed) cycle */
+    @keyframes flowNode {
+      0%   { box-shadow: 0 0 0 0.375rem rgba(74, 180, 217, 0.1); transform: scale(1); }
+      5%   { box-shadow: 0 0 0 0.6rem rgba(74, 180, 217, 0.30); transform: scale(1.07); }
+      14%  { box-shadow: 0 0 0 0.375rem rgba(74, 180, 217, 0.1); transform: scale(1); }
+      100% { box-shadow: 0 0 0 0.375rem rgba(74, 180, 217, 0.1); transform: scale(1); }
+    }
+
+    /* line 1 packet (nth-child 2) → segment 1; line 2 (nth-child 4) → segment 2 */
+    .advantage-card:hover .mockup-flow .flow-line::after {
+      animation: flowSeg1 3.4s ease-in-out infinite;
+    }
+
+    .advantage-card:hover .mockup-flow .flow-line:nth-child(4)::after {
+      animation-name: flowSeg2;
+    }
+
+    /* nodes pulse exactly when the packet reaches them (same 4.4s cycle,
+       delays = arrival times): icon1 at start, icon2 after seg1,
+       icon3 after seg2 */
+    .advantage-card:hover .mockup-flow .flow-icon {
+      animation: flowNode 3.4s ease-in-out infinite;
+    }
+
+    .advantage-card:hover .mockup-flow .flow-icon:nth-child(3) {
+      animation-delay: 1.25s;
+    }
+
+    .advantage-card:hover .mockup-flow .flow-icon:nth-child(5) {
+      animation-delay: 2.7s;
+    }
+    /* NB: intentionally NOT suppressed under prefers-reduced-motion —
+       consistent with the Variant B decision for .advantage-card
+       (motion kept on by product choice despite the OS setting). */
 
     /* Card 4 Mockup */
     .mockup-chart-container {
@@ -1058,7 +1140,16 @@
       line-height: 1.6;
       margin-top: auto;
       overflow-x: auto;
-      white-space: pre-line;
+    }
+
+    /* each source line is hoverable → bold on hover */
+    .mockup-code-line {
+      white-space: nowrap;
+    }
+
+    .mockup-code-line:hover {
+      font-weight: 700;
+      color: #333;
     }
 
     .mockup-panel {
@@ -1623,6 +1714,13 @@
       border-radius: 50%;
       box-shadow: 0 0 0.5rem #10B981;
       animation: pulseStatus 2s infinite;
+      transition: background-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    /* hover the status line → indicator turns yellow */
+    .sys-status:hover .status-dot {
+      background: #FDE047;
+      box-shadow: 0 0 0.5rem #FDE047;
     }
 
     @keyframes pulseStatus {
@@ -1640,21 +1738,14 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
+      /* Variant B applied site-wide: interactive hover/state transitions
+         (.btn, .chat-fab, .chat-window, .int-item, .int-icon-box, .p-btn,
+         .partner-logo, .t-logo, .advantage-card, .pricing-card, card-3 flow)
+         are intentionally NOT suppressed, so hover movement stays smooth
+         even with OS reduced-motion on (product decision). Only the
+         continuous decorative .status-dot pulse is disabled here. */
       .status-dot {
         animation: none;
-      }
-
-      .advantage-card,
-      .btn,
-      .chat-fab,
-      .chat-window,
-      .int-icon-box,
-      .int-item,
-      .p-btn,
-      .partner-logo,
-      .pricing-card,
-      .t-logo {
-        transition: none;
       }
     }
 
@@ -2001,6 +2092,17 @@
       font-size: 1.5rem;
       margin-bottom: 0.5rem;
       color: var(--text-dark);
+    }
+
+    /* accent title (e.g. «Получить демо доступ») — dark amber from the
+       site's yellow pair, readable on the white modal */
+    .lead-modal__title--accent {
+      color: #1E3A8A;
+    }
+
+    /* meeting request («Заказать встречу») — deep brand teal, readable on white */
+    .lead-modal__title--accent-teal {
+      color: #176B87;
     }
 
     .lead-modal__subtitle {
