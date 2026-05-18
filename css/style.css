@@ -1040,6 +1040,20 @@
       opacity: 0.6;
     }
 
+    /* legend-driven highlight: hovering a tag emphasizes its line and
+       dims the others (classes toggled by initChartLegendHover) */
+    .chart-area svg path {
+      transition: opacity 0.2s ease;
+    }
+
+    .chart-area svg path.line-on {
+      opacity: 1;
+    }
+
+    .chart-area svg path.line-off {
+      opacity: 0.15;
+    }
+
     .chart-area {
       width: 100%;
       flex: 1;
