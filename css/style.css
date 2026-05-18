@@ -1140,7 +1140,16 @@
       line-height: 1.6;
       margin-top: auto;
       overflow-x: auto;
-      white-space: pre-line;
+    }
+
+    /* each source line is hoverable → bold on hover */
+    .mockup-code-line {
+      white-space: nowrap;
+    }
+
+    .mockup-code-line:hover {
+      font-weight: 700;
+      color: #333;
     }
 
     .mockup-panel {
