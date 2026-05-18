@@ -24,5 +24,11 @@ GitHub. Скрипты в репо: `deploy/bootstrap.sh` (однократно 
 статики в веб-корень). Bootstrap клонирует в `/opt/amigo-site`, детектит
 web root (nginx/apache), бэкапит старый в `/var/backups/amigo-*`, ставит
 cron каждые 3 мин. Лог `/var/log/amigo-deploy.log`. Дальнейшие деплои —
-автоматически по merge в `master`, ручных шагов нет. Подробности —
+автоматически по merge в `master`, ручных шагов нет.
+
+⚠️ Грабли (исправлено): `deploy.sh` ДОЛЖЕН rsync-ить всегда. Ранняя версия
+выходила с «already up to date», если git не менялся → при первом запуске
+после свежего клона (HEAD уже == origin/master) сайт не публиковался
+вообще. Не возвращать оптимизацию «skip if git unchanged». Реальный
+web root прода: `/var/www/amigo` (nginx, server_name 45.159.79.57). Подробности —
 `deploy/README.md`. См. [[forms-build-playbook]].
