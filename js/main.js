@@ -2,6 +2,13 @@ const initPageInteractions = () => {
   const WEBHOOK_URL = 'https://s43202e8e.fastvps-server.com/webhook/66815567-30b4-41c4-b6c0-a2aa2f15dd97';
   const REQUEST_TIMEOUT_MS = 60000;
 
+  // configuration-sensitive: lead-form delivery to Telegram bot @amigo_igc_bot.
+  // Direct browser->Telegram call by design (no backend); token is therefore
+  // public. Document any change in the PR (see AGENTS.md security notes).
+  const TELEGRAM_BOT_TOKEN = '8950625452:AAEK-uFPioBDOyhJHiZTujz2Fz5X-peHxmU';
+  // group "amigo_orders_chat" — group ids are negative in Telegram.
+  const TELEGRAM_CHAT_ID = '-5268263277';
+
   const initMobileMenu = () => {
     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
     const navWrapper = document.querySelector('.nav-wrapper');
@@ -392,10 +399,274 @@ const initPageInteractions = () => {
     });
   };
 
+  const initLeadFormModal = () => {
+    const modal = document.getElementById('leadModal');
+    const dialog = modal ? modal.querySelector('.lead-modal__dialog') : null;
+    const closeBtn = document.getElementById('leadModalClose');
+    const form = document.getElementById('leadForm');
+    const triggers = Array.from(document.querySelectorAll('.js-lead-open'));
+
+    if (!modal || !dialog || !closeBtn || !form || !triggers.length) return;
+
+    const nameInput = document.getElementById('leadName');
+    const emailInput = document.getElementById('leadEmail');
+    const phoneInput = document.getElementById('leadPhone');
+    const consentInput = document.getElementById('leadConsent');
+    const submitBtn = document.getElementById('leadSubmit');
+    const statusEl = document.getElementById('leadStatus');
+
+    let isSending = false;
+    let lastTrigger = null;
+    let leadSource = '';
+
+    // Local timeout-fetch helper (intentionally a private copy; chat widget
+    // keeps its own — see plans/modal-lead-form.md decision 3).
+    const postWithTimeout = async (url, payload, timeoutMs) => {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), timeoutMs);
+      try {
+        const resp = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+          signal: controller.signal
+        });
+        return resp;
+      } finally {
+        clearTimeout(timer);
+      }
+    };
+
+    const setStatus = (message, kind) => {
+      statusEl.textContent = message;
+      statusEl.classList.remove('is-success', 'is-error');
+      if (message) {
+        statusEl.classList.add('is-visible');
+        if (kind) statusEl.classList.add(`is-${kind}`);
+      } else {
+        statusEl.classList.remove('is-visible');
+      }
+    };
+
+    const setFieldError = (input, errorEl, message) => {
+      if (message) {
+        input.classList.add('is-invalid');
+        errorEl.textContent = message;
+        errorEl.classList.add('is-visible');
+      } else {
+        input.classList.remove('is-invalid');
+        errorEl.textContent = '';
+        errorEl.classList.remove('is-visible');
+      }
+    };
+
+    const errorFor = (input) => document.getElementById(`${input.id}Error`);
+
+    const formatPhone = (raw) => {
+      let digits = String(raw).replace(/\D/g, '');
+      if (digits.startsWith('8')) digits = `7${digits.slice(1)}`;
+      if (!digits.startsWith('7')) digits = `7${digits}`;
+      digits = digits.slice(0, 11);
+
+      const rest = digits.slice(1);
+      let out = '+7';
+      if (rest.length > 0) out += ` (${rest.slice(0, 3)}`;
+      if (rest.length >= 3) out += ')';
+      if (rest.length > 3) out += ` ${rest.slice(3, 6)}`;
+      if (rest.length > 6) out += `-${rest.slice(6, 8)}`;
+      if (rest.length > 8) out += `-${rest.slice(8, 10)}`;
+      return out;
+    };
+
+    const phoneDigits = () => phoneInput.value.replace(/\D/g, '');
+
+    const validate = () => {
+      let firstInvalid = null;
+
+      const name = nameInput.value.trim();
+      if (!name) {
+        setFieldError(nameInput, errorFor(nameInput), 'Укажите ваше имя.');
+        firstInvalid = firstInvalid || nameInput;
+      } else {
+        setFieldError(nameInput, errorFor(nameInput), '');
+      }
+
+      const email = emailInput.value.trim();
+      const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      if (!emailOk) {
+        setFieldError(emailInput, errorFor(emailInput), 'Укажите корректный адрес эл. почты.');
+        firstInvalid = firstInvalid || emailInput;
+      } else {
+        setFieldError(emailInput, errorFor(emailInput), '');
+      }
+
+      const digits = phoneDigits();
+      const phoneOk = digits.length === 11 && digits.startsWith('7');
+      if (!phoneOk) {
+        setFieldError(phoneInput, errorFor(phoneInput), 'Укажите номер в формате +7 (XXX) XXX-XX-XX.');
+        firstInvalid = firstInvalid || phoneInput;
+      } else {
+        setFieldError(phoneInput, errorFor(phoneInput), '');
+      }
+
+      return { ok: !firstInvalid, firstInvalid, name, email, phone: `+${digits}` };
+    };
+
+    const syncSubmitState = () => {
+      submitBtn.disabled = !consentInput.checked || isSending;
+    };
+
+    const resetForm = () => {
+      form.reset();
+      [nameInput, emailInput, phoneInput].forEach((input) => {
+        setFieldError(input, errorFor(input), '');
+      });
+      syncSubmitState();
+    };
+
+    const FOCUSABLE = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+
+    const trapFocus = (e) => {
+      if (e.key !== 'Tab') return;
+      const items = Array.from(dialog.querySelectorAll(FOCUSABLE))
+        .filter((el) => !el.disabled && el.offsetParent !== null);
+      if (!items.length) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+
+    const onKeydown = (e) => {
+      if (e.key === 'Escape') {
+        closeModal();
+      } else {
+        trapFocus(e);
+      }
+    };
+
+    const openModal = (trigger) => {
+      lastTrigger = trigger || null;
+      leadSource = (trigger && trigger.dataset.leadSource) || '';
+      modal.classList.remove('hidden');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('modal-open');
+      document.addEventListener('keydown', onKeydown);
+      dialog.classList.remove('is-submitted');
+      setStatus('', null);
+      syncSubmitState();
+      nameInput.focus();
+    };
+
+    function closeModal() {
+      if (modal.classList.contains('hidden')) return;
+      modal.classList.add('hidden');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('modal-open');
+      document.removeEventListener('keydown', onKeydown);
+      if (lastTrigger && typeof lastTrigger.focus === 'function') {
+        lastTrigger.focus();
+      }
+    }
+
+    triggers.forEach((btn) => {
+      btn.addEventListener('click', () => openModal(btn));
+    });
+
+    closeBtn.addEventListener('click', closeModal);
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    phoneInput.addEventListener('input', () => {
+      const pos = phoneInput.value.length;
+      phoneInput.value = formatPhone(phoneInput.value);
+      if (pos >= phoneInput.value.length) {
+        phoneInput.setSelectionRange(phoneInput.value.length, phoneInput.value.length);
+      }
+    });
+
+    consentInput.addEventListener('change', syncSubmitState);
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (isSending) return;
+
+      const result = validate();
+      if (!result.ok) {
+        if (result.firstInvalid) result.firstInvalid.focus();
+        return;
+      }
+
+      isSending = true;
+      submitBtn.classList.add('is-loading');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Отправляем…';
+      setStatus('', null);
+
+      // Moscow time regardless of the visitor's timezone
+      const mskParts = new Intl.DateTimeFormat('en-GB', {
+        timeZone: 'Europe/Moscow',
+        hour: '2-digit', minute: '2-digit', second: '2-digit',
+        year: 'numeric', month: '2-digit', day: '2-digit',
+        hour12: false
+      }).formatToParts(new Date()).reduce((acc, p) => {
+        acc[p.type] = p.value;
+        return acc;
+      }, {});
+      const mskDate = `${mskParts.year}-${mskParts.month}-${mskParts.day}`;
+      const mskTime = `${mskParts.hour}:${mskParts.minute}:${mskParts.second}`;
+
+      const text = [
+        'Новая заявка с сайта Amigo',
+        `Имя: ${result.name}`,
+        `E-mail: ${result.email}`,
+        `Телефон: ${result.phone}`,
+        `Дата: ${mskDate}`,
+        `Время: ${mskTime} (МСК)`
+      ].join('\n');
+
+      try {
+        const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+        // plain text, no parse_mode — user input cannot break Telegram markup.
+        const resp = await postWithTimeout(
+          url,
+          { chat_id: TELEGRAM_CHAT_ID, text },
+          REQUEST_TIMEOUT_MS
+        );
+        const data = await resp.json().catch(() => ({}));
+
+        if (resp.ok && data && data.ok) {
+          resetForm();
+          dialog.classList.add('is-submitted');
+          setStatus('Спасибо! Заявка отправлена, мы скоро свяжемся с вами.', 'success');
+          // show only the confirmation text, then close the modal
+          setTimeout(closeModal, 1800);
+        } else {
+          setStatus('Не удалось отправить заявку. Попробуйте ещё раз позже.', 'error');
+        }
+      } catch (err) {
+        setStatus('Не удалось отправить заявку. Проверьте соединение и попробуйте снова.', 'error');
+      } finally {
+        isSending = false;
+        submitBtn.classList.remove('is-loading');
+        submitBtn.textContent = 'Отправить';
+        syncSubmitState();
+      }
+    });
+  };
+
   initMobileMenu();
   initCubeParallax();
   initChartHover();
   initChatWidget();
+  initLeadFormModal();
 };
 
 if (document.readyState === 'loading') {

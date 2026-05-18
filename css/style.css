@@ -622,6 +622,12 @@
         width: 100%;
       }
 
+      /* The lead-form trigger is dropped from the burger menu on mobile —
+         the always-visible hero button covers this action. */
+      .nav-wrapper .js-lead-open {
+        display: none;
+      }
+
       .hero-section {
         padding: 6rem 5% 4rem;
       }
@@ -1661,6 +1667,16 @@
       display: flex;
       flex-direction: column;
       align-items: flex-end;
+      /* The hidden chat window still occupies layout (visibility:hidden, not
+         display:none, to keep the open/close transition). Let clicks pass
+         through the empty container area so it doesn't block CTAs beneath
+         it on narrow screens; children re-enable pointer events. */
+      pointer-events: none;
+    }
+
+    .chat-fab,
+    .chat-window {
+      pointer-events: auto;
     }
 
     .chat-fab {
@@ -1898,5 +1914,285 @@
         width: calc(100vw - 2rem);
         height: 60vh;
         max-height: 400px;
+      }
+    }
+
+    /* --- Lead Form Modal --- */
+    body.modal-open {
+      overflow: hidden;
+    }
+
+    .lead-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--spacing-sm);
+      background: rgba(17, 17, 17, 0.55);
+      opacity: 1;
+      transition: opacity 0.25s ease;
+    }
+
+    .lead-modal.hidden {
+      display: none;
+    }
+
+    .lead-modal__dialog {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-width: 460px;
+      max-height: calc(100vh - 2 * var(--spacing-sm));
+      max-height: calc(100dvh - 2 * var(--spacing-sm));
+      overflow: hidden;
+      background: var(--bg-color);
+      border-radius: 16px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+      font-family: var(--font-sans);
+      color: var(--text-dark);
+      animation: leadModalIn 0.25s ease;
+    }
+
+    /* Inner scroll area — keeps the close button pinned to the dialog
+       (#1: close no longer scrolls away on short / landscape screens). */
+    .lead-modal__body {
+      overflow-y: auto;
+      padding: var(--spacing-md);
+    }
+
+    @keyframes leadModalIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .lead-modal__close {
+      position: absolute;
+      z-index: 1;
+      top: 0.75rem;
+      right: 0.75rem;
+      width: 2rem;
+      height: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: color 0.2s ease;
+    }
+
+    .lead-modal__close:hover {
+      color: var(--text-dark);
+    }
+
+    .lead-modal__title {
+      font-family: var(--font-ui);
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: var(--text-dark);
+    }
+
+    .lead-modal__subtitle {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: var(--spacing-md);
+    }
+
+    .lead-form__field {
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .lead-form__field label {
+      display: block;
+      font-family: var(--font-ui);
+      font-size: 0.875rem;
+      color: var(--text-dark);
+      margin-bottom: 0.35rem;
+    }
+
+    .lead-form__field input {
+      width: 100%;
+      padding: 0.7rem 0.85rem;
+      font-family: var(--font-sans);
+      font-size: 1rem;
+      color: var(--text-dark);
+      background: var(--bg-color);
+      border: 1px solid var(--guide-gray);
+      border-radius: 10px;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    .lead-form__field input:focus {
+      border-color: var(--text-dark);
+    }
+
+    .lead-form__field input.is-invalid {
+      border-color: var(--guide-red);
+    }
+
+    .lead-form__error {
+      display: none;
+      margin-top: 0.3rem;
+      font-size: 0.8rem;
+      color: var(--guide-red);
+    }
+
+    .lead-form__error.is-visible {
+      display: block;
+    }
+
+    .lead-form__consent {
+      display: flex;
+      gap: 0.6rem;
+      align-items: flex-start;
+      margin: var(--spacing-sm) 0;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    .lead-form__consent input {
+      margin-top: 0.15rem;
+      flex-shrink: 0;
+      width: 1rem;
+      height: 1rem;
+      accent-color: var(--text-dark);
+    }
+
+    .lead-form__consent a {
+      color: var(--text-dark);
+      text-decoration: underline;
+    }
+
+    .lead-form__submit {
+      width: 100%;
+    }
+
+    .lead-form__submit:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .lead-form__submit.is-loading {
+      opacity: 0.7;
+      cursor: progress;
+    }
+
+    .lead-form__status {
+      margin-top: var(--spacing-sm);
+      font-size: 0.9rem;
+      text-align: center;
+      display: none;
+    }
+
+    .lead-form__status.is-visible {
+      display: block;
+    }
+
+    .lead-form__status.is-success {
+      color: var(--guide-blue);
+    }
+
+    .lead-form__status.is-error {
+      color: var(--guide-red);
+    }
+
+    /* Success state: hide the form, show only the confirmation text */
+    .lead-modal__dialog.is-submitted .lead-modal__title,
+    .lead-modal__dialog.is-submitted .lead-modal__subtitle,
+    .lead-modal__dialog.is-submitted .lead-form {
+      display: none;
+    }
+
+    .lead-modal__dialog.is-submitted .lead-form__status {
+      margin: 0;
+      font-size: 1.05rem;
+    }
+
+    @media (max-width: 768px) {
+      .lead-modal {
+        padding: var(--spacing-xs);
+      }
+      /* keep the dialog at a comfortable width on tablets/large phones;
+         on narrow phones the viewport itself caps it (#2). */
+      .lead-modal__body {
+        padding: var(--spacing-md) var(--spacing-sm);
+      }
+    }
+
+    /* --- Privacy Page --- */
+    .privacy-header {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: var(--spacing-md) var(--spacing-sm);
+    }
+
+    .privacy-header .logo {
+      font-family: var(--font-hero);
+      font-size: 1.6rem;
+      color: var(--text-dark);
+      text-decoration: none;
+    }
+
+    .privacy-page {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 var(--spacing-sm) var(--spacing-xl);
+      font-family: var(--font-sans);
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+
+    .privacy-page h1 {
+      font-family: var(--font-ui);
+      font-size: 1.9rem;
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .privacy-page h2 {
+      font-family: var(--font-ui);
+      font-size: 1.2rem;
+      margin: var(--spacing-md) 0 0.5rem;
+    }
+
+    .privacy-page p,
+    .privacy-page li {
+      color: var(--text-muted);
+      margin-bottom: 0.6rem;
+    }
+
+    .privacy-page ul {
+      padding-left: 1.25rem;
+    }
+
+    .privacy-page a {
+      color: var(--text-dark);
+    }
+
+    .privacy-page .privacy-note {
+      margin-top: var(--spacing-md);
+      padding: var(--spacing-sm);
+      border: 1px dashed var(--guide-gray);
+      border-radius: 10px;
+      font-size: 0.85rem;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .lead-modal,
+      .lead-modal__dialog {
+        animation: none;
+        transition: none;
       }
     }
