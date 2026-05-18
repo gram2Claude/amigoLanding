@@ -1,3 +1,4 @@
 - [Telegram lead bot](telegram-lead-bot.md) — bot token + direct-API delivery for the «Оставить заявку» form
 - [Forms build playbook](forms-build-playbook.md) — reusable modal/form patterns, responsive gotchas, screenshot tooling for the next form
 - [User workflow](user-workflow.md) — spec→plan→implement approval gates; user owns git/commits
+- [Reduced-motion Variant B](reduced-motion-variant-b.md) — env has OS reduce-motion ON; don't suppress interactive transitions under prefers-reduced-motion

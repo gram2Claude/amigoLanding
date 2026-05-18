@@ -1716,24 +1716,14 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
+      /* Variant B applied site-wide: interactive hover/state transitions
+         (.btn, .chat-fab, .chat-window, .int-item, .int-icon-box, .p-btn,
+         .partner-logo, .t-logo, .advantage-card, .pricing-card, card-3 flow)
+         are intentionally NOT suppressed, so hover movement stays smooth
+         even with OS reduced-motion on (product decision). Only the
+         continuous decorative .status-dot pulse is disabled here. */
       .status-dot {
         animation: none;
-      }
-
-      /* .advantage-card intentionally kept animated even under
-         reduced-motion (product decision: smooth hover on the
-         «Почему выбирают Amigo» cards) */
-      .btn,
-      .chat-fab,
-      .chat-window,
-      .int-icon-box,
-      .int-item,
-      .p-btn,
-      .partner-logo,
-      /* .pricing-card intentionally kept animated even under
-         reduced-motion (Variant B, consistent with .advantage-card) */
-      .t-logo {
-        transition: none;
       }
     }
 
