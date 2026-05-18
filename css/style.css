@@ -2097,7 +2097,7 @@
     /* accent title (e.g. «Получить демо доступ») — dark amber from the
        site's yellow pair, readable on the white modal */
     .lead-modal__title--accent {
-      color: #854D0E;
+      color: #1E3A8A;
     }
 
     /* meeting request («Заказать встречу») — deep brand teal, readable on white */
