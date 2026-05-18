@@ -30,7 +30,7 @@
 
   <link rel="icon" href="./favicon.svg?v=1" type="image/svg+xml">
 
-  <link rel="stylesheet" href="./css/style.css?v=19">
+  <link rel="stylesheet" href="./css/style.css?v=37">
 </head>
 
 <body>
@@ -103,7 +103,11 @@
       данных</p>
 
     <div class="cta-group">
-      <button type="button" class="btn btn-primary">Попробовать</button>
+      <button type="button" class="btn btn-primary js-lead-open" data-lead-source="попробовать"
+        data-lead-title="Получить демо доступ"
+        data-lead-subtitle="На указанный адрес эл. почты будет отправлен демо доступ"
+        data-lead-title-accent
+        data-lead-tg-title="Запрос демо доступа с сайта Amigo">Попробовать</button>
       <button type="button" class="btn btn-outline js-lead-open" data-lead-source="hero">Оставить заявку</button>
     </div>
 
@@ -227,7 +231,12 @@
               Полная <span class="text-accent">перезапись</span> данных <span class="text-accent">за период 1-30</span>
               дней <span class="text-accent">каждые сутки</span>
             </div>
-            <button type="button" class="mockup-btn-yellow">
+            <button type="button" class="mockup-btn-yellow js-lead-open"
+              data-lead-source="запуск-по-кнопке"
+              data-lead-title="Получить демо доступ"
+              data-lead-subtitle="На указанный адрес эл. почты будет отправлен демо доступ"
+              data-lead-title-accent
+              data-lead-tg-title="Запрос демо доступа с сайта Amigo">
               <iconify-icon icon="solar:play-circle-linear" class="mockup-icon-sm" aria-hidden="true"></iconify-icon>
               Запуск по кнопке
             </button>
@@ -332,7 +341,12 @@
                     <iconify-icon icon="solar:check-circle-bold" class="text-green" aria-hidden="true"></iconify-icon>
                   </div>
                 </div>
-                <button type="button" class="btn-mockup-blue">
+                <button type="button" class="btn-mockup-blue js-lead-open"
+                  data-lead-source="демо-кабинет"
+                  data-lead-title="Получить демо доступ"
+                  data-lead-subtitle="На указанный адрес эл. почты будет отправлен демо доступ"
+                  data-lead-title-accent
+                  data-lead-tg-title="Запрос демо доступа с сайта Amigo">
                   <iconify-icon icon="solar:add-circle-linear" class="mockup-icon-sm"
                     aria-hidden="true"></iconify-icon> Демо кабинет
                 </button>
@@ -449,7 +463,11 @@
             Стандартная поддержка
           </li>
         </ul>
-        <a href="mailto:hello@amigo.com?subject=Заявка%20Amigo%20-%20Базовый" class="p-btn">Попробовать</a>
+        <button type="button" class="p-btn js-lead-open" data-lead-source="попробовать-базовый"
+          data-lead-title="Получить демо доступ"
+          data-lead-subtitle="На указанный адрес эл. почты будет отправлен демо доступ"
+          data-lead-title-accent
+          data-lead-tg-title="Запрос демо доступа с сайта Amigo">Попробовать</button>
       </div>
 
       <!-- Popular (Pro) -->
@@ -502,7 +520,11 @@
             Персональный менеджер
           </li>
         </ul>
-        <a href="mailto:hello@amigo.com?subject=Заявка%20Amigo%20-%20Энтерпрайз" class="p-btn">Заказать</a>
+        <button type="button" class="p-btn js-lead-open" data-lead-source="заказать-энтерпрайз"
+          data-lead-title="Заказать встречу"
+          data-lead-subtitle="Менеджер свяжется с вами, чтобы согласовать время встречи"
+          data-lead-title-accent="teal"
+          data-lead-tg-title="Запрос встречи с сайта Amigo">Заказать</button>
       </div>
     </div>
   </section>
@@ -527,7 +549,11 @@
           <li><a href="#about">Аналитика</a></li>
           <li><a href="#integrations">Интеграции</a></li>
           <li><a href="#pricing">Цены</a></li>
-          <li><a href="mailto:hello@amigo.com?subject=Демо%20кабинет%20Amigo">Демо кабинет</a></li>
+          <li><a href="#" class="js-lead-open" data-lead-source="футер-демо-кабинет"
+              data-lead-title="Получить демо доступ"
+              data-lead-subtitle="На указанный адрес эл. почты будет отправлен демо доступ"
+              data-lead-title-accent
+              data-lead-tg-title="Запрос демо доступа с сайта Amigo">Демо кабинет</a></li>
         </ul>
       </div>
 
@@ -596,7 +622,7 @@
 
       <div class="lead-modal__body">
       <h2 class="lead-modal__title" id="leadModalTitle">Оставить заявку</h2>
-      <p class="lead-modal__subtitle">Оставьте контакты — мы свяжемся с вами и ответим на вопросы.</p>
+      <p class="lead-modal__subtitle" id="leadModalSubtitle">Оставьте контакты — мы свяжемся с вами и ответим на вопросы.</p>
 
       <form class="lead-form" id="leadForm" novalidate>
         <div class="lead-form__field">
@@ -623,7 +649,7 @@
         <label class="lead-form__consent">
           <input type="checkbox" id="leadConsent" name="consent" required>
           <span>Я согласен на обработку персональных данных в соответствии с
-            <a href="./privacy.html?v=19" target="_blank" rel="noopener">политикой обработки
+            <a href="./privacy.html?v=37" target="_blank" rel="noopener">политикой обработки
               персональных данных</a>.</span>
         </label>
 
@@ -638,7 +664,7 @@
   </div>
 
   <!-- Lightweight interaction script -->
-  <script src="./js/main.js?v=19" defer></script>
+  <script src="./js/main.js?v=37" defer></script>
 </body>
 
 </html>
