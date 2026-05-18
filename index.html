@@ -30,7 +30,7 @@
 
   <link rel="icon" href="./favicon.svg?v=1" type="image/svg+xml">
 
-  <link rel="stylesheet" href="./css/style.css?v=11">
+  <link rel="stylesheet" href="./css/style.css?v=12">
 </head>
 
 <body>
@@ -63,7 +63,7 @@
         <a href="#integrations">Услуги</a>
         <a href="#pricing">Цены</a>
       </nav>
-      <button type="button" class="btn btn-primary">Оставить заявку</button>
+      <button type="button" class="btn btn-primary js-lead-open" data-lead-source="шапка">Оставить заявку</button>
     </div>
   </header>
 
@@ -104,7 +104,7 @@
 
     <div class="cta-group">
       <button type="button" class="btn btn-primary">Попробовать</button>
-      <button type="button" class="btn btn-outline">Оставить заявку</button>
+      <button type="button" class="btn btn-outline js-lead-open" data-lead-source="hero">Оставить заявку</button>
     </div>
 
     <div class="trusted-by">
@@ -586,8 +586,57 @@
     </button>
   </div>
 
+  <!-- Lead Form Modal -->
+  <div class="lead-modal hidden" id="leadModal" role="dialog" aria-modal="true"
+    aria-labelledby="leadModalTitle" aria-hidden="true">
+    <div class="lead-modal__dialog" role="document">
+      <button type="button" class="lead-modal__close" id="leadModalClose" aria-label="Закрыть">
+        <iconify-icon icon="solar:close-circle-linear" aria-hidden="true"></iconify-icon>
+      </button>
+
+      <h2 class="lead-modal__title" id="leadModalTitle">Оставить заявку</h2>
+      <p class="lead-modal__subtitle">Оставьте контакты — мы свяжемся с вами и ответим на вопросы.</p>
+
+      <form class="lead-form" id="leadForm" novalidate>
+        <div class="lead-form__field">
+          <label for="leadName">Ваше имя</label>
+          <input type="text" id="leadName" name="name" autocomplete="name" required
+            aria-describedby="leadNameError">
+          <span class="lead-form__error" id="leadNameError" role="alert"></span>
+        </div>
+
+        <div class="lead-form__field">
+          <label for="leadEmail">Адрес эл. почты</label>
+          <input type="email" id="leadEmail" name="email" autocomplete="email" required
+            aria-describedby="leadEmailError">
+          <span class="lead-form__error" id="leadEmailError" role="alert"></span>
+        </div>
+
+        <div class="lead-form__field">
+          <label for="leadPhone">Номер телефона</label>
+          <input type="tel" id="leadPhone" name="phone" autocomplete="tel" inputmode="tel"
+            placeholder="+7 (___) ___-__-__" required aria-describedby="leadPhoneError">
+          <span class="lead-form__error" id="leadPhoneError" role="alert"></span>
+        </div>
+
+        <label class="lead-form__consent">
+          <input type="checkbox" id="leadConsent" name="consent" required>
+          <span>Я согласен на обработку персональных данных в соответствии с
+            <a href="./privacy.html?v=12" target="_blank" rel="noopener">политикой обработки
+              персональных данных</a>.</span>
+        </label>
+
+        <button type="submit" class="btn btn-primary lead-form__submit" id="leadSubmit" disabled>
+          Отправить
+        </button>
+
+        <p class="lead-form__status" id="leadStatus" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+
   <!-- Lightweight interaction script -->
-  <script src="./js/main.js?v=11" defer></script>
+  <script src="./js/main.js?v=12" defer></script>
 </body>
 
 </html>
