@@ -1001,10 +1001,21 @@
       border-radius: 0.75rem;
       border: 1px solid var(--guide-gray);
       box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.02);
+      transition: opacity 0.2s ease;
     }
 
     .tag-muted {
       opacity: 0.5;
+    }
+
+    /* hovering the legend: hovered tag becomes active, the rest dim —
+       regardless of which one carries the static .tag-muted default */
+    .chart-tags:hover .tag {
+      opacity: 0.5;
+    }
+
+    .chart-tags:hover .tag:hover {
+      opacity: 1;
     }
 
     .dot {
@@ -1027,6 +1038,20 @@
 
     .chart-line-muted {
       opacity: 0.6;
+    }
+
+    /* legend-driven highlight: hovering a tag emphasizes its line and
+       dims the others (classes toggled by initChartLegendHover) */
+    .chart-area svg path {
+      transition: opacity 0.2s ease;
+    }
+
+    .chart-area svg path.line-on {
+      opacity: 1;
+    }
+
+    .chart-area svg path.line-off {
+      opacity: 0.15;
     }
 
     .chart-area {
@@ -2023,7 +2048,14 @@
       padding: var(--spacing-sm);
       background: rgba(17, 17, 17, 0.55);
       opacity: 1;
-      transition: opacity 0.25s ease;
+      /* backdrop fades in on open (display toggle can't transition,
+         so use a one-shot entrance animation) */
+      animation: leadOverlayIn 0.25s ease;
+    }
+
+    @keyframes leadOverlayIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
     }
 
     .lead-modal.hidden {
@@ -2291,13 +2323,9 @@
       font-size: 0.85rem;
     }
 
-    @media (prefers-reduced-motion: reduce) {
-      .lead-modal,
-      .lead-modal__dialog {
-        animation: none;
-        transition: none;
-      }
-    }
+    /* .lead-modal / .lead-modal__dialog entrance animation is intentionally
+       NOT suppressed under prefers-reduced-motion — Variant B site-wide
+       (smooth modal open kept by product choice despite the OS setting). */
 
     /* --- Cookie Consent Banner --- */
     .cookie-banner {

@@ -728,12 +728,39 @@ const initPageInteractions = () => {
     declineBtn.addEventListener('click', () => decide('declined'));
   };
 
+  const initChartLegendHover = () => {
+    const containers = document.querySelectorAll('.mockup-chart-container');
+
+    containers.forEach((container) => {
+      const tagsWrap = container.querySelector('.chart-tags');
+      const tags = tagsWrap ? Array.from(tagsWrap.querySelectorAll('.tag')) : [];
+      const lines = Array.from(container.querySelectorAll('.chart-area svg path'));
+
+      if (!tagsWrap || tags.length === 0 || lines.length === 0) return;
+
+      const clear = () => lines.forEach((l) => l.classList.remove('line-on', 'line-off'));
+
+      // tag[i] corresponds to chart line path[i] (same source order)
+      tags.forEach((tag, i) => {
+        tag.addEventListener('pointerenter', () => {
+          lines.forEach((line, j) => {
+            line.classList.toggle('line-on', j === i);
+            line.classList.toggle('line-off', j !== i);
+          });
+        });
+      });
+
+      tagsWrap.addEventListener('pointerleave', clear);
+    });
+  };
+
   initMobileMenu();
   initCubeParallax();
   initChartHover();
   initChatWidget();
   initLeadFormModal();
   initCookieBanner();
+  initChartLegendHover();
 };
 
 if (document.readyState === 'loading') {

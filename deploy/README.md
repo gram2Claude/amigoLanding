@@ -23,15 +23,16 @@ Override the web root if detection is wrong:
 ## Deploying a new version (explicit, on demand)
 
 There is **no auto-update**. The live site changes only when you explicitly
-run the deploy command on the server. After merging into `master`:
+run the deploy command on the server. After merging into `master`, run:
 
 ```
-bash <(curl -fsSL https://raw.githubusercontent.com/gram2Claude/amigoLanding/master/deploy/deploy.sh)
+/opt/amigo-site/deploy/deploy.sh
 ```
 
-This always pulls the latest `master` and republishes the static files to
-the web root (idempotent — safe to run anytime). `deploy.sh` reads the web
-root from `/etc/amigo-deploy.conf` written by `bootstrap.sh`.
+This pulls the latest `master` (`git fetch` + `reset --hard`) and republishes
+the static files to the web root. Idempotent, safe to run anytime, and uses
+git directly (no `raw.githubusercontent.com` CDN-cache lag). `deploy.sh`
+reads the web root from `/etc/amigo-deploy.conf` written by `bootstrap.sh`.
 
 ## Security note
 
