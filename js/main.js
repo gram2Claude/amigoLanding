@@ -684,11 +684,56 @@ const initPageInteractions = () => {
     });
   };
 
+  const initCookieBanner = () => {
+    const banner = document.getElementById('cookieBanner');
+    const acceptBtn = document.getElementById('cookieAccept');
+    const declineBtn = document.getElementById('cookieDecline');
+
+    if (!banner || !acceptBtn || !declineBtn) return;
+
+    const STORAGE_KEY = 'cookieConsent';
+
+    let stored = null;
+    try {
+      stored = window.localStorage.getItem(STORAGE_KEY);
+    } catch (e) {
+      stored = null;
+    }
+
+    // already accepted/declined → never show again
+    if (stored === 'accepted' || stored === 'declined') return;
+
+    banner.hidden = false;
+    window.requestAnimationFrame(() => banner.classList.add('is-visible'));
+
+    const decide = (value) => {
+      try {
+        window.localStorage.setItem(STORAGE_KEY, value);
+      } catch (e) {
+        /* storage unavailable — banner just won't persist */
+      }
+      banner.classList.remove('is-visible');
+      let hidden = false;
+      const hide = () => {
+        if (hidden) return;
+        hidden = true;
+        banner.hidden = true;
+        banner.removeEventListener('transitionend', hide);
+      };
+      banner.addEventListener('transitionend', hide);
+      window.setTimeout(hide, 500); // fallback if transitionend doesn't fire
+    };
+
+    acceptBtn.addEventListener('click', () => decide('accepted'));
+    declineBtn.addEventListener('click', () => decide('declined'));
+  };
+
   initMobileMenu();
   initCubeParallax();
   initChartHover();
   initChatWidget();
   initLeadFormModal();
+  initCookieBanner();
 };
 
 if (document.readyState === 'loading') {
