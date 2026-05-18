@@ -24,11 +24,12 @@ GitHub. Скрипты в репо: `deploy/bootstrap.sh` (однократно 
 статики в веб-корень). Bootstrap клонирует в `/opt/amigo-site`, детектит
 web root (nginx/apache, реально `/var/www/amigo`), бэкапит старый в
 `/var/backups/amigo-*`. **Только ручной деплой — БЕЗ cron** (заказчик
-явно требует выкат только по команде). Канонический деплой новой версии
-(после merge в master) — на сервере одной короткой командой:
-`/opt/amigo-site/deploy/deploy.sh` (git fetch+reset --hard origin/master +
-rsync; без задержки raw-CDN). Прод проверен: v=45, HTTP 200, конвейер
-«merge → команда → выкат» работает.
+явно требует выкат только по команде). Канонический деплой новой версии (после merge в master) — на сервере:
+`bash /opt/amigo-site/deploy/deploy.sh` (git fetch+reset --hard
+origin/master + rsync; без raw-CDN). **Запускать через `bash`**: внутри
+скрипт делает `git reset --hard`, что сбрасывает exec-бит → прямой
+`./deploy.sh` падает с `Permission denied`. В git exec-бит выставлен
+(`git update-index --chmod=+x`), но `bash …` надёжнее в любом случае.
 
 ⚠️ Грабли (исправлено): `deploy.sh` ДОЛЖЕН rsync-ить всегда. Ранняя версия
 выходила с «already up to date», если git не менялся → при первом запуске
