@@ -2298,3 +2298,71 @@
         transition: none;
       }
     }
+
+    /* --- Cookie Consent Banner --- */
+    .cookie-banner {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 1000;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: var(--spacing-sm);
+      padding: var(--spacing-sm) var(--spacing-md);
+      background: var(--bg-color);
+      border-top: 1px solid var(--guide-gray);
+      box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.08);
+      font-family: var(--font-sans);
+      transform: translateY(100%);
+      transition: transform 0.35s ease;
+    }
+
+    /* higher specificity than .cookie-banner{display:flex} so the
+       hidden attribute keeps it removed before JS decides to show it */
+    .cookie-banner[hidden] {
+      display: none;
+    }
+
+    .cookie-banner.is-visible {
+      transform: translateY(0);
+    }
+
+    .cookie-banner__text {
+      margin: 0;
+      max-width: 760px;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      color: var(--text-muted);
+    }
+
+    .cookie-banner__text a {
+      color: var(--text-dark);
+      text-decoration: underline;
+    }
+
+    .cookie-banner__actions {
+      display: flex;
+      gap: 0.6rem;
+      flex-shrink: 0;
+    }
+
+    .cookie-banner__actions .btn {
+      padding: 0.55rem 1.25rem;
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 768px) {
+      .cookie-banner {
+        padding: var(--spacing-sm);
+        gap: 0.75rem;
+      }
+      .cookie-banner__actions {
+        width: 100%;
+      }
+      .cookie-banner__actions .btn {
+        flex: 1;
+      }
+    }
