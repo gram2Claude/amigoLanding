@@ -12,13 +12,6 @@
       --guide-blue: #4AB4D9;
       --guide-gray: rgba(0, 0, 0, 0.2);
       --guide-gray-dark: rgba(0, 0, 0, 0.08);
-      /* #data-flow per-stage accents (muted; lake/enrich reuse brand
-         guide tones, the rest are desaturated to stay on-palette) */
-      --flow-c-src: #7C8DB5;
-      --flow-c-lake: var(--guide-blue);
-      --flow-c-enrich: var(--guide-red);
-      --flow-c-mart: #3FA796;
-      --flow-c-dash: #6C7AE0;
       /* Typography */
       --font-serif: 'Onest', sans-serif;
       --font-sans: 'Golos Text', sans-serif;
@@ -2573,32 +2566,6 @@
       font-weight: 700;
     }
 
-    .product-sources {
-      list-style: none;
-      padding: 0;
-      margin: 0 0 var(--spacing-sm);
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-    }
-
-    .product-source-chip {
-      padding: 0.55rem 1.1rem;
-      border: 1px solid var(--guide-gray);
-      border-radius: 999px;
-      font-family: var(--font-ui);
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: var(--text-dark);
-      background: var(--bg-color);
-      transition: border-color 0.2s ease, transform 0.2s ease;
-    }
-
-    .product-source-chip:hover {
-      border-color: var(--text-dark);
-      transform: translateY(-2px);
-    }
-
     .product-figure {
       margin: var(--spacing-md) 0 0;
       text-align: center;
@@ -2639,244 +2606,115 @@
       color: var(--text-dark);
     }
 
+    /* #data-flow reuses the index .advantages-* card system, but its
+       content is sparser. Stop the grid from height-equalising rows and
+       let each .card-visual hug its mockup, so cards aren't stretched
+       tall. Scoped to #data-flow — index.html cards keep their look. */
+    /* heading matches the "Как работает Amigo" hero (.product-hero h1):
+       same typeface and same size/line-height, per request */
+    #data-flow h2 {
+      font-family: var(--font-hero);
+      font-size: clamp(2rem, 5vw, 3rem);
+      line-height: 1.15;
+    }
+
+    /* intro paragraph intentionally left to inherit .product-section p
+       (Golos Text, base size) — matches the "Что такое Amigo" block. */
+
+    /* card 1 description uses Space Mono (explicit choice for card 1).
+       Scoped to the span-2 card = card 1 only. */
+    #data-flow .advantage-card.span-2 .card-desc {
+      font-family: var(--font-mono);
+    }
+
+    /* source logos in card 1's free left space (skips Hybrid — no asset) */
+    /* one logo per row; the stacked column lifts card 1 to roughly the
+       height of card 2 (Data Lake) in the same grid row */
+    /* logos spread evenly over the full column height (first at top,
+       last at bottom), so card 1's left side stays balanced */
+    #data-flow .src-logos {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-between;
+      height: 100%;
+      margin-top: 0;
+    }
+
+    /* card 1 header sits above the 2-col row at full card width; the
+       inner row grows to fill the rest of the (stretched) card so the
+       logo column has height to distribute over */
+    #data-flow .card-horizontal-inner {
+      height: auto;
+      flex: 1;
+      /* logos column shrinks to its content; the mockup takes all the
+         freed space on its left (was a 1fr/1fr split) */
+      grid-template-columns: max-content 1fr;
+    }
+
+    #data-flow .src-logos img {
+      height: 24px;
+      width: auto;
+      max-width: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    #data-flow .advantages-grid {
+      align-items: start;
+      /* align the grid box to the section's heading/intro (flush-left,
+         full content width) instead of the index centred 75rem box */
+      max-width: none;
+      margin: 0;
+    }
+
+    /* card 1 (span-2) stretches to its grid-row height so it ends up
+       exactly as tall as card 2 (Data Lake) beside it; other rows keep
+       their content height via the align-items: start above */
+    #data-flow .advantage-card.span-2 {
+      align-self: stretch;
+    }
+
+    #data-flow .card-visual {
+      flex: 0 0 auto;
+      min-height: 0;
+    }
+
+    #data-flow .mockup-code-block {
+      width: 100%;
+      /* fill the cell height so the mockup is as tall as the logo
+         column instead of hugging its 8 lines of content */
+      height: 100%;
+      box-sizing: border-box;
+    }
+
+    /* long source lines wrap inside the box instead of the index
+       single-line nowrap (which clipped the text on the right) */
+    #data-flow .mockup-code-block .mockup-code-line {
+      white-space: normal;
+      overflow-wrap: break-word;
+    }
+
+    /* indent the detail lines under each "-- Source" header */
+    #data-flow .mockup-code-block .mc-sub {
+      padding-left: 1.1rem;
+    }
+
+    /* keep mockup rows to a single line so cards stay compact */
+    #data-flow .mockup-item span {
+      min-width: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    #data-flow .mockup-box-header {
+      white-space: nowrap;
+    }
+
     /* NB: product-page motion (chip hover, nav transitions, smooth anchor
        scroll in main.js) is intentionally NOT suppressed under
        prefers-reduced-motion — Variant B site-wide decision. */
-
-    /* --- #data-flow pipeline diagram (SVG logos + dashed arrows) --- */
-    .product-flow {
-      margin-top: var(--spacing-md);
-      width: 100%;
-      display: flex;
-      align-items: stretch;
-      justify-content: space-between;
-      gap: 0.25rem;
-      flex-wrap: nowrap;
-    }
-
-    .flow-node {
-      flex: 0 1 auto;
-      min-width: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 0.4rem;
-      padding: 0.7rem 0.5rem;
-      border: 1px solid var(--guide-gray-dark);
-      border-radius: 10px;
-      background: var(--bg-color);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-      text-align: center;
-    }
-
-    .flow-node .flow-logo {
-      height: 24px;
-      width: auto;
-      max-width: 104px;
-      object-fit: contain;
-      display: block;
-    }
-
-    .flow-label {
-      font-family: var(--font-ui);
-      font-size: 0.76rem;
-      font-weight: 600;
-      color: var(--text-dark);
-      line-height: 1.2;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .flow-label small {
-      font-weight: 400;
-      font-size: 0.68rem;
-      color: var(--text-muted);
-    }
-
-    .flow-node--sources {
-      flex: 0 1 auto;
-    }
-
-    .flow-sources__grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      align-items: center;
-      gap: 0.3rem 0.55rem;
-    }
-
-    .flow-sources__grid img {
-      height: 14px;
-      width: auto;
-      max-width: 72px;
-      object-fit: contain;
-      display: block;
-    }
-
-    .flow-icon svg {
-      width: 28px;
-      height: 28px;
-      color: var(--text-muted);
-      display: block;
-    }
-
-    .flow-tiles {
-      display: flex;
-      gap: 0.4rem;
-    }
-
-    .flow-tiles img {
-      height: 34px;
-      width: auto;
-      border-radius: 5px;
-      display: block;
-    }
-
-    /* dashed connector; structured for a future flow animation
-       (animate stroke-dashoffset per segment — out of current scope,
-       deliberately NOT added, and not suppressed under reduced-motion). */
-    .flow-arrow {
-      flex: 0 0 auto;
-      align-self: center;
-      display: flex;
-      align-items: center;
-      color: var(--text-muted);
-    }
-
-    .flow-arrow svg {
-      width: 30px;
-      height: 14px;
-      display: block;
-    }
-
-    /* Iteration 1: one-shot scroll-reveal of the pipeline.
-       Progressive enhancement — base state is fully visible; JS adds
-       .flow-reveal (sets hidden start state), then .is-inview animates
-       children in left→right. Plays once; intentionally NOT suppressed
-       under prefers-reduced-motion (Variant B site-wide decision). */
-    .product-flow.flow-reveal > * {
-      opacity: 0;
-      transform: translateY(12px);
-      transition: opacity 0.5s ease, transform 0.5s ease;
-    }
-
-    .product-flow.flow-reveal.is-inview > * {
-      opacity: 1;
-      transform: none;
-    }
-
-    .product-flow.flow-reveal.is-inview > *:nth-child(1) { transition-delay: 0ms; }
-    .product-flow.flow-reveal.is-inview > *:nth-child(2) { transition-delay: 80ms; }
-    .product-flow.flow-reveal.is-inview > *:nth-child(3) { transition-delay: 160ms; }
-    .product-flow.flow-reveal.is-inview > *:nth-child(4) { transition-delay: 240ms; }
-    .product-flow.flow-reveal.is-inview > *:nth-child(5) { transition-delay: 320ms; }
-    .product-flow.flow-reveal.is-inview > *:nth-child(6) { transition-delay: 400ms; }
-    .product-flow.flow-reveal.is-inview > *:nth-child(7) { transition-delay: 480ms; }
-    .product-flow.flow-reveal.is-inview > *:nth-child(8) { transition-delay: 560ms; }
-    .product-flow.flow-reveal.is-inview > *:nth-child(9) { transition-delay: 640ms; }
-
-    /* Iteration 2: hover-link between a pipeline node and its bullet.
-       Combined transition on .flow-node also carries the reveal's fade
-       (overrides the generic .flow-reveal transition for nodes by source
-       order — arrows keep theirs). Pure interactive highlight, no
-       continuous motion — kept on under reduced-motion (Variant B). */
-    .product-flow .flow-node {
-      transition: opacity 0.5s ease, transform 0.3s ease,
-        box-shadow 0.2s ease, border-color 0.2s ease;
-    }
-
-    .product-flow .flow-node.is-flow-active {
-      border-color: var(--guide-blue);
-      background: rgba(74, 180, 217, 0.07);
-      box-shadow: 0 10px 24px rgba(74, 180, 217, 0.38),
-        0 0 0 2px var(--guide-blue);
-      transform: translateY(-5px);
-    }
-
-    .product-list li {
-      border-radius: 6px;
-      transition: color 0.2s ease, background-color 0.2s ease;
-    }
-
-    .product-list li.is-flow-active {
-      color: var(--text-dark);
-      background: rgba(74, 180, 217, 0.12);
-    }
-
-    .product-list li.is-flow-active strong {
-      color: var(--guide-blue);
-    }
-
-    .product-list li.is-flow-active::before {
-      background: var(--guide-blue);
-      box-shadow: 0 0 0 4px rgba(74, 180, 217, 0.25);
-    }
-
-    /* Iteration 3: static visual upgrade — thin per-stage accent bar
-       (inset top, no layout shift) + deeper resting card, brand-blue
-       connectors. Selectors kept at low specificity on purpose so the
-       iteration-2 .is-flow-active hover state still wins. Static only —
-       no motion, nothing to suppress under reduced-motion. */
-    .flow-node--sources {
-      box-shadow: inset 0 3px 0 var(--flow-c-src), 0 2px 10px rgba(0, 0, 0, 0.06);
-    }
-
-    .flow-node[data-flow="lake"] {
-      box-shadow: inset 0 3px 0 var(--flow-c-lake), 0 2px 10px rgba(0, 0, 0, 0.06);
-    }
-
-    .flow-node[data-flow="enrich"] {
-      box-shadow: inset 0 3px 0 var(--flow-c-enrich), 0 2px 10px rgba(0, 0, 0, 0.06);
-    }
-
-    .flow-node[data-flow="mart"] {
-      box-shadow: inset 0 3px 0 var(--flow-c-mart), 0 2px 10px rgba(0, 0, 0, 0.06);
-    }
-
-    .flow-node[data-flow="dash"] {
-      box-shadow: inset 0 3px 0 var(--flow-c-dash), 0 2px 10px rgba(0, 0, 0, 0.06);
-    }
-
-    .flow-node[data-flow="enrich"] .flow-icon svg {
-      color: var(--flow-c-enrich);
-    }
-
-    .product-flow .flow-arrow {
-      color: var(--guide-blue);
-    }
-
-    /* Iteration C: dashes "flow" toward each arrowhead while the user
-       hovers the pipeline; idle = static (current look). Hover-gated /
-       interactive — intentionally NOT suppressed under
-       prefers-reduced-motion, consistent with the .advantage-card flow
-       precedent (interactive motion kept on by product choice). */
-    @keyframes flowDash {
-      to { stroke-dashoffset: -8; }
-    }
-
-    .product-flow:hover .flow-arrow svg line {
-      animation: flowDash 0.6s linear infinite;
-    }
-
-    @media (max-width: 768px) {
-      .product-flow {
-        flex-direction: column;
-        align-items: center;
-        gap: 0.4rem;
-      }
-      .flow-node,
-      .flow-node--sources {
-        width: 100%;
-        max-width: 22rem;
-      }
-      .flow-sources__grid {
-        grid-template-columns: repeat(4, 1fr);
-        justify-items: center;
-      }
-      .flow-arrow svg {
-        transform: rotate(90deg);
-      }
-    }
 
     @media (max-width: 768px) {
       .product-nav {
