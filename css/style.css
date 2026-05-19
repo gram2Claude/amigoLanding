@@ -12,6 +12,13 @@
       --guide-blue: #4AB4D9;
       --guide-gray: rgba(0, 0, 0, 0.2);
       --guide-gray-dark: rgba(0, 0, 0, 0.08);
+      /* #data-flow per-stage accents (muted; lake/enrich reuse brand
+         guide tones, the rest are desaturated to stay on-palette) */
+      --flow-c-src: #7C8DB5;
+      --flow-c-lake: var(--guide-blue);
+      --flow-c-enrich: var(--guide-red);
+      --flow-c-mart: #3FA796;
+      --flow-c-dash: #6C7AE0;
       /* Typography */
       --font-serif: 'Onest', sans-serif;
       --font-sans: 'Golos Text', sans-serif;
@@ -2659,6 +2666,7 @@
       border: 1px solid var(--guide-gray-dark);
       border-radius: 10px;
       background: var(--bg-color);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
       text-align: center;
     }
 
@@ -2739,6 +2747,115 @@
       width: 30px;
       height: 14px;
       display: block;
+    }
+
+    /* Iteration 1: one-shot scroll-reveal of the pipeline.
+       Progressive enhancement — base state is fully visible; JS adds
+       .flow-reveal (sets hidden start state), then .is-inview animates
+       children in left→right. Plays once; intentionally NOT suppressed
+       under prefers-reduced-motion (Variant B site-wide decision). */
+    .product-flow.flow-reveal > * {
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .product-flow.flow-reveal.is-inview > * {
+      opacity: 1;
+      transform: none;
+    }
+
+    .product-flow.flow-reveal.is-inview > *:nth-child(1) { transition-delay: 0ms; }
+    .product-flow.flow-reveal.is-inview > *:nth-child(2) { transition-delay: 80ms; }
+    .product-flow.flow-reveal.is-inview > *:nth-child(3) { transition-delay: 160ms; }
+    .product-flow.flow-reveal.is-inview > *:nth-child(4) { transition-delay: 240ms; }
+    .product-flow.flow-reveal.is-inview > *:nth-child(5) { transition-delay: 320ms; }
+    .product-flow.flow-reveal.is-inview > *:nth-child(6) { transition-delay: 400ms; }
+    .product-flow.flow-reveal.is-inview > *:nth-child(7) { transition-delay: 480ms; }
+    .product-flow.flow-reveal.is-inview > *:nth-child(8) { transition-delay: 560ms; }
+    .product-flow.flow-reveal.is-inview > *:nth-child(9) { transition-delay: 640ms; }
+
+    /* Iteration 2: hover-link between a pipeline node and its bullet.
+       Combined transition on .flow-node also carries the reveal's fade
+       (overrides the generic .flow-reveal transition for nodes by source
+       order — arrows keep theirs). Pure interactive highlight, no
+       continuous motion — kept on under reduced-motion (Variant B). */
+    .product-flow .flow-node {
+      transition: opacity 0.5s ease, transform 0.3s ease,
+        box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    .product-flow .flow-node.is-flow-active {
+      border-color: var(--guide-blue);
+      background: rgba(74, 180, 217, 0.07);
+      box-shadow: 0 10px 24px rgba(74, 180, 217, 0.38),
+        0 0 0 2px var(--guide-blue);
+      transform: translateY(-5px);
+    }
+
+    .product-list li {
+      border-radius: 6px;
+      transition: color 0.2s ease, background-color 0.2s ease;
+    }
+
+    .product-list li.is-flow-active {
+      color: var(--text-dark);
+      background: rgba(74, 180, 217, 0.12);
+    }
+
+    .product-list li.is-flow-active strong {
+      color: var(--guide-blue);
+    }
+
+    .product-list li.is-flow-active::before {
+      background: var(--guide-blue);
+      box-shadow: 0 0 0 4px rgba(74, 180, 217, 0.25);
+    }
+
+    /* Iteration 3: static visual upgrade — thin per-stage accent bar
+       (inset top, no layout shift) + deeper resting card, brand-blue
+       connectors. Selectors kept at low specificity on purpose so the
+       iteration-2 .is-flow-active hover state still wins. Static only —
+       no motion, nothing to suppress under reduced-motion. */
+    .flow-node--sources {
+      box-shadow: inset 0 3px 0 var(--flow-c-src), 0 2px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    .flow-node[data-flow="lake"] {
+      box-shadow: inset 0 3px 0 var(--flow-c-lake), 0 2px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    .flow-node[data-flow="enrich"] {
+      box-shadow: inset 0 3px 0 var(--flow-c-enrich), 0 2px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    .flow-node[data-flow="mart"] {
+      box-shadow: inset 0 3px 0 var(--flow-c-mart), 0 2px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    .flow-node[data-flow="dash"] {
+      box-shadow: inset 0 3px 0 var(--flow-c-dash), 0 2px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    .flow-node[data-flow="enrich"] .flow-icon svg {
+      color: var(--flow-c-enrich);
+    }
+
+    .product-flow .flow-arrow {
+      color: var(--guide-blue);
+    }
+
+    /* Iteration C: dashes "flow" toward each arrowhead while the user
+       hovers the pipeline; idle = static (current look). Hover-gated /
+       interactive — intentionally NOT suppressed under
+       prefers-reduced-motion, consistent with the .advantage-card flow
+       precedent (interactive motion kept on by product choice). */
+    @keyframes flowDash {
+      to { stroke-dashoffset: -8; }
+    }
+
+    .product-flow:hover .flow-arrow svg line {
+      animation: flowDash 0.6s linear infinite;
     }
 
     @media (max-width: 768px) {

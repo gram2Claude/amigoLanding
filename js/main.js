@@ -806,6 +806,59 @@ const initPageInteractions = () => {
     syncActive();
   };
 
+  // One-shot reveal of the #data-flow pipeline as it scrolls into view.
+  // Progressive enhancement: no-op without the element; if JS/IO are
+  // unavailable the diagram simply stays visible (CSS base state).
+  const initFlowReveal = () => {
+    const flow = document.querySelector('.product-flow');
+
+    if (!flow) return;
+
+    flow.classList.add('flow-reveal');
+
+    const reveal = () => flow.classList.add('is-inview');
+
+    if (!('IntersectionObserver' in window)) {
+      reveal();
+      return;
+    }
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          reveal();
+          io.disconnect();
+        }
+      });
+    }, { threshold: 0.2 });
+
+    io.observe(flow);
+  };
+
+  // Bidirectional hover-link: hovering a pipeline node highlights its
+  // matching bullet (and vice versa) via shared data-flow keys. No-op
+  // without #data-flow / keyed elements (index.html, privacy.html).
+  const initFlowLink = () => {
+    const scope = document.getElementById('data-flow');
+
+    if (!scope) return;
+
+    const targets = Array.from(scope.querySelectorAll('[data-flow]'));
+
+    if (!targets.length) return;
+
+    const setActive = (key, on) => {
+      targets.forEach((el) => {
+        if (el.dataset.flow === key) el.classList.toggle('is-flow-active', on);
+      });
+    };
+
+    targets.forEach((el) => {
+      el.addEventListener('pointerenter', () => setActive(el.dataset.flow, true));
+      el.addEventListener('pointerleave', () => setActive(el.dataset.flow, false));
+    });
+  };
+
   initMobileMenu();
   initCubeParallax();
   initChartHover();
@@ -814,6 +867,8 @@ const initPageInteractions = () => {
   initCookieBanner();
   initChartLegendHover();
   initProductNav();
+  initFlowReveal();
+  initFlowLink();
 };
 
 if (document.readyState === 'loading') {

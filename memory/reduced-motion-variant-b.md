@@ -17,6 +17,16 @@ metadata:
 .int-icon-box .p-btn .partner-logo .t-logo .advantage-card .pricing-card`)
 и hover-анимация карточки 3 — НЕ подавляются.
 
+**Граница ambient vs hover-gated (важно для «потоковых» анимаций):**
+бесконечный *ambient* луп, играющий всегда без действия пользователя
+(`.status-dot`) — глушится под reduce-motion. Бесконечный луп, который
+*idle = static* и запускается только на hover/взаимодействие
+(прецедент: flow карточки 3 `.advantage-card:hover` → `flowSeg1/2`;
+`#data-flow` коннекторы `.product-flow:hover` → `flowDash`) — НЕ глушится.
+Для новых «бегущих/поток данных» эффектов предпочитать hover-gated +
+idle-static: даёт движение обычным пользователям и статичный (без
+регресса) вид в среде ревью с reduce-motion.
+
 **How to apply:** при добавлении новых hover/scroll-эффектов НЕ оборачивать
 их в `prefers-reduced-motion: reduce` с `animation/transition: none` —
 иначе заказчик их не увидит (как и весь трафик с этой настройкой). Это
