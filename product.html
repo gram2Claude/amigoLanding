@@ -27,7 +27,7 @@
 
   <link rel="icon" href="./favicon.svg?v=1" type="image/svg+xml">
 
-  <link rel="stylesheet" href="./css/style.css?v=84">
+  <link rel="stylesheet" href="./css/style.css?v=97">
 </head>
 
 <body>
@@ -130,19 +130,18 @@
           </div>
           <div class="card-horizontal-inner">
             <div class="src-logos">
-              <img src="./assets/images/vector/01_yandex_direct.svg?v=84" alt="Яндекс Директ" loading="lazy" decoding="async">
-              <img src="./assets/images/vector/02_yandex_metrika.svg?v=84" alt="Яндекс Метрика" loading="lazy" decoding="async">
-              <img src="./assets/images/vector/04_vk_ads.svg?v=84" alt="VK Ads" loading="lazy" decoding="async">
-              <img src="./assets/images/vector/05_my_target.svg?v=84" alt="MyTarget" loading="lazy" decoding="async">
-              <img src="./assets/images/vector/06_rtb_droid.svg?v=84" alt="RTB Droid" loading="lazy" decoding="async">
-              <img src="./assets/images/vector/08_metrika_ecom.svg?v=84" alt="E-commerce" loading="lazy" decoding="async">
-              <img src="./assets/images/vector/09_plan_fakt.svg?v=84" alt="ПланФакт" loading="lazy" decoding="async">
+              <img class="lg-direct" src="./assets/images/vector/01_yandex_direct.svg?v=97" alt="Яндекс Директ" data-src="direct" loading="lazy" decoding="async">
+              <img class="lg-metrika" src="./assets/images/vector/02_yandex_metrika.svg?v=97" alt="Яндекс Метрика" data-src="metrika" loading="lazy" decoding="async">
+              <img class="lg-vkads" src="./assets/images/vector/04_vk_ads.svg?v=97" alt="VK Ads" data-src="vk" loading="lazy" decoding="async">
+              <img class="lg-mytarget" src="./assets/images/vector/05_my_target.svg?v=97" alt="MyTarget" data-src="vk" loading="lazy" decoding="async">
+              <img class="lg-rtb" src="./assets/images/vector/06_rtb_droid.svg?v=97" alt="RTB Droid" data-src="vk" loading="lazy" decoding="async">
+              <img class="lg-ecom" src="./assets/images/vector/08_metrika_ecom.svg?v=97" alt="E-commerce" data-src="metrika" loading="lazy" decoding="async">
             </div>
             <div class="card-visual card-visual-plain">
               <div class="mockup-code-block">
-                <div class="mockup-code-line">-- Яндекс Директ - 10 вариантов отчетов. Ключевые слова, Площадки РСЯ, Пол-Возраст-Устройство, Гео отчет, Отчет по кампаниям, Отчет по объявлениям, Средняя позиция клика и 2 отчета по медиа кампаниям директ</div>
-                <div class="mockup-code-line">-- VK ads, Vkontakte, MyTarget, RTB Droid. Эти источники схожи между собой в плане данных, которые они отдают по АПИ. Здесь формируем 3 варианта отчетов Отчет по кампаниям, Группам объявлений, Отчет по объявлениям. Также для VK ads и MyTarget доступны отчеты по Лид формам</div>
-                <div class="mockup-code-line">-- Яндекс Метрика. Этот источник содержит больше всего вариантов отчетов - 19. Среди прочего мы можем получить статистику по Ecom (Электронной торговле) - Пол-Возраст-Устройство, Гео, Продукты. Отчеты по конверсиям представлены в 3-х вариантах - Целевые посетители, Целевые визиты, Достижение цели</div>
+                <div class="mockup-code-line" data-src="direct">-- Яндекс Директ - 10 вариантов отчетов. Ключевые слова, Площадки РСЯ, Пол-Возраст-Устройство, Гео отчет, Отчет по кампаниям, Отчет по объявлениям, Средняя позиция клика и 2 отчета по медиа кампаниям директ</div>
+                <div class="mockup-code-line" data-src="vk">-- VK ads, Vkontakte, MyTarget, RTB Droid. Эти источники схожи между собой в плане данных, которые они отдают по АПИ. Здесь формируем 3 варианта отчетов Отчет по кампаниям, Группам объявлений, Отчет по объявлениям. Также для VK ads и MyTarget доступны отчеты по Лид формам</div>
+                <div class="mockup-code-line" data-src="metrika">-- Яндекс Метрика. Этот источник содержит больше всего вариантов отчетов - 19. Среди прочего мы можем получить статистику по Ecom (Электронной торговле) - Пол-Возраст-Устройство, Гео, Продукты. Отчеты по конверсиям представлены в 3-х вариантах - Целевые посетители, Целевые визиты, Достижение цели</div>
               </div>
             </div>
           </div>
@@ -267,7 +266,7 @@
         <li><strong>Повторная перезапись при расхождениях</strong> — при обнаружении несоответствий данные обновляются автоматически.</li>
       </ul>
       <figure class="product-figure">
-        <img src="./assets/images/product-data-refresh.jpg?v=84"
+        <img src="./assets/images/product-data-refresh.jpg?v=97"
           alt="Схема поддержания актуальности данных: ежедневное обновление, перезапись изменяемых периодов, проверка прошлых данных за 180 дней, повторная перезапись при расхождениях"
           width="950" height="819" loading="lazy" decoding="async">
       </figure>
@@ -391,7 +390,7 @@
     <p class="cookie-banner__text">
       Мы используем файлы cookie, чтобы сайт работал корректно и был удобнее. Продолжая
       пользоваться сайтом, вы соглашаетесь с обработкой данных согласно
-      <a href="./privacy.html?v=84" target="_blank" rel="noopener">политике обработки
+      <a href="./privacy.html?v=97" target="_blank" rel="noopener">политике обработки
         персональных данных</a>.
     </p>
     <div class="cookie-banner__actions">
@@ -437,7 +436,7 @@
         <label class="lead-form__consent">
           <input type="checkbox" id="leadConsent" name="consent" required>
           <span>Я согласен на обработку персональных данных в соответствии с
-            <a href="./privacy.html?v=84" target="_blank" rel="noopener">политикой обработки
+            <a href="./privacy.html?v=97" target="_blank" rel="noopener">политикой обработки
               персональных данных</a>.</span>
         </label>
 
@@ -452,7 +451,7 @@
   </div>
 
   <!-- Lightweight interaction script -->
-  <script src="./js/main.js?v=84" defer></script>
+  <script src="./js/main.js?v=97" defer></script>
 </body>
 
 </html>

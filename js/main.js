@@ -806,6 +806,44 @@ const initPageInteractions = () => {
     syncActive();
   };
 
+  // #data-flow card 1: bidirectional hover-link via a shared data-src
+  // key. Hover a logo → highlight its mockup block; hover a block →
+  // glow the matching logo(s) (several logos may map to one block).
+  // No-op without the elements (index.html / privacy.html).
+  const initSourceHighlight = () => {
+    const scope = document.querySelector('#data-flow .src-logos');
+
+    if (!scope) return;
+
+    const logos = Array.from(scope.querySelectorAll('img[data-src]'));
+    const lines = Array.from(
+      document.querySelectorAll('#data-flow .mockup-code-line[data-src]'));
+
+    if (!logos.length || !lines.length) return;
+
+    const setLines = (key, on) => {
+      lines.forEach((line) => {
+        if (line.dataset.src === key) line.classList.toggle('is-src-active', on);
+      });
+    };
+
+    const setLogos = (key, on) => {
+      logos.forEach((logo) => {
+        if (logo.dataset.src === key) logo.classList.toggle('is-logo-active', on);
+      });
+    };
+
+    logos.forEach((logo) => {
+      logo.addEventListener('pointerenter', () => setLines(logo.dataset.src, true));
+      logo.addEventListener('pointerleave', () => setLines(logo.dataset.src, false));
+    });
+
+    lines.forEach((line) => {
+      line.addEventListener('pointerenter', () => setLogos(line.dataset.src, true));
+      line.addEventListener('pointerleave', () => setLogos(line.dataset.src, false));
+    });
+  };
+
   initMobileMenu();
   initCubeParallax();
   initChartHover();
@@ -814,6 +852,7 @@ const initPageInteractions = () => {
   initCookieBanner();
   initChartLegendHover();
   initProductNav();
+  initSourceHighlight();
 };
 
 if (document.readyState === 'loading') {

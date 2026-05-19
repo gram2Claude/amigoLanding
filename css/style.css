@@ -2653,11 +2653,33 @@
     }
 
     #data-flow .src-logos img {
-      height: 24px;
+      height: 34px;
       width: auto;
       max-width: 100%;
       object-fit: contain;
       display: block;
+      /* transparent border reserved so the active state adds no layout
+         shift; padding/radius give the button-like frame */
+      border: 1px solid transparent;
+      border-radius: 7px;
+      padding: 5px 10px;
+      /* clearly gradual fade-in/out of the active border */
+      transition: border-color 0.55s ease-in-out;
+    }
+
+    /* per-logo brand colour for the active border */
+    #data-flow .src-logos .lg-direct   { --lg: rgba(252, 63, 29, 0.65); }
+    #data-flow .src-logos .lg-metrika  { --lg: rgba(255, 160, 0, 0.70); }
+    #data-flow .src-logos .lg-vkads    { --lg: rgba(0, 119, 255, 0.65); }
+    #data-flow .src-logos .lg-mytarget { --lg: rgba(230, 51, 42, 0.65); }
+    #data-flow .src-logos .lg-rtb      { --lg: rgba(123, 97, 255, 0.70); }
+    #data-flow .src-logos .lg-ecom     { --lg: rgba(26, 115, 232, 0.65); }
+
+    /* reverse hover-link: hovering a mockup block gives the matching
+       logo(s) a thin button-like border in its own colour. No layout
+       shift (border reserved above). Interactive, kept on (Variant B). */
+    #data-flow .src-logos img.is-logo-active {
+      border-color: var(--lg);
     }
 
     #data-flow .advantages-grid {
@@ -2686,6 +2708,17 @@
          column instead of hugging its 8 lines of content */
       height: 100%;
       box-sizing: border-box;
+      /* shrunk so all 3 source blocks fit within card 2's height,
+         keeping card 1 = card 2 (align-self: stretch then equalises) */
+      font-size: 0.62rem;
+      line-height: 1.4;
+      overflow: hidden;
+      /* blocks distributed down the full box height (no empty top/
+         bottom), small minimum gap so they stay separated */
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.3rem;
     }
 
     /* long source lines wrap inside the box instead of the index
@@ -2693,6 +2726,15 @@
     #data-flow .mockup-code-block .mockup-code-line {
       white-space: normal;
       overflow-wrap: break-word;
+      border-radius: 4px;
+      transition: background-color 0.18s ease, color 0.18s ease;
+    }
+
+    /* hovering a source logo highlights its matching block (set by JS).
+       Hover-gated/interactive — kept on under reduced-motion (Variant B). */
+    #data-flow .mockup-code-block .mockup-code-line.is-src-active {
+      background: rgba(74, 180, 217, 0.16);
+      color: var(--text-dark);
     }
 
     /* indent the detail lines under each "-- Source" header */
