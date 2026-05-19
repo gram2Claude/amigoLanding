@@ -2,15 +2,20 @@
 .env.local
 .env.*.local
 
+# Claude Code local (machine-specific) settings — keep shared .claude/commands tracked
+.claude/settings.local.json
+
 # Local editor and OS files
 .idea/
 .vscode/
 .DS_Store
 Thumbs.db
+desktop.ini
 
 # Temporary verification artifacts
 .playwright-*.png
-screenshots/
+/screenshots/
+tools/screenshots/
 playwright-report/
 test-results/
 
@@ -20,3 +25,13 @@ source-materials/
 # Local dependencies and caches
 node_modules/
 .cache/
+
+# Python tooling artifacts (vectorize_logo.py / process_logos.py)
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
