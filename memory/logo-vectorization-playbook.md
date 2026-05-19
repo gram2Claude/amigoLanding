@@ -41,6 +41,17 @@ font-independent logo SVGs.
    (ichance indigo was `#3B428A`). Keep multi-color marks (the violet
    «оригами») from the color trace; classify icon-vs-text by hue
    (purple: B=max, R−G≥~24, B≥~150, R≥~90).
+4b. **Gradient logo** (color *is* the identity, e.g. rtb droid): do NOT
+   flatten and do NOT plain color-trace (bands/mud). Build the ink
+   silhouette (mask = opaque non-near-white, ×6, vtracer binary) and fill
+   it with an SVG `<linearGradient>` whose stops are the mean ink color
+   sampled per vertical band of the original (≈7 stops, x1=0→x2=1).
+4c. **Hollow / outlined letters** (e.g. «droid» = stroke only, transparent
+   counters): the binary trace makes rings, but vtracer's nonzero winding
+   fills them solid. Add `fill-rule="evenodd"` on the silhouette `<g>` —
+   genuine counters open; truly-solid shapes (filled letters, icon nodes,
+   single-contour) are unaffected. Verify the interiors are actually
+   transparent first (sample alpha), not a faint tint.
 5. **Edges:** drop near-white anti-alias halo paths (luminance ≥ ~225) so
    borders are clean.
 6. **Background:** white = full-bleed `<rect fill="#FFFFFF">` over the
