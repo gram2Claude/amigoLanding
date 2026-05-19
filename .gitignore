@@ -14,7 +14,7 @@ desktop.ini
 
 # Temporary verification artifacts
 .playwright-*.png
-/screenshots/
+/screenshot/
 tools/
 playwright-report/
 test-results/

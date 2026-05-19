@@ -2636,6 +2636,131 @@
        scroll in main.js) is intentionally NOT suppressed under
        prefers-reduced-motion — Variant B site-wide decision. */
 
+    /* --- #data-flow pipeline diagram (SVG logos + dashed arrows) --- */
+    .product-flow {
+      margin-top: var(--spacing-md);
+      width: 100%;
+      display: flex;
+      align-items: stretch;
+      justify-content: space-between;
+      gap: 0.25rem;
+      flex-wrap: nowrap;
+    }
+
+    .flow-node {
+      flex: 0 1 auto;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      padding: 0.7rem 0.5rem;
+      border: 1px solid var(--guide-gray-dark);
+      border-radius: 10px;
+      background: var(--bg-color);
+      text-align: center;
+    }
+
+    .flow-node .flow-logo {
+      height: 24px;
+      width: auto;
+      max-width: 104px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .flow-label {
+      font-family: var(--font-ui);
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      line-height: 1.2;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .flow-label small {
+      font-weight: 400;
+      font-size: 0.68rem;
+      color: var(--text-muted);
+    }
+
+    .flow-node--sources {
+      flex: 0 1 auto;
+    }
+
+    .flow-sources__grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      align-items: center;
+      gap: 0.3rem 0.55rem;
+    }
+
+    .flow-sources__grid img {
+      height: 14px;
+      width: auto;
+      max-width: 72px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .flow-icon svg {
+      width: 28px;
+      height: 28px;
+      color: var(--text-muted);
+      display: block;
+    }
+
+    .flow-tiles {
+      display: flex;
+      gap: 0.4rem;
+    }
+
+    .flow-tiles img {
+      height: 34px;
+      width: auto;
+      border-radius: 5px;
+      display: block;
+    }
+
+    /* dashed connector; structured for a future flow animation
+       (animate stroke-dashoffset per segment — out of current scope,
+       deliberately NOT added, and not suppressed under reduced-motion). */
+    .flow-arrow {
+      flex: 0 0 auto;
+      align-self: center;
+      display: flex;
+      align-items: center;
+      color: var(--text-muted);
+    }
+
+    .flow-arrow svg {
+      width: 30px;
+      height: 14px;
+      display: block;
+    }
+
+    @media (max-width: 768px) {
+      .product-flow {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.4rem;
+      }
+      .flow-node,
+      .flow-node--sources {
+        width: 100%;
+        max-width: 22rem;
+      }
+      .flow-sources__grid {
+        grid-template-columns: repeat(4, 1fr);
+        justify-items: center;
+      }
+      .flow-arrow svg {
+        transform: rotate(90deg);
+      }
+    }
+
     @media (max-width: 768px) {
       .product-nav {
         padding: var(--spacing-sm);

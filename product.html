@@ -27,7 +27,7 @@
 
   <link rel="icon" href="./favicon.svg?v=1" type="image/svg+xml">
 
-  <link rel="stylesheet" href="./css/style.css?v=49">
+  <link rel="stylesheet" href="./css/style.css?v=50">
 </head>
 
 <body>
@@ -118,19 +118,72 @@
     <section class="product-section" id="data-flow">
       <h2>Поток данных и архитектура</h2>
       <p>
-        Данные проходят управляемый конвейер — от сырых выгрузок до готовых дашбордов:
+        Под каждого клиента создаётся отдельный проект — своя база со статистикой
+        из его рекламных источников по его правилам. Внутри проекта данные идут по
+        управляемому конвейеру:
       </p>
       <ul class="product-list">
-        <li><strong>Data Lake (ClickHouse)</strong> — сырые рекламные данные из всех подключённых источников.</li>
-        <li><strong>Слой обработки</strong> — обогащение и парсинг, добавление комиссий, НДС, кастомных группировок.</li>
-        <li><strong>Data Mart (MySQL)</strong> — обработанные, готовые к использованию данные.</li>
-        <li><strong>Визуализация</strong> — дашборды Power BI и выгрузки в Excel.</li>
+        <li><strong>Data Lake (ClickHouse)</strong> — сырые, практически необработанные данные из рекламных источников; для каждого проекта своя база, ClickHouse выбран ради скорости.</li>
+        <li><strong>Обогащение и парсинг</strong> — добавляем агентскую комиссию, НДС (если не учтён в расходах), собственные группировки и типы.</li>
+        <li><strong>Data Mart (MySQL)</strong> — витрина обработанных, готовых к использованию данных.</li>
+        <li><strong>Дашборды и выгрузки</strong> — Power BI и Excel подключаются напрямую к витрине.</li>
       </ul>
-      <figure class="product-figure">
-        <img src="./assets/images/product-data-flow.png?v=49"
-          alt="Схема потока данных Amigo: рекламные источники собираются в ClickHouse Data Lake, проходят обогащение и парсинг, попадают в MySQL Data Market и визуализируются в Power BI и Excel"
-          width="1000" height="973" loading="lazy" decoding="async">
-      </figure>
+
+      <div class="product-flow">
+        <div class="flow-node flow-node--sources">
+          <span class="flow-label">Источники</span>
+          <div class="flow-sources__grid">
+            <img src="./assets/images/vector/01_yandex_direct.svg?v=50" alt="Яндекс Директ" loading="lazy" decoding="async">
+            <img src="./assets/images/vector/02_yandex_metrika.svg?v=50" alt="Яндекс Метрика" loading="lazy" decoding="async">
+            <img src="./assets/images/vector/04_vk_ads.svg?v=50" alt="VK Ads" loading="lazy" decoding="async">
+            <img src="./assets/images/vector/05_my_target.svg?v=50" alt="myTarget" loading="lazy" decoding="async">
+            <img src="./assets/images/vector/06_rtb_droid.svg?v=50" alt="RTB Droid" loading="lazy" decoding="async">
+            <img src="./assets/images/vector/09_plan_fakt.svg?v=50" alt="ПланФакт" loading="lazy" decoding="async">
+            <img src="./assets/images/vector/08_metrika_ecom.svg?v=50" alt="E-commerce" loading="lazy" decoding="async">
+          </div>
+        </div>
+
+        <span class="flow-arrow" aria-hidden="true">
+          <svg viewBox="0 0 48 16" focusable="false"><line x1="0" y1="8" x2="38" y2="8" stroke="currentColor" stroke-width="2" stroke-dasharray="4 4"/><path d="M38 3 L47 8 L38 13 Z" fill="currentColor"/></svg>
+        </span>
+
+        <div class="flow-node">
+          <img class="flow-logo" src="./assets/images/vector/clickhouse.svg?v=50" alt="ClickHouse" loading="lazy" decoding="async">
+          <span class="flow-label">Data Lake<small>ClickHouse</small></span>
+        </div>
+
+        <span class="flow-arrow" aria-hidden="true">
+          <svg viewBox="0 0 48 16" focusable="false"><line x1="0" y1="8" x2="38" y2="8" stroke="currentColor" stroke-width="2" stroke-dasharray="4 4"/><path d="M38 3 L47 8 L38 13 Z" fill="currentColor"/></svg>
+        </span>
+
+        <div class="flow-node">
+          <span class="flow-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false"><path d="M2.5 4h19l-7.5 9v6.2l-4 2.3V13z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
+          </span>
+          <span class="flow-label">Обогащение<small>и парсинг</small></span>
+        </div>
+
+        <span class="flow-arrow" aria-hidden="true">
+          <svg viewBox="0 0 48 16" focusable="false"><line x1="0" y1="8" x2="38" y2="8" stroke="currentColor" stroke-width="2" stroke-dasharray="4 4"/><path d="M38 3 L47 8 L38 13 Z" fill="currentColor"/></svg>
+        </span>
+
+        <div class="flow-node">
+          <img class="flow-logo" src="./assets/images/vector/mySql.svg?v=50" alt="MySQL" loading="lazy" decoding="async">
+          <span class="flow-label">Data Mart<small>MySQL</small></span>
+        </div>
+
+        <span class="flow-arrow" aria-hidden="true">
+          <svg viewBox="0 0 48 16" focusable="false"><line x1="0" y1="8" x2="38" y2="8" stroke="currentColor" stroke-width="2" stroke-dasharray="4 4"/><path d="M38 3 L47 8 L38 13 Z" fill="currentColor"/></svg>
+        </span>
+
+        <div class="flow-node flow-node--out">
+          <div class="flow-tiles">
+            <img src="./assets/images/vector/powerBi.svg?v=50" alt="Power BI" loading="lazy" decoding="async">
+            <img src="./assets/images/vector/excel.svg?v=50" alt="Excel" loading="lazy" decoding="async">
+          </div>
+          <span class="flow-label">Дашборды и выгрузки</span>
+        </div>
+      </div>
     </section>
 
     <!-- Источники данных -->
@@ -183,7 +236,7 @@
         <li><strong>Повторная перезапись при расхождениях</strong> — при обнаружении несоответствий данные обновляются автоматически.</li>
       </ul>
       <figure class="product-figure">
-        <img src="./assets/images/product-data-refresh.jpg?v=49"
+        <img src="./assets/images/product-data-refresh.jpg?v=50"
           alt="Схема поддержания актуальности данных: ежедневное обновление, перезапись изменяемых периодов, проверка прошлых данных за 180 дней, повторная перезапись при расхождениях"
           width="950" height="819" loading="lazy" decoding="async">
       </figure>
@@ -307,7 +360,7 @@
     <p class="cookie-banner__text">
       Мы используем файлы cookie, чтобы сайт работал корректно и был удобнее. Продолжая
       пользоваться сайтом, вы соглашаетесь с обработкой данных согласно
-      <a href="./privacy.html?v=49" target="_blank" rel="noopener">политике обработки
+      <a href="./privacy.html?v=50" target="_blank" rel="noopener">политике обработки
         персональных данных</a>.
     </p>
     <div class="cookie-banner__actions">
@@ -353,7 +406,7 @@
         <label class="lead-form__consent">
           <input type="checkbox" id="leadConsent" name="consent" required>
           <span>Я согласен на обработку персональных данных в соответствии с
-            <a href="./privacy.html?v=49" target="_blank" rel="noopener">политикой обработки
+            <a href="./privacy.html?v=50" target="_blank" rel="noopener">политикой обработки
               персональных данных</a>.</span>
         </label>
 
@@ -368,7 +421,7 @@
   </div>
 
   <!-- Lightweight interaction script -->
-  <script src="./js/main.js?v=49" defer></script>
+  <script src="./js/main.js?v=50" defer></script>
 </body>
 
 </html>
