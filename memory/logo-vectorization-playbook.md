@@ -56,10 +56,19 @@ font-independent logo SVGs.
    borders are clean.
 6. **Background:** white = full-bleed `<rect fill="#FFFFFF">` over the
    viewBox; transparent = omit the rect (user toggles per logo).
-7. **Always** render the SVG vs the original PNG side-by-side at large and
-   small sizes (inline the SVG / data-URI the PNG in Playwright `setContent`
-   — `file://` in `setContent` is blocked) and report differences honestly
-   before declaring done.
+7. **Optimize with svgo (mandatory final step).** vtracer traces at ~6×
+   then `scale(1/6)`, so `d` attrs are huge 6-decimal floats — typically
+   75–95 % shrinkable with zero visible change at logo scale. Run
+   `npx svgo` with `preset-default` but `overrides:{removeViewBox:false,
+   convertPathData:{floatPrecision:1}, cleanupNumericValues:{floatPrecision:1}}`,
+   `multipass:true`. svgo bakes the scale transform into coords. It
+   preserves `fill-rule="evenodd"`, gradients, and transparent vs white
+   backgrounds — but re-verify (step 8) anyway. (Batch run: 14 logos
+   ~608 KB → ~102 KB.)
+8. **Always** render the SVG vs the original PNG side-by-side at large and
+   small sizes, AFTER svgo (inline the SVG / data-URI the PNG in Playwright
+   `setContent` — `file://` in `setContent` is blocked) and report
+   differences honestly before declaring done.
 
 Related: [[forms-build-playbook]] (same screenshot-verify discipline),
 [[reduced-motion-variant-b]], [[user-workflow]] (user owns commits).

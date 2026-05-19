@@ -221,6 +221,40 @@ def verify_against_original(src, svg, png_out="source-materials/_vec_cmp.png"):
     return html
 
 
+# --- optimize ---------------------------------------------------------------
+def svgo_optimize(svg):
+    """Mandatory final step: shrink the vtracer output ~75-95% with svgo
+    (bakes the scale transform, rounds coords to 1 dp). Preserves viewBox,
+    fill-rule=evenodd, gradients, bg rect. Re-verify render afterwards."""
+    import subprocess
+    import tempfile
+
+    cfg = (
+        "export default { multipass: true, plugins: [{ name:"
+        " 'preset-default', params: { overrides: {"
+        " removeViewBox: false,"
+        " convertPathData: { floatPrecision: 1 },"
+        " cleanupNumericValues: { floatPrecision: 1 },"
+        " convertTransform: { floatPrecision: 3 } } } }] };"
+    )
+    fd, cfg_path = tempfile.mkstemp(suffix=".mjs")
+    os.write(fd, cfg.encode())
+    os.close(fd)
+    try:
+        before = os.path.getsize(svg)
+        subprocess.run(
+            ["npx", "--yes", "svgo", "--config", cfg_path, "-i", svg,
+             "-o", svg],
+            check=True, shell=(os.name == "nt"),
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        after = os.path.getsize(svg)
+        print("svgo: %d -> %d bytes (-%.0f%%)"
+              % (before, after, 100 * (1 - after / before)))
+    finally:
+        os.unlink(cfg_path)
+    return svg
+
+
 if __name__ == "__main__":
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("mode", choices=["trace", "font", "silhouette"])
@@ -236,6 +270,8 @@ if __name__ == "__main__":
     p.add_argument("--target-w", type=float, help="font mode: wordmark width")
     p.add_argument("--exclude-purple-mark", action="store_true")
     p.add_argument("--icon-from", help="silhouette: svg to lift the mark from")
+    p.add_argument("--no-svgo", action="store_true",
+                   help="skip the mandatory svgo optimize step (debug only)")
     a = p.parse_args()
 
     out = a.out or os.path.join(
@@ -255,3 +291,7 @@ if __name__ == "__main__":
         print(mode_silhouette(a.src, out, brand, a.bg,
                               exclude_purple_mark=a.exclude_purple_mark,
                               icon_from=a.icon_from))
+
+    if not a.no_svgo:
+        svgo_optimize(out)
+    print("Now run verify_against_original(src, out) and review honestly.")
