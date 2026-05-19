@@ -14,6 +14,9 @@ screenshots/
 playwright-report/
 test-results/
 
+# Source materials for content authoring (presentation, doc exports, raw images)
+source-materials/
+
 # Local dependencies and caches
 node_modules/
 .cache/

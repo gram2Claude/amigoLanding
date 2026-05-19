@@ -754,6 +754,58 @@ const initPageInteractions = () => {
     });
   };
 
+  // product.html in-page section navigator: smooth-scroll on click +
+  // scroll-spy that underlines the section currently in view. No-op on
+  // pages without #productNav (index.html / privacy.html).
+  const initProductNav = () => {
+    const nav = document.getElementById('productNav');
+
+    if (!nav) return;
+
+    const links = Array.from(nav.querySelectorAll('a[href^="#"]'));
+    const items = links
+      .map((link) => ({ link, section: document.getElementById(link.getAttribute('href').slice(1)) }))
+      .filter((item) => item.section);
+
+    if (!items.length) return;
+
+    const setActive = (activeLink) => {
+      links.forEach((link) => link.classList.toggle('is-active', link === activeLink));
+    };
+
+    items.forEach(({ link, section }) => {
+      link.addEventListener('click', (event) => {
+        event.preventDefault();
+        // smooth scroll kept on purpose under reduced-motion (Variant B)
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        setActive(link);
+        history.replaceState(null, '', link.getAttribute('href'));
+      });
+    });
+
+    let ticking = false;
+    const syncActive = () => {
+      ticking = false;
+      const probe = window.scrollY + window.innerHeight * 0.25;
+      let current = items[0];
+
+      items.forEach((item) => {
+        const top = item.section.getBoundingClientRect().top + window.scrollY;
+        if (top <= probe) current = item;
+      });
+
+      setActive(current.link);
+    };
+
+    window.addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(syncActive);
+    }, { passive: true });
+
+    syncActive();
+  };
+
   initMobileMenu();
   initCubeParallax();
   initChartHover();
@@ -761,6 +813,7 @@ const initPageInteractions = () => {
   initLeadFormModal();
   initCookieBanner();
   initChartLegendHover();
+  initProductNav();
 };
 
 if (document.readyState === 'loading') {

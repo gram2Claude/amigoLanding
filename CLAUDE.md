@@ -2,47 +2,61 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-A detailed contributor guide already exists in `AGENTS.md` (structure, coding style, manual testing checklist, commit/PR conventions). Read it. This file focuses on the cross-file architecture that `AGENTS.md` does not spell out.
+A detailed contributor guide exists in `AGENTS.md` (structure, coding style, manual testing checklist, commit/PR conventions). The `memory/` directory holds durable project facts (deploy access, reduced-motion decision, forms playbook) — read `memory/MEMORY.md`. This file focuses on the cross-file architecture and conventions those don't fully spell out.
 
 ## What this is
 
-A static, single-page Russian-language marketing landing site for "Amigo". No package manager, no build step, no test suite, no framework. The entire site is `index.html` + `css/style.css` + `js/main.js`, plus image assets and external CDNs (Google Fonts, Iconify).
+A static, single-page Russian-language marketing landing for "Amigo". No package manager, no build step, no test suite, no framework. The site is `index.html` + `css/style.css` + `js/main.js` + `privacy.html`, plus image assets and external CDNs (Google Fonts, Iconify).
+
+## Asset cache-busting (do this on EVERY change)
+
+`index.html` references `./css/style.css?v=N`, `./js/main.js?v=N`, and a `./privacy.html?v=N` link; `privacy.html` references `./css/style.css?v=N`. **Any edit to CSS/JS/HTML requires bumping `N` in all of those (currently `v=48`)** or returning visitors keep the cached old build. This is the single most common omission — treat the version bump as part of the edit, not an afterthought.
 
 ## Running and verifying
 
-- Open the site: `Start-Process .\index.html` (PowerShell) or open `index.html` in a browser. Internet is required for fonts/icons to render.
-- There are no automated tests. Verify manually per the checklist in `AGENTS.md` (desktop + mobile widths, mobile menu, hero, pricing, footer, chat). `plans/final_audit_checklist.md` is the concrete QA list.
-- Regenerate logo PNGs from raw sources (needs Pillow): `python process_logos.py` — trims `assets/images/logos_raw/*` into `assets/images/logos/`. `refactor.py` is a one-off historical script; do not rerun it.
+- Open locally: `Start-Process .\index.html` (PowerShell). Internet required for fonts/icons. Use `Ctrl+F5` to bypass cache.
+- No automated tests. The reliable way to verify visuals/interactions across viewports is the Playwright tooling in `tools/screenshots/` (gitignored, dev-only): `cd tools/screenshots && npm run shots`, or write a one-off `*.mjs` there. Use `reducedMotion: 'reduce'` in Playwright to reproduce the target environment (see below). Open a modal in scripts via `page.evaluate(() => document.querySelector('header .js-lead-open').click())` — header triggers are hidden behind the burger on ≤768px.
+- Regenerate logo PNGs (needs Pillow): `python process_logos.py`. `refactor.py` is historical — do not rerun.
 
 ## JavaScript architecture (`js/main.js`)
 
-All behavior lives in one file. `initPageInteractions()` is the single entry point (invoked on `DOMContentLoaded`, or immediately if the DOM is already parsed). It composes four independent, self-contained initializers, each of which no-ops if its target elements are absent:
+All behavior is one file. `initPageInteractions()` is the single entry point (on `DOMContentLoaded`). It composes independent, self-contained `initX` closures, each a no-op if its elements are absent: `initMobileMenu`, `initCubeParallax`, `initChartHover`, `initChatWidget`, `initLeadFormModal`, `initCookieBanner`, `initChartLegendHover`. New features follow this pattern: a new `initX` registered at the bottom, guarded by element checks. Any user/bot text injected into the DOM goes through `escapeHtml` (preserve that ordering).
 
-- `initMobileMenu` — toggles `.nav-wrapper.active` and ARIA state.
-- `initCubeParallax` — pointer-driven `transform` on `.cube` elements, throttled via `requestAnimationFrame`.
-- `initChartHover` — interactive SVG chart. It parses `data-points` attributes ("x,y x,y …"), linearly interpolates Y for the cursor X, and positions the hover guide, points, and value labels. Changing the chart means changing both the SVG markup and these `data-points`.
-- `initChatWidget` — the most complex piece; see below.
+## Lead-form modal — one modal, many purposes (key system)
 
-When adding a feature, follow this pattern: a new `initX` closure registered at the bottom of `initPageInteractions`, guarded by element-existence checks.
+There is a single `#leadModal`. Every CTA that opens it carries class `js-lead-open`; its behavior is configured per-trigger via `data-` attributes read in `openModal` (`lastTrigger.dataset`):
 
-## Chat widget protocol (most important to understand)
+- `data-lead-title` / `data-lead-subtitle` — header texts (default = "Оставить заявку" / its subtitle).
+- `data-lead-title-accent` — bare = amber `.lead-modal__title--accent`; with a value (e.g. `teal`) = `.lead-modal__title--accent-<value>` (add the color to CSS).
+- `data-lead-tg-title` — first line of the Telegram message (default `Новая заявка с сайта Amigo`).
 
-The chat is **bidirectional** and talks to an external n8n-style webhook. The contract is specified in `spec/site-chat-bidirectional.md` (and `plans/site-chat-bidirectional.md`); keep code and that spec in sync when changing chat behavior.
+Current modes: lead request (no data attrs), demo access (`Получить демо доступ`, accent `#1E3A8A`, TG `Запрос демо доступа…`), meeting (`Заказать встречу`, accent-teal `#176B87`, TG `Запрос встречи…`). To add a CTA: add `js-lead-open` + the relevant data attrs — never duplicate the modal. Triggers may be `<button>` or `<a href="#">`; the click handler calls `e.preventDefault()` so anchors don't jump. Pricing/footer `mailto:` CTAs were converted to `<button class="p-btn js-lead-open">`.
 
-Key facts that span multiple concerns:
+Delivery is a **direct browser → Telegram Bot API** call (`TELEGRAM_BOT_TOKEN`/`TELEGRAM_CHAT_ID` constants at top of `main.js`, plain-text, no `parse_mode`, `AbortController` timeout). The token is therefore public — an accepted no-backend tradeoff (see `memory/telegram-lead-bot.md`). `TELEGRAM_CHAT_ID` is the group id and **must be negative**. The modal scroll lives on `.lead-modal__body` (inner) so the close button stays pinned; entrance uses `leadOverlayIn` + `leadModalIn`.
 
-- `WEBHOOK_URL` is a hardcoded constant at the top of `main.js` and is **configuration-sensitive** — treat it like a secret-ish endpoint, and document any change in the PR (per `AGENTS.md` security notes).
-- A per-visitor `sessionId` is generated (`crypto.randomUUID`) and persisted in `sessionStorage` under `chatSessionId`. Every outbound message includes it.
-- Outbound user message: `POST WEBHOOK_URL` with `{ chatInput, sessionId }`.
-- Requests use a 60s timeout via `AbortController` (`REQUEST_TIMEOUT_MS`). The site **does read the response body** with a normal CORS `fetch` — it does *not* use `mode: 'no-cors'`. (Note: `AGENTS.md` still references an old `no-cors` approach; the current bidirectional implementation supersedes that. Trust the code + `spec/site-chat-bidirectional.md`.)
-- Response handling (`handleResponse`): if `resp.type === 'clarification'`, it renders an inline Yes/No prompt (`renderClarification`) whose buttons `POST` `{ approved: boolean }` to the server-supplied `resumeUrl` and then recursively feed the reply back through `handleResponse`. Otherwise it shows `resp.output || resp.text || resp.message` (or treats a raw string / non-JSON body as the message text).
-- Re-entrancy is gated by an `isSending` flag and disabled input. The subtle rule: on a `clarification` response the input is intentionally left **disabled** until the user clicks Yes/No — do not "fix" this by re-enabling input in the `finally` block; that logic deliberately checks `isClarification`.
-- Bot messages render through `renderMarkdown`, which is built on `escapeHtml` — preserve that ordering so user/bot content cannot inject HTML.
+`initCookieBanner` is an informational consent bar persisting the choice in `localStorage.cookieConsent`; it links to `privacy.html`. `privacy.html` is the standalone ПДн policy page (operator details are placeholders).
+
+## Chat widget protocol
+
+Bidirectional, talks to an external n8n webhook. Contract in `spec/site-chat-bidirectional.md` — keep code and spec in sync.
+
+- `WEBHOOK_URL` is a hardcoded, configuration-sensitive constant at the top of `main.js`.
+- Per-visitor `sessionId` (`crypto.randomUUID`) persisted in `sessionStorage.chatSessionId`; sent with every message. Outbound: `POST WEBHOOK_URL { chatInput, sessionId }`, 60s `AbortController` timeout, normal CORS `fetch` (reads the body; not `no-cors` — `AGENTS.md`'s old `no-cors` note is superseded).
+- `handleResponse`: `resp.type === 'clarification'` renders an inline Yes/No (`renderClarification`) that POSTs `{ approved }` to the server's `resumeUrl` and recurses; otherwise shows `resp.output || resp.text || resp.message`.
+- Re-entrancy gated by `isSending` + disabled input. On `clarification` the input stays **disabled** until Yes/No is clicked — the `finally` deliberately checks `isClarification`; do not "fix" by unconditionally re-enabling.
+- The lead-form modal keeps its own private timeout-fetch copy; do not refactor the chat's helper to share it.
 
 ## CSS conventions (`css/style.css`)
 
-One ~1900-line stylesheet organized into ordered sections (variables → global → navigation → hero → sections → footer → chat → media queries). Add rules to the matching existing section rather than appending at the end, and prefer adding classes over inline styles. Theme values are CSS custom properties in the `:root` variables block.
+One large stylesheet in ordered sections (variables → global → nav → hero → sections → footer → chat → lead-modal → cookie → media/reduced-motion). Add to the matching section, prefer classes over inline styles, use `:root` custom properties.
+
+**Reduced-motion ("Variant B", project decision):** the environment this site is reviewed in has OS reduce-motion ON. Do **not** wrap interactive/decorative motion in `@media (prefers-reduced-motion: reduce){ … : none }` — it makes hover/animations look abrupt for the customer and gets reported as a bug repeatedly. Only the continuous `.status-dot` pulse is suppressed there. See `memory/reduced-motion-variant-b.md`.
+
+## Git & deploy
+
+- Repo not in a git subdir of `tools/screenshots` (gitignored) — run git from the **repo root**, or use `git -C "<repo root>"`. Work happens on branch `forms`; it is merged to `master` via PR.
+- Production (`http://45.159.79.57/`) mirrors `master`. **Manual deploy only, no auto-update.** After merging to `master`, on the server run `bash /opt/amigo-site/deploy/deploy.sh` (must invoke via `bash` — `git reset --hard` inside it can drop the exec bit). Full details in `deploy/README.md`; server credentials live in gitignored `.env.local`; see `memory/deploy-access.md`.
 
 ## Specs and planning docs
 
-`spec/` holds the authoritative behavioral specs (`refactoring_specification.md`, `site-chat-bidirectional.md`). `plans/` holds the execution plans and the final audit checklist. When asked to author a new spec, the `/create-spec` skill and `specs/template.md` define the expected format.
+`spec/` holds authoritative behavioral specs; `plans/` holds execution plans and the audit checklist; `specs/` holds feature specs authored via the `/create-spec` skill (`specs/template.md` defines the format). Feature workflow the customer expects: spec → answers in the file → confirm → plan → confirm → implement; the customer owns git commits/merges (see `memory/user-workflow.md`).

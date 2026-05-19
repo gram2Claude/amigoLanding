@@ -2394,3 +2394,264 @@
         flex: 1;
       }
     }
+
+    /* --- Product page (product.html — «Как работает Amigo») --- */
+
+    /* header logo is an <a> here (links home) — on index.html it is a
+       non-link <div>; keep the site look: dark, no underline. */
+    header a.logo {
+      color: var(--text-dark);
+      text-decoration: none;
+    }
+
+    /* In-page section navigator (FR-1b/2a): static strip under the header,
+       NOT sticky; wraps to multiple rows on narrow widths; active item
+       underlined (scroll-spy via .is-active set in main.js). */
+    .product-nav {
+      max-width: 60rem;
+      margin: 0 auto;
+      padding: var(--spacing-sm) var(--spacing-md);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem 2rem;
+      border-bottom: 1px solid var(--guide-gray-dark);
+    }
+
+    .product-nav a {
+      font-family: var(--font-ui);
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-decoration: none;
+      padding-bottom: 2px;
+      border-bottom: 2px solid transparent;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .product-nav a:hover {
+      color: var(--text-dark);
+    }
+
+    .product-nav a.is-active {
+      color: var(--text-dark);
+      border-bottom-color: var(--text-dark);
+    }
+
+    .product-page {
+      max-width: 56rem;
+      margin: 0 auto;
+      padding: var(--spacing-lg) var(--spacing-md) var(--spacing-xl);
+      font-family: var(--font-sans);
+      color: var(--text-dark);
+      line-height: 1.7;
+    }
+
+    .product-hero {
+      padding-bottom: var(--spacing-md);
+      margin-bottom: var(--spacing-md);
+      border-bottom: 1px solid var(--guide-gray-dark);
+    }
+
+    .product-hero h1 {
+      font-family: var(--font-hero);
+      font-size: clamp(2rem, 5vw, 3rem);
+      line-height: 1.15;
+      color: var(--text-dark);
+      margin-bottom: 0.75rem;
+    }
+
+    .product-hero__subtitle {
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .product-hero__lead {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 44rem;
+    }
+
+    .product-section {
+      margin-top: var(--spacing-lg);
+      /* breathing room when reached via an in-page anchor */
+      scroll-margin-top: var(--spacing-md);
+    }
+
+    .product-section h2 {
+      font-family: var(--font-ui);
+      font-size: clamp(1.3rem, 3vw, 1.7rem);
+      color: var(--text-dark);
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .product-section p {
+      color: var(--text-muted);
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .product-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 var(--spacing-sm);
+    }
+
+    .product-list li {
+      position: relative;
+      padding-left: 1.5rem;
+      margin-bottom: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    .product-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.6rem;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--guide-blue);
+    }
+
+    .product-list li strong {
+      color: var(--text-dark);
+    }
+
+    .product-list--grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0 var(--spacing-md);
+    }
+
+    .product-steps {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 var(--spacing-sm);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: stretch;
+      gap: 0.6rem;
+      counter-reset: product-step;
+    }
+
+    .product-steps li {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1rem;
+      border: 1px solid var(--guide-gray);
+      border-radius: 10px;
+      font-family: var(--font-ui);
+      font-size: 0.95rem;
+      color: var(--text-dark);
+      background: var(--bg-color);
+    }
+
+    .product-steps li::before {
+      counter-increment: product-step;
+      content: counter(product-step);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.4rem;
+      height: 1.4rem;
+      flex-shrink: 0;
+      border-radius: 50%;
+      background: var(--text-dark);
+      color: var(--primary-btn-text);
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .product-sources {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 var(--spacing-sm);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .product-source-chip {
+      padding: 0.55rem 1.1rem;
+      border: 1px solid var(--guide-gray);
+      border-radius: 999px;
+      font-family: var(--font-ui);
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      background: var(--bg-color);
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .product-source-chip:hover {
+      border-color: var(--text-dark);
+      transform: translateY(-2px);
+    }
+
+    .product-figure {
+      margin: var(--spacing-md) 0 0;
+      text-align: center;
+    }
+
+    .product-figure img {
+      max-width: 100%;
+      height: auto;
+      border: 1px solid var(--guide-gray-dark);
+      border-radius: 14px;
+      padding: var(--spacing-sm);
+      background: var(--bg-color);
+    }
+
+    .product-cta {
+      text-align: center;
+      margin-top: var(--spacing-xl);
+      padding-top: var(--spacing-lg);
+      border-top: 1px solid var(--guide-gray-dark);
+    }
+
+    .product-cta p {
+      max-width: 32rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .product-cta .p-btn {
+      margin-top: 0.5rem;
+    }
+
+    .product-cta__secondary {
+      margin-top: var(--spacing-md);
+      font-size: 0.9rem;
+    }
+
+    .product-cta__secondary a {
+      color: var(--text-dark);
+    }
+
+    /* NB: product-page motion (chip hover, nav transitions, smooth anchor
+       scroll in main.js) is intentionally NOT suppressed under
+       prefers-reduced-motion — Variant B site-wide decision. */
+
+    @media (max-width: 768px) {
+      .product-nav {
+        padding: var(--spacing-sm);
+        gap: 0.6rem 1.25rem;
+      }
+      .product-nav a {
+        font-size: 0.875rem;
+      }
+      .product-page {
+        padding: var(--spacing-md) var(--spacing-sm) var(--spacing-lg);
+      }
+      .product-list--grid {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+      .product-figure img {
+        padding: 0.5rem;
+      }
+    }

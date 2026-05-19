@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="description"
+    content="Как работает Amigo — платформа автоматизации отчётности и рекламной аналитики: сбор, проверка и обработка данных в единой системе.">
+  <meta property="og:title" content="Как работает Amigo">
+  <meta property="og:description" content="Платформа автоматизации отчётности и рекламной аналитики.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ru_RU">
+  <title>Как работает Amigo — Amigo</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Manrope:wght@400;500;600&family=Onest:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Space+Mono:wght@400;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Iconify Setup -->
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+  <link rel="icon" href="./favicon.svg?v=1" type="image/svg+xml">
+
+  <link rel="stylesheet" href="./css/style.css?v=49">
+</head>
+
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="logo-area">
+      <a href="./index.html" class="logo">Amigo</a>
+    </div>
+
+    <!-- Mobile Hamburger Button -->
+    <button type="button" class="mobile-menu-btn" aria-label="Открыть меню" aria-controls="siteNav"
+      aria-expanded="false">
+      <iconify-icon icon="solar:hamburger-menu-linear" aria-hidden="true"></iconify-icon>
+    </button>
+
+    <div class="nav-wrapper" id="siteNav">
+      <nav>
+        <a href="./index.html#about">О нас</a>
+        <a href="./index.html#integrations">Услуги</a>
+        <a href="./index.html#pricing">Цены</a>
+      </nav>
+      <button type="button" class="btn btn-primary js-lead-open" data-lead-source="шапка-продукт">Оставить заявку</button>
+    </div>
+  </header>
+
+  <!-- In-page section navigator (FR-1b/2a) -->
+  <nav class="product-nav" id="productNav" aria-label="Навигация по разделам страницы">
+    <a href="#problem">Проблема</a>
+    <a href="#what">Что такое Amigo</a>
+    <a href="#data-flow">Поток данных</a>
+    <a href="#sources">Источники</a>
+    <a href="#reports">Уровни отчётов</a>
+    <a href="#freshness">Актуальность данных</a>
+  </nav>
+
+  <main class="product-page">
+
+    <!-- Hero -->
+    <section class="product-hero">
+      <h1>Как работает Amigo</h1>
+      <p class="product-hero__subtitle">Платформа автоматизации отчётности и рекламной аналитики</p>
+      <p class="product-hero__lead">
+        Amigo превращает разрозненную статистику из множества рекламных кабинетов в единую
+        систему аналитики. Платформа автоматизирует сбор, проверку и обработку данных,
+        экономит время команды и снижает риск ошибок в отчётах.
+      </p>
+    </section>
+
+    <!-- Проблема -->
+    <section class="product-section" id="problem">
+      <h2>Проблема: почему ручная отчётность не работает</h2>
+      <p>
+        Чем больше источников и клиентов, тем сложнее поддерживать скорость, точность и
+        актуальность отчётности. Ручная подготовка перестаёт справляться:
+      </p>
+      <ul class="product-list">
+        <li><strong>Данные разрознены.</strong> Статистика лежит в разных рекламных кабинетах.</li>
+        <li><strong>Сбор и сверка занимают время.</strong> Рутина растёт вместе с числом проектов.</li>
+        <li><strong>Ручная подготовка повышает риск ошибок</strong> в итоговых отчётах.</li>
+        <li><strong>Платформы пересчитывают данные задним числом.</strong> Выгруженные цифры устаревают.</li>
+        <li><strong>Нужно единое окно.</strong> Руководителям, сотрудникам и клиентам неудобно без общего доступа к аналитике.</li>
+      </ul>
+    </section>
+
+    <!-- Что такое Amigo -->
+    <section class="product-section" id="what">
+      <h2>Что такое Amigo</h2>
+      <p>
+        Amigo автоматизирует ключевые процессы рекламной отчётности и собирает их в
+        единую систему:
+      </p>
+      <ol class="product-steps">
+        <li>Сбор статистики</li>
+        <li>Проверка актуальности данных</li>
+        <li>Обработка и нормализация</li>
+        <li>Единая витрина — дашборды, Excel-отчёты и базы данных</li>
+        <li>Масштабирование под новые проекты</li>
+      </ol>
+      <p>
+        Цель — сократить время сотрудников на сбор статистики из множества рекламных
+        кабинетов и исключить ошибки при подготовке отчётов. Работа построена по принципу
+        единого окна, архитектура — на микросервисах.
+      </p>
+    </section>
+
+    <!-- Поток данных / архитектура -->
+    <section class="product-section" id="data-flow">
+      <h2>Поток данных и архитектура</h2>
+      <p>
+        Данные проходят управляемый конвейер — от сырых выгрузок до готовых дашбордов:
+      </p>
+      <ul class="product-list">
+        <li><strong>Data Lake (ClickHouse)</strong> — сырые рекламные данные из всех подключённых источников.</li>
+        <li><strong>Слой обработки</strong> — обогащение и парсинг, добавление комиссий, НДС, кастомных группировок.</li>
+        <li><strong>Data Mart (MySQL)</strong> — обработанные, готовые к использованию данные.</li>
+        <li><strong>Визуализация</strong> — дашборды Power BI и выгрузки в Excel.</li>
+      </ul>
+      <figure class="product-figure">
+        <img src="./assets/images/product-data-flow.png?v=49"
+          alt="Схема потока данных Amigo: рекламные источники собираются в ClickHouse Data Lake, проходят обогащение и парсинг, попадают в MySQL Data Market и визуализируются в Power BI и Excel"
+          width="1000" height="973" loading="lazy" decoding="async">
+      </figure>
+    </section>
+
+    <!-- Источники данных -->
+    <section class="product-section" id="sources">
+      <h2>Источники данных</h2>
+      <p>
+        Мы уже работаем с ключевыми рекламными и аналитическими источниками:
+      </p>
+      <ul class="product-sources">
+        <li class="product-source-chip">Яндекс Директ</li>
+        <li class="product-source-chip">Яндекс Метрика</li>
+        <li class="product-source-chip">VK Ads</li>
+        <li class="product-source-chip">MyTarget</li>
+        <li class="product-source-chip">RTB Droid</li>
+        <li class="product-source-chip">E-commerce</li>
+        <li class="product-source-chip">Hybrid</li>
+        <li class="product-source-chip">ПланФакт</li>
+      </ul>
+    </section>
+
+    <!-- Уровни отчётов -->
+    <section class="product-section" id="reports">
+      <h2>Уровни отчётов</h2>
+      <p>
+        Amigo формирует отчёты по ключевым уровням рекламной аналитики:
+      </p>
+      <ul class="product-list product-list--grid">
+        <li>Кампании, группы и объявления</li>
+        <li>Ключевые слова и площадки</li>
+        <li>География</li>
+        <li>Пол, возраст, устройство</li>
+        <li>E-commerce и данные Яндекс Метрики</li>
+        <li>Средняя позиция клика и объём трафика</li>
+        <li>Лид-формы</li>
+      </ul>
+    </section>
+
+    <!-- Актуальность данных -->
+    <section class="product-section" id="freshness">
+      <h2>Актуальность данных</h2>
+      <p>
+        Система не просто один раз забирает статистику — она регулярно проверяет
+        изменения. Это особенно важно для рекламных платформ, где расходы, показы,
+        клики и конверсии могут пересчитываться задним числом.
+      </p>
+      <ul class="product-list">
+        <li><strong>Ежедневное обновление</strong> — каждую ночь система получает свежие данные из рекламных платформ.</li>
+        <li><strong>Перезапись изменяемых периодов</strong> — данные за выбранный период перезаписываются, чтобы учесть изменения задним числом.</li>
+        <li><strong>Проверка прошлых данных</strong> — исторические данные за последние ~180 дней сверяются с контрольной базой.</li>
+        <li><strong>Повторная перезапись при расхождениях</strong> — при обнаружении несоответствий данные обновляются автоматически.</li>
+      </ul>
+      <figure class="product-figure">
+        <img src="./assets/images/product-data-refresh.jpg?v=49"
+          alt="Схема поддержания актуальности данных: ежедневное обновление, перезапись изменяемых периодов, проверка прошлых данных за 180 дней, повторная перезапись при расхождениях"
+          width="950" height="819" loading="lazy" decoding="async">
+      </figure>
+    </section>
+
+    <!-- Мониторинг использования -->
+    <section class="product-section" id="monitoring">
+      <h2>Мониторинг использования</h2>
+      <p>
+        Платформа отслеживает, как используются дашборды, сколько данных занимает каждый
+        клиент и сколько серверного времени требуется на обслуживание проектов — это
+        помогает прозрачно планировать ресурсы и развитие.
+      </p>
+    </section>
+
+    <!-- Финальный CTA -->
+    <section class="product-section product-cta" id="demo">
+      <h2>Попробуйте Amigo на своих данных</h2>
+      <p>
+        Покажем платформу на ваших источниках и пришлём демо-доступ.
+      </p>
+      <button type="button" class="p-btn js-lead-open" data-lead-source="продукт-демо"
+        data-lead-title="Получить демо доступ"
+        data-lead-subtitle="На указанный адрес эл. почты будет отправлен демо доступ"
+        data-lead-title-accent
+        data-lead-tg-title="Запрос демо доступа с сайта Amigo">Получить демо доступ</button>
+      <p class="product-cta__secondary">
+        <a href="./index.html#pricing">Посмотреть тарифы</a> ·
+        <a href="./index.html">← Вернуться на главную</a>
+      </p>
+    </section>
+
+  </main>
+
+  <!-- === FOOTER === -->
+  <footer>
+    <div class="foot-grid">
+      <!-- Brand Col -->
+      <div class="f-col-brand">
+        <div class="corner-logo footer-logo">
+          <span class="footer-logo-text">Amigo</span>
+        </div>
+        <p>
+          Единая система аналитики без рутины. Мы создаем инфраструктуру данных для маркетинговых агентств и команд.
+        </p>
+      </div>
+
+      <!-- Col 1 -->
+      <div class="f-col">
+        <h4>Продукт</h4>
+        <ul class="f-links">
+          <li><a href="./index.html#about">Аналитика</a></li>
+          <li><a href="./index.html#integrations">Интеграции</a></li>
+          <li><a href="./index.html#pricing">Цены</a></li>
+          <li><a href="#" class="js-lead-open" data-lead-source="футер-демо-кабинет-продукт"
+              data-lead-title="Получить демо доступ"
+              data-lead-subtitle="На указанный адрес эл. почты будет отправлен демо доступ"
+              data-lead-title-accent
+              data-lead-tg-title="Запрос демо доступа с сайта Amigo">Демо кабинет</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 2 -->
+      <div class="f-col">
+        <h4>Компания</h4>
+        <ul class="f-links">
+          <li><a href="./index.html#about">О нас</a></li>
+          <li><a href="mailto:hello@amigo.com?subject=Партнерство%20Amigo">Партнерам</a></li>
+          <li><a href="mailto:hello@amigo.com?subject=Кейсы%20Amigo">Кейсы</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 3 -->
+      <div class="f-col">
+        <h4>Контакты</h4>
+        <ul class="f-links">
+          <li><a href="mailto:hello@amigo.com?subject=Поддержка%20Amigo">Служба поддержки</a></li>
+          <li><a href="mailto:hello@amigo.com?subject=Telegram%20Amigo">Telegram</a></li>
+          <li><a href="mailto:hello@amigo.com">hello@amigo.com</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="foot-bottom">
+      <p class="copyright">© 2026 Amigo. Все права защищены.</p>
+      <div class="sys-status">
+        <div class="status-dot"></div>
+        <span>Все системы работают в штатном режиме</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Chat Widget -->
+  <div class="chat-widget-container">
+    <div class="chat-window hidden" id="chatWindow" role="region" aria-labelledby="chatTitle" aria-hidden="true">
+      <div class="chat-header">
+        <h4 id="chatTitle">Помощник</h4>
+        <button type="button" id="closeChatBtn" aria-label="Закрыть чат">
+          <iconify-icon icon="solar:close-circle-linear"></iconify-icon>
+        </button>
+      </div>
+      <div class="chat-messages" id="chatMessages">
+        <!-- Messages will appear here -->
+      </div>
+      <div class="chat-input-area">
+        <input type="text" id="chatInput" aria-label="Сообщение помощнику" placeholder="Введите сообщение...">
+        <button type="button" id="sendChatBtn" aria-label="Отправить">
+          <iconify-icon icon="solar:plain-2-linear"></iconify-icon>
+        </button>
+      </div>
+    </div>
+    <button type="button" class="chat-fab" id="chatFab" aria-label="Открыть чат" aria-controls="chatWindow"
+      aria-expanded="false">
+      <iconify-icon icon="solar:chat-round-dots-linear"></iconify-icon>
+    </button>
+  </div>
+
+  <!-- Cookie consent banner -->
+  <div class="cookie-banner" id="cookieBanner" role="region"
+    aria-label="Уведомление об использовании cookie" hidden>
+    <p class="cookie-banner__text">
+      Мы используем файлы cookie, чтобы сайт работал корректно и был удобнее. Продолжая
+      пользоваться сайтом, вы соглашаетесь с обработкой данных согласно
+      <a href="./privacy.html?v=49" target="_blank" rel="noopener">политике обработки
+        персональных данных</a>.
+    </p>
+    <div class="cookie-banner__actions">
+      <button type="button" class="btn btn-outline" id="cookieDecline">Отклонить</button>
+      <button type="button" class="btn btn-primary" id="cookieAccept">Принять</button>
+    </div>
+  </div>
+
+  <!-- Lead Form Modal -->
+  <div class="lead-modal hidden" id="leadModal" role="dialog" aria-modal="true"
+    aria-labelledby="leadModalTitle" aria-hidden="true">
+    <div class="lead-modal__dialog" role="document">
+      <button type="button" class="lead-modal__close" id="leadModalClose" aria-label="Закрыть">
+        <iconify-icon icon="solar:close-circle-linear" aria-hidden="true"></iconify-icon>
+      </button>
+
+      <div class="lead-modal__body">
+      <h2 class="lead-modal__title" id="leadModalTitle">Оставить заявку</h2>
+      <p class="lead-modal__subtitle" id="leadModalSubtitle">Оставьте контакты — мы свяжемся с вами и ответим на вопросы.</p>
+
+      <form class="lead-form" id="leadForm" novalidate>
+        <div class="lead-form__field">
+          <label for="leadName">Ваше имя</label>
+          <input type="text" id="leadName" name="name" autocomplete="name" required
+            aria-describedby="leadNameError">
+          <span class="lead-form__error" id="leadNameError" role="alert"></span>
+        </div>
+
+        <div class="lead-form__field">
+          <label for="leadEmail">Адрес эл. почты</label>
+          <input type="email" id="leadEmail" name="email" autocomplete="email" required
+            aria-describedby="leadEmailError">
+          <span class="lead-form__error" id="leadEmailError" role="alert"></span>
+        </div>
+
+        <div class="lead-form__field">
+          <label for="leadPhone">Номер телефона</label>
+          <input type="tel" id="leadPhone" name="phone" autocomplete="tel" inputmode="tel"
+            placeholder="+7 (___) ___-__-__" required aria-describedby="leadPhoneError">
+          <span class="lead-form__error" id="leadPhoneError" role="alert"></span>
+        </div>
+
+        <label class="lead-form__consent">
+          <input type="checkbox" id="leadConsent" name="consent" required>
+          <span>Я согласен на обработку персональных данных в соответствии с
+            <a href="./privacy.html?v=49" target="_blank" rel="noopener">политикой обработки
+              персональных данных</a>.</span>
+        </label>
+
+        <button type="submit" class="btn btn-primary lead-form__submit" id="leadSubmit" disabled>
+          Отправить
+        </button>
+      </form>
+
+      <p class="lead-form__status" id="leadStatus" role="status" aria-live="polite"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lightweight interaction script -->
+  <script src="./js/main.js?v=49" defer></script>
+</body>
+
+</html>
