@@ -21,7 +21,7 @@ git reset --hard origin/master --quiet
 # cheap no-op when the web root is already in sync, and — unlike the old
 # "skip if git unchanged" logic — it also publishes on the very first run
 # right after a fresh clone (when HEAD already equals origin/master).
-for item in index.html privacy.html favicon.svg css js assets; do
+for item in index.html product.html privacy.html favicon.svg css js assets; do
   if [ -e "$REPO_DIR/$item" ]; then
     rsync -a --delete "$REPO_DIR/$item" "$WEBROOT/"
   fi

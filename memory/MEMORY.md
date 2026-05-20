@@ -7,4 +7,5 @@
 - [Cache-bust UTF-8 pitfall](cache-bust-utf8-pitfall.md) — bump ?v=N via Edit/Python, never PS Get/Set-Content (corrupts Cyrillic)
 - [Test viewport 814×903](test-viewport-814x903.md) — user's DevTools viewport (between 768/1024 breakpoints); good for catching squeeze bugs in side-reserved layouts
 - [Screen blocks.jpg ≈1480×1600](screen-blocks-jpg.md) — user's full-browser+DevTools setup; screenshots in ./screenshot/ are 2560×1600 with page viewport ≈1480 px wide
+- [Deploy allowlist pitfall](deploy-allowlist-pitfall.md) — deploy.sh rsync loop is a hardcoded allowlist; new top-level files must be added or they silently never deploy
 - [bg-guides viewport height](bg-guides-viewport-height.md) — `.bg-guides` must be `100vh` not `100%`, else `.horizontal-guide` & co. scale off long-page body height
