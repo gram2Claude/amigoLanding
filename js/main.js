@@ -754,6 +754,96 @@ const initPageInteractions = () => {
     });
   };
 
+  // product.html in-page section navigator: smooth-scroll on click +
+  // scroll-spy that underlines the section currently in view. No-op on
+  // pages without #productNav (index.html / privacy.html).
+  const initProductNav = () => {
+    const nav = document.getElementById('productNav');
+
+    if (!nav) return;
+
+    const links = Array.from(nav.querySelectorAll('a[href^="#"]'));
+    const items = links
+      .map((link) => ({ link, section: document.getElementById(link.getAttribute('href').slice(1)) }))
+      .filter((item) => item.section);
+
+    if (!items.length) return;
+
+    const setActive = (activeLink) => {
+      links.forEach((link) => link.classList.toggle('is-active', link === activeLink));
+    };
+
+    items.forEach(({ link, section }) => {
+      link.addEventListener('click', (event) => {
+        event.preventDefault();
+        // smooth scroll kept on purpose under reduced-motion (Variant B)
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        setActive(link);
+        history.replaceState(null, '', link.getAttribute('href'));
+      });
+    });
+
+    let ticking = false;
+    const syncActive = () => {
+      ticking = false;
+      const probe = window.scrollY + window.innerHeight * 0.25;
+      let current = items[0];
+
+      items.forEach((item) => {
+        const top = item.section.getBoundingClientRect().top + window.scrollY;
+        if (top <= probe) current = item;
+      });
+
+      setActive(current.link);
+    };
+
+    window.addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(syncActive);
+    }, { passive: true });
+
+    syncActive();
+  };
+
+  // #data-flow card 1: bidirectional hover-link via a shared data-src
+  // key. Hover a logo → highlight its mockup block; hover a block →
+  // glow the matching logo(s) (several logos may map to one block).
+  // No-op without the elements (index.html / privacy.html).
+  const initSourceHighlight = () => {
+    const scope = document.querySelector('#data-flow .src-logos');
+
+    if (!scope) return;
+
+    const logos = Array.from(scope.querySelectorAll('img[data-src]'));
+    const lines = Array.from(
+      document.querySelectorAll('#data-flow .mockup-code-line[data-src]'));
+
+    if (!logos.length || !lines.length) return;
+
+    const setLines = (key, on) => {
+      lines.forEach((line) => {
+        if (line.dataset.src === key) line.classList.toggle('is-src-active', on);
+      });
+    };
+
+    const setLogos = (key, on) => {
+      logos.forEach((logo) => {
+        if (logo.dataset.src === key) logo.classList.toggle('is-logo-active', on);
+      });
+    };
+
+    logos.forEach((logo) => {
+      logo.addEventListener('pointerenter', () => setLines(logo.dataset.src, true));
+      logo.addEventListener('pointerleave', () => setLines(logo.dataset.src, false));
+    });
+
+    lines.forEach((line) => {
+      line.addEventListener('pointerenter', () => setLogos(line.dataset.src, true));
+      line.addEventListener('pointerleave', () => setLogos(line.dataset.src, false));
+    });
+  };
+
   initMobileMenu();
   initCubeParallax();
   initChartHover();
@@ -761,6 +851,8 @@ const initPageInteractions = () => {
   initLeadFormModal();
   initCookieBanner();
   initChartLegendHover();
+  initProductNav();
+  initSourceHighlight();
 };
 
 if (document.readyState === 'loading') {

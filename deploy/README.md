@@ -26,8 +26,12 @@ There is **no auto-update**. The live site changes only when you explicitly
 run the deploy command on the server. After merging into `master`, run:
 
 ```
-/opt/amigo-site/deploy/deploy.sh
+bash /opt/amigo-site/deploy/deploy.sh
 ```
+
+(Invoke via `bash` — `git reset --hard` inside the script can drop the file's
+executable bit, so `./deploy.sh` may fail with "Permission denied"; `bash …`
+always works.)
 
 This pulls the latest `master` (`git fetch` + `reset --hard`) and republishes
 the static files to the web root. Idempotent, safe to run anytime, and uses

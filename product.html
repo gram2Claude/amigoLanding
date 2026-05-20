@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="description"
+    content="Как работает Amigo — платформа автоматизации отчётности и рекламной аналитики: сбор, проверка и обработка данных в единой системе.">
+  <meta property="og:title" content="Как работает Amigo">
+  <meta property="og:description" content="Платформа автоматизации отчётности и рекламной аналитики.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ru_RU">
+  <title>Как работает Amigo — Amigo</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Manrope:wght@400;500;600&family=Onest:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Space+Mono:wght@400;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Iconify Setup -->
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+  <link rel="icon" href="./favicon.svg?v=1" type="image/svg+xml">
+
+  <link rel="stylesheet" href="./css/style.css?v=180">
+</head>
+
+<body>
+
+  <!-- Background Decorative Elements -->
+  <div class="bg-guides">
+    <div class="pattern-col left pattern-col--full"></div>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="logo-area">
+      <a href="./index.html" class="logo">Amigo</a>
+    </div>
+
+    <!-- Mobile Hamburger Button -->
+    <button type="button" class="mobile-menu-btn" aria-label="Открыть меню" aria-controls="siteNav"
+      aria-expanded="false">
+      <iconify-icon icon="solar:hamburger-menu-linear" aria-hidden="true"></iconify-icon>
+    </button>
+
+    <div class="nav-wrapper" id="siteNav">
+      <nav>
+        <span class="nav-current" aria-current="page">О нас</span>
+        <a href="./index.html#integrations">Услуги</a>
+        <a href="./index.html#pricing">Цены</a>
+      </nav>
+      <button type="button" class="btn btn-primary js-lead-open" data-lead-source="шапка-продукт">Оставить заявку</button>
+    </div>
+  </header>
+
+  <!-- In-page section navigator (FR-1b/2a) -->
+  <nav class="product-nav" id="productNav" aria-label="Навигация по разделам страницы">
+    <a href="#what">Who is mr.Amigo</a>
+    <a href="#data-flow">Архитектура</a>
+    <a href="#reports">Уровни отчётов</a>
+    <a href="#freshness">Актуальность данных</a>
+  </nav>
+
+  <main class="product-page">
+
+    <!-- Hero -->
+    <section class="product-hero">
+      <h1>Как работает Amigo</h1>
+      <p class="product-hero__subtitle">Платформа автоматизации отчётности и рекламной аналитики</p>
+      <p class="product-hero__lead">
+        Amigo превращает разрозненную статистику из множества рекламных кабинетов в единую
+        систему аналитики. Платформа автоматизирует сбор, проверку и обработку данных,
+        экономит время команды и снижает риск ошибок в отчётах.
+      </p>
+    </section>
+
+    <!-- Проблема -->
+    <section class="product-section" id="problem">
+      <h2>Проблема: почему ручная отчётность не работает</h2>
+      <p>
+        Чем больше источников и клиентов, тем сложнее поддерживать скорость, точность и
+        актуальность отчётности. Ручная подготовка перестаёт справляться:
+      </p>
+      <ul class="product-list">
+        <li><strong>Данные разрознены.</strong> Статистика лежит в разных рекламных кабинетах.</li>
+        <li><strong>Сбор и сверка занимают время.</strong> Рутина растёт вместе с числом проектов.</li>
+        <li><strong>Ручная подготовка повышает риск ошибок</strong> в итоговых отчётах.</li>
+        <li><strong>Платформы пересчитывают данные задним числом.</strong> Выгруженные цифры устаревают.</li>
+        <li><strong>Нужно единое окно.</strong> Руководителям, сотрудникам и клиентам неудобно без общего доступа к аналитике.</li>
+      </ul>
+    </section>
+
+    <!-- Что такое Amigo -->
+    <section class="product-section" id="what">
+      <h2>Что такое Amigo</h2>
+      <p>
+        Amigo автоматизирует ключевые процессы рекламной отчётности и собирает их в
+        единую систему:
+      </p>
+      <ol class="product-steps">
+        <li>Сбор статистики</li>
+        <li>Проверка актуальности данных</li>
+        <li>Обработка и нормализация</li>
+        <li>Единая витрина — дашборды, Excel-отчёты и базы данных</li>
+        <li>Масштабирование под новые проекты</li>
+      </ol>
+      <p>
+        Цель — сократить время сотрудников на сбор статистики из множества рекламных
+        кабинетов и исключить ошибки при подготовке отчётов. Работа построена по принципу
+        единого окна, архитектура — на микросервисах.
+      </p>
+    </section>
+
+    <!-- Поток данных / архитектура -->
+    <section class="product-section" id="data-flow">
+      <h2>Поток данных и архитектура</h2>
+      <p>
+        Под каждого клиента создаётся отдельный проект — своя база со статистикой
+        из его рекламных источников по его правилам. Внутри проекта данные идут по
+        управляемому конвейеру:
+      </p>
+      <div class="advantages-grid">
+        <!-- Card 1: Источники данных (span-2) -->
+        <div class="advantage-card span-2">
+          <div class="card-text">
+            <h3 class="card-title">Источники данных</h3>
+            <p class="card-desc">Мы уже работаем с ключевыми рекламными и аналитическими источниками. По мере развития этот список будет дополняться</p>
+          </div>
+          <div class="card-horizontal-inner">
+            <div class="src-logos">
+              <img class="lg-direct" src="./assets/images/vector/01_yandex_direct.svg?v=180" alt="Яндекс Директ" data-src="direct" loading="lazy" decoding="async">
+              <img class="lg-metrika" src="./assets/images/vector/02_yandex_metrika.svg?v=180" alt="Яндекс Метрика" data-src="metrika" loading="lazy" decoding="async">
+              <img class="lg-vkads" src="./assets/images/vector/04_vk_ads.svg?v=180" alt="VK Ads" data-src="vk" loading="lazy" decoding="async">
+              <img class="lg-mytarget" src="./assets/images/vector/05_my_target.svg?v=180" alt="MyTarget" data-src="vk" loading="lazy" decoding="async">
+              <img class="lg-rtb" src="./assets/images/vector/06_rtb_droid.svg?v=180" alt="RTB Droid" data-src="vk" loading="lazy" decoding="async">
+              <img class="lg-ecom" src="./assets/images/vector/08_metrika_ecom.svg?v=180" alt="E-commerce" data-src="metrika" loading="lazy" decoding="async">
+            </div>
+            <div class="card-visual card-visual-plain">
+              <div class="mockup-code-block">
+                <div class="mockup-code-line" data-src="direct">-- Яндекс Директ - 10 вариантов отчетов. Ключевые слова, Площадки РСЯ, Пол-Возраст-Устройство, Гео отчет, Отчет по кампаниям, Отчет по объявлениям, Средняя позиция клика и 2 отчета по медиа кампаниям директ</div>
+                <div class="mockup-code-line" data-src="vk">-- VK ads, Vkontakte, MyTarget, RTB Droid. Эти источники схожи между собой в плане данных, которые они отдают по АПИ. Здесь формируем 3 варианта отчетов Отчет по кампаниям, Группам объявлений, Отчет по объявлениям. Также для VK ads и MyTarget доступны отчеты по Лид формам</div>
+                <div class="mockup-code-line" data-src="metrika">-- Яндекс Метрика. Этот источник содержит больше всего вариантов отчетов - 19. Среди прочего мы можем получить статистику по Ecom (Электронной торговле) - Пол-Возраст-Устройство, Гео, Продукты. Отчеты по конверсиям представлены в 3-х вариантах - Целевые посетители, Целевые визиты, Достижение цели</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: Data Lake (ClickHouse) -->
+        <div class="advantage-card">
+          <div class="card-text">
+            <div class="card-title-row">
+              <h3 class="card-title">Data Lake (ClickHouse)</h3>
+              <img class="card-title-logo" src="./assets/images/vector/10_clickhouse.svg?v=180" alt="ClickHouse" loading="lazy" decoding="async">
+            </div>
+            <p class="card-desc">Здесь хранятся сырые практически не обработанные данные, которые мы получили из рекламных источников</p>
+          </div>
+          <div class="card-visual">
+            <div class="mockup-list">
+              <div class="mockup-item">
+                <span><iconify-icon icon="solar:cloud-download-linear" class="mockup-inline-icon" aria-hidden="true"></iconify-icon> Данные по API</span>
+                <iconify-icon icon="solar:shield-check-bold" class="text-green" aria-hidden="true"></iconify-icon>
+              </div>
+              <div class="mockup-item">
+                <span><iconify-icon icon="solar:database-linear" class="mockup-inline-icon" aria-hidden="true"></iconify-icon> База на проект</span>
+                <iconify-icon icon="solar:shield-check-bold" class="text-green" aria-hidden="true"></iconify-icon>
+              </div>
+              <div class="mockup-item mockup-item-muted">
+                <span><iconify-icon icon="solar:bolt-linear" class="mockup-inline-icon" aria-hidden="true"></iconify-icon> Скорость работы</span>
+                <iconify-icon icon="solar:shield-check-bold" class="text-green" aria-hidden="true"></iconify-icon>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Обогащение и парсинг -->
+        <div class="advantage-card">
+          <div class="card-text">
+            <h3 class="card-title">Обогащение и парсинг</h3>
+            <p class="card-desc">На этом этапе данные обогащаются дополнительными параметрами</p>
+          </div>
+          <div class="card-visual">
+            <div class="mockup-box">
+              <div class="mockup-box-header">
+                <iconify-icon icon="solar:routing-2-linear" class="mockup-icon-sm" aria-hidden="true"></iconify-icon>
+                raw &rarr; enrich &rarr; typed
+              </div>
+              <div class="mockup-box-desc">
+                <span class="text-accent">Агентская комиссия</span>, <span class="text-accent">НДС</span>,
+                свои <span class="text-accent">группировки и типы</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4: Data Mart (MySQL) -->
+        <div class="advantage-card">
+          <div class="card-text">
+            <div class="card-title-row">
+              <h3 class="card-title">Data Mart (MySQL)</h3>
+              <img class="card-title-logo" src="./assets/images/vector/mySql.svg?v=180" alt="MySQL" loading="lazy" decoding="async">
+            </div>
+            <p class="card-desc">Витрина обработанных, готовых к использованию данных</p>
+          </div>
+          <div class="card-visual">
+            <div class="mockup-list">
+              <div class="mockup-item">
+                <span><iconify-icon icon="solar:filter-linear" class="mockup-inline-icon" aria-hidden="true"></iconify-icon> Очищенные данные</span>
+                <iconify-icon icon="solar:shield-check-bold" class="text-green" aria-hidden="true"></iconify-icon>
+              </div>
+              <div class="mockup-item">
+                <span><iconify-icon icon="solar:database-linear" class="mockup-inline-icon" aria-hidden="true"></iconify-icon> Витрина MySQL</span>
+                <iconify-icon icon="solar:shield-check-bold" class="text-green" aria-hidden="true"></iconify-icon>
+              </div>
+              <div class="mockup-item mockup-item-muted">
+                <span><iconify-icon icon="solar:link-circle-linear" class="mockup-inline-icon" aria-hidden="true"></iconify-icon> Готово к работе</span>
+                <iconify-icon icon="solar:shield-check-bold" class="text-green" aria-hidden="true"></iconify-icon>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 5: Дашборды и выгрузки -->
+        <div class="advantage-card">
+          <div class="card-text">
+            <h3 class="card-title">Дашборды и выгрузки</h3>
+            <p class="card-desc">Power BI и Excel подключаются напрямую к общему источнику правды</p>
+          </div>
+          <div class="card-visual">
+            <div class="mockup-flow tri-flow">
+              <svg class="tri-flow__lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                <line x1="42.4" y1="34.8" x2="29.6" y2="65.2"/>
+                <line x1="57.6" y1="34.8" x2="70.4" y2="65.2"/>
+              </svg>
+              <div class="flow-icon"><img src="./assets/images/vector/mysql_dolphin.svg?v=180" alt="MySQL" loading="lazy" decoding="async"></div>
+              <div class="flow-line"></div>
+              <div class="flow-icon"><img src="./assets/images/vector/excel_icon2.svg?v=180" alt="Excel" loading="lazy" decoding="async"></div>
+              <div class="flow-line"></div>
+              <div class="flow-icon"><img src="./assets/images/vector/power-bi_icon.svg?v=180" alt="Power BI" loading="lazy" decoding="async"></div>
+              <span class="tri-packet tri-packet--left" aria-hidden="true"></span>
+              <span class="tri-packet tri-packet--right" aria-hidden="true"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Уровни отчётов -->
+    <section class="product-section" id="reports">
+      <h2>Уровни отчётов</h2>
+      <p>
+        Amigo формирует отчёты по ключевым уровням рекламной аналитики:
+      </p>
+      <ul class="product-list product-list--grid">
+        <li>Кампании, группы и объявления</li>
+        <li>Ключевые слова и площадки</li>
+        <li>География</li>
+        <li>Пол, возраст, устройство</li>
+        <li>E-commerce и данные Яндекс Метрики</li>
+        <li>Средняя позиция клика и объём трафика</li>
+        <li>План-Факт</li>
+        <li>Лид-формы</li>
+      </ul>
+    </section>
+
+    <!-- Актуальность данных -->
+    <section class="product-section" id="freshness">
+      <h2>Актуальность данных</h2>
+      <p>
+        Система не просто один раз забирает статистику — она регулярно проверяет
+        изменения. Это особенно важно для рекламных платформ, где расходы, показы,
+        клики и конверсии могут пересчитываться задним числом.
+      </p>
+      <div class="int-grid-container">
+        <div class="int-axis-x"></div>
+        <div class="int-axis-y"></div>
+
+        <div class="int-hub">
+          <div class="int-circle int-c-1"></div>
+          <div class="int-circle int-c-2"></div>
+          <div class="int-circle int-c-3"></div>
+          <div class="int-core">
+            <img src="./assets/images/vector/actual_data.svg?v=180" alt="" aria-hidden="true" loading="lazy" decoding="async">
+          </div>
+          <div class="int-hub__label">Актуальные данные</div>
+        </div>
+
+        <div class="int-items-grid">
+          <div class="int-item">
+            <div class="int-icon-box">
+              <img src="./assets/images/vector/calendar.svg?v=180" alt="" aria-hidden="true" loading="lazy" decoding="async">
+            </div>
+            <h3>Ежедневное обновление</h3>
+            <p class="int-desc">
+              Каждую ночь система получает свежие данные из рекламных платформ
+            </p>
+          </div>
+
+          <div class="int-item">
+            <div class="int-icon-box">
+              <img src="./assets/images/vector/recircle2.svg?v=180" alt="" aria-hidden="true" loading="lazy" decoding="async">
+            </div>
+            <h3>Перезапись периодов</h3>
+            <p class="int-desc">
+              Данные за выбранный период перезаписываются, чтобы учесть изменения задним числом
+            </p>
+          </div>
+
+          <div class="int-item">
+            <div class="int-icon-box">
+              <img src="./assets/images/vector/recircle_db.svg?v=180" alt="" aria-hidden="true" loading="lazy" decoding="async">
+            </div>
+            <h3>Повторная перезапись</h3>
+            <p class="int-desc">
+              При обнаружении несоответствий данные обновляются автоматически
+            </p>
+          </div>
+
+          <div class="int-item">
+            <div class="int-icon-box">
+              <img src="./assets/images/vector/diff.svg?v=180" alt="" aria-hidden="true" loading="lazy" decoding="async">
+            </div>
+            <h3>Проверка данных</h3>
+            <p class="int-desc">
+              Исторические данные за последние 180 дней сверяются с контрольной базой
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Мониторинг использования -->
+    <section class="product-section" id="monitoring">
+      <h2>Дашборды для разных пользователей</h2>
+      <p>
+        Amigo дает возможность получить нужный уровень аналитики разным пользователям.
+        Руководителю важна общая картина и контроль KPI, сотруднику — детализация,
+        клиенту — прозрачная отчетность, администратору — контроль активности и ресурсов.
+      </p>
+      <ul class="product-list">
+        <li>Руководитель — расходы, KPI, динамика</li>
+        <li>Сотрудник — детализация по кампаниям и отчетам</li>
+        <li>Клиент — прозрачная актуальная статистика</li>
+        <li>Администратор — активность и ресурсы</li>
+      </ul>
+    </section>
+
+    <!-- Финальный CTA -->
+    <section class="product-section product-cta" id="demo">
+      <h2>Попробуйте Amigo на своих данных</h2>
+      <p>
+        Со временем энтропия возрастает. Оставьте заявку, мы покажем платформу и пришлём демо-доступ.
+      </p>
+      <div class="product-cta__buttons">
+        <button type="button" class="p-btn js-lead-open" data-lead-source="продукт-консультация"
+          data-lead-title="Заказать встречу"
+          data-lead-subtitle="Менеджер свяжется с вами, чтобы согласовать время встречи"
+          data-lead-title-accent="teal"
+          data-lead-tg-title="Запрос встречи с сайта Amigo">Заказать консультацию</button>
+        <button type="button" class="p-btn js-lead-open" data-lead-source="продукт-демо"
+          data-lead-title="Получить демо доступ"
+          data-lead-subtitle="На указанный адрес эл. почты будет отправлен демо доступ"
+          data-lead-title-accent
+          data-lead-tg-title="Запрос демо доступа с сайта Amigo">Получить демо доступ</button>
+        <button type="button" class="p-btn js-lead-open" data-lead-source="продукт-заявка">Оставить заявку</button>
+      </div>
+      <p class="product-cta__secondary">
+        <a href="./index.html#pricing">Посмотреть тарифы</a> ·
+        <a href="./index.html">← Вернуться на главную</a>
+      </p>
+    </section>
+
+  </main>
+
+  <!-- === FOOTER === -->
+  <footer>
+    <div class="foot-grid">
+      <!-- Brand Col -->
+      <div class="f-col-brand">
+        <div class="corner-logo footer-logo">
+          <span class="footer-logo-text">Amigo</span>
+        </div>
+        <p>
+          Единая система аналитики без рутины. Мы создаем инфраструктуру данных для маркетинговых агентств и команд.
+        </p>
+      </div>
+
+      <!-- Col 1 -->
+      <div class="f-col">
+        <h4>Продукт</h4>
+        <ul class="f-links">
+          <li><a href="./index.html#about">Аналитика</a></li>
+          <li><a href="./index.html#integrations">Интеграции</a></li>
+          <li><a href="./index.html#pricing">Цены</a></li>
+          <li><a href="#" class="js-lead-open" data-lead-source="футер-демо-кабинет-продукт"
+              data-lead-title="Получить демо доступ"
+              data-lead-subtitle="На указанный адрес эл. почты будет отправлен демо доступ"
+              data-lead-title-accent
+              data-lead-tg-title="Запрос демо доступа с сайта Amigo">Демо кабинет</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 2 -->
+      <div class="f-col">
+        <h4>Компания</h4>
+        <ul class="f-links">
+          <li><a href="./index.html#about">О нас</a></li>
+          <li><a href="mailto:hello@amigo.com?subject=Партнерство%20Amigo">Партнерам</a></li>
+          <li><a href="mailto:hello@amigo.com?subject=Кейсы%20Amigo">Кейсы</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 3 -->
+      <div class="f-col">
+        <h4>Контакты</h4>
+        <ul class="f-links">
+          <li><a href="mailto:hello@amigo.com?subject=Поддержка%20Amigo">Служба поддержки</a></li>
+          <li><a href="mailto:hello@amigo.com?subject=Telegram%20Amigo">Telegram</a></li>
+          <li><a href="mailto:hello@amigo.com">hello@amigo.com</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="foot-bottom">
+      <p class="copyright">© 2026 Amigo. Все права защищены.</p>
+      <div class="sys-status">
+        <div class="status-dot"></div>
+        <span>Все системы работают в штатном режиме</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Chat Widget -->
+  <div class="chat-widget-container">
+    <div class="chat-window hidden" id="chatWindow" role="region" aria-labelledby="chatTitle" aria-hidden="true">
+      <div class="chat-header">
+        <h4 id="chatTitle">Помощник</h4>
+        <button type="button" id="closeChatBtn" aria-label="Закрыть чат">
+          <iconify-icon icon="solar:close-circle-linear"></iconify-icon>
+        </button>
+      </div>
+      <div class="chat-messages" id="chatMessages">
+        <!-- Messages will appear here -->
+      </div>
+      <div class="chat-input-area">
+        <input type="text" id="chatInput" aria-label="Сообщение помощнику" placeholder="Введите сообщение...">
+        <button type="button" id="sendChatBtn" aria-label="Отправить">
+          <iconify-icon icon="solar:plain-2-linear"></iconify-icon>
+        </button>
+      </div>
+    </div>
+    <button type="button" class="chat-fab" id="chatFab" aria-label="Открыть чат" aria-controls="chatWindow"
+      aria-expanded="false">
+      <iconify-icon icon="solar:chat-round-dots-linear"></iconify-icon>
+    </button>
+  </div>
+
+  <!-- Cookie consent banner -->
+  <div class="cookie-banner" id="cookieBanner" role="region"
+    aria-label="Уведомление об использовании cookie" hidden>
+    <p class="cookie-banner__text">
+      Мы используем файлы cookie, чтобы сайт работал корректно и был удобнее. Продолжая
+      пользоваться сайтом, вы соглашаетесь с обработкой данных согласно
+      <a href="./privacy.html?v=180" target="_blank" rel="noopener">политике обработки
+        персональных данных</a>.
+    </p>
+    <div class="cookie-banner__actions">
+      <button type="button" class="btn btn-outline" id="cookieDecline">Отклонить</button>
+      <button type="button" class="btn btn-primary" id="cookieAccept">Принять</button>
+    </div>
+  </div>
+
+  <!-- Lead Form Modal -->
+  <div class="lead-modal hidden" id="leadModal" role="dialog" aria-modal="true"
+    aria-labelledby="leadModalTitle" aria-hidden="true">
+    <div class="lead-modal__dialog" role="document">
+      <button type="button" class="lead-modal__close" id="leadModalClose" aria-label="Закрыть">
+        <iconify-icon icon="solar:close-circle-linear" aria-hidden="true"></iconify-icon>
+      </button>
+
+      <div class="lead-modal__body">
+      <h2 class="lead-modal__title" id="leadModalTitle">Оставить заявку</h2>
+      <p class="lead-modal__subtitle" id="leadModalSubtitle">Оставьте контакты — мы свяжемся с вами и ответим на вопросы.</p>
+
+      <form class="lead-form" id="leadForm" novalidate>
+        <div class="lead-form__field">
+          <label for="leadName">Ваше имя</label>
+          <input type="text" id="leadName" name="name" autocomplete="name" required
+            aria-describedby="leadNameError">
+          <span class="lead-form__error" id="leadNameError" role="alert"></span>
+        </div>
+
+        <div class="lead-form__field">
+          <label for="leadEmail">Адрес эл. почты</label>
+          <input type="email" id="leadEmail" name="email" autocomplete="email" required
+            aria-describedby="leadEmailError">
+          <span class="lead-form__error" id="leadEmailError" role="alert"></span>
+        </div>
+
+        <div class="lead-form__field">
+          <label for="leadPhone">Номер телефона</label>
+          <input type="tel" id="leadPhone" name="phone" autocomplete="tel" inputmode="tel"
+            placeholder="+7 (___) ___-__-__" required aria-describedby="leadPhoneError">
+          <span class="lead-form__error" id="leadPhoneError" role="alert"></span>
+        </div>
+
+        <label class="lead-form__consent">
+          <input type="checkbox" id="leadConsent" name="consent" required>
+          <span>Я согласен на обработку персональных данных в соответствии с
+            <a href="./privacy.html?v=180" target="_blank" rel="noopener">политикой обработки
+              персональных данных</a>.</span>
+        </label>
+
+        <button type="submit" class="btn btn-primary lead-form__submit" id="leadSubmit" disabled>
+          Отправить
+        </button>
+      </form>
+
+      <p class="lead-form__status" id="leadStatus" role="status" aria-live="polite"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lightweight interaction script -->
+  <script src="./js/main.js?v=180" defer></script>
+</body>
+
+</html>

@@ -57,12 +57,17 @@
     }
 
     /* --- Background Architectural Guides --- */
+    /* fixed-height (not 100% of body): horizontal-guide at top:340px
+       and measure-badges land where the hero wants them regardless of
+       page length. height is also enough to host the side pattern-col
+       stripes down past the "Почему выбирают Amigo" advantages section
+       (~2015 px on 1366×768) — bumped to 2200 px with buffer */
     .bg-guides {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
-      height: 100%;
+      height: 2200px;
       z-index: -1;
       pointer-events: none;
       overflow: hidden;
@@ -91,6 +96,18 @@
       right: 8%;
     }
 
+    /* product.html uses this modifier so the side stripe persists
+       across scroll on the long page (instead of being clipped to
+       .bg-guides' 100vh height). position: fixed pins it to the
+       viewport so it's always visible. */
+    .pattern-col--full {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
     /* The huge circular arc in the background */
     .hero-arc {
       position: absolute;
@@ -103,10 +120,14 @@
       border: 1px solid var(--guide-gray-dark);
     }
 
-    /* The master horizontal red line */
+    /* The master horizontal red line — sits at a fixed 420 px from top,
+       matching the literal "420 px" annotation badges on its ends.
+       Was `top: 8%` which scaled with bg-guides height and ended up
+       either too high (after the bg-guides → 100vh fix) or too low
+       (when bg-guides was body-height on long pages) */
     .horizontal-guide {
       position: absolute;
-      top: 8%;
+      top: 340px;
       left: 0;
       width: 100%;
       height: 1px;
@@ -117,7 +138,7 @@
     /* Padding badges on the horizontal rule */
     .measure-badge {
       position: absolute;
-      top: 8%;
+      top: 340px;
       transform: translateY(-50%);
       background-color: #E26E4A;
       color: white;
@@ -203,6 +224,16 @@
 
     nav a:hover {
       opacity: 0.6;
+    }
+
+    /* nav item that matches the current page — shown muted, no link */
+    nav .nav-current {
+      font-size: 0.875rem;
+      font-weight: 500;
+      font-family: var(--font-ui);
+      color: var(--text-muted);
+      opacity: 0.5;
+      cursor: default;
     }
 
     a:focus-visible,
@@ -580,6 +611,22 @@
       }
 
       .pattern-col {
+        display: none;
+      }
+
+      /* once the side pattern-cols are hidden, the trusted-by ticker
+         no longer needs `calc(100vw - 34rem)` reservation — relax it
+         so the marquee uses the full available width (fixes a too-narrow
+         track at viewports between 768 and 1024px, e.g. 814×903) */
+      .trusted-by {
+        max-width: 100%;
+      }
+
+      /* hide the architectural-mockup decorations too: without the
+         side strips the orange measurement guide / 420 px badges
+         dangle out of context, so they go away with the strips */
+      .horizontal-guide,
+      .measure-badge {
         display: none;
       }
     }
@@ -1256,6 +1303,16 @@
 
     .btn-mockup-blue:hover {
       background: #1e40af;
+    }
+
+    @media (max-width: 1300px) {
+      .advantages-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .advantage-card.span-2 {
+        grid-column: span 2;
+      }
     }
 
     @media (max-width: 900px) {
@@ -2392,5 +2449,714 @@
       }
       .cookie-banner__actions .btn {
         flex: 1;
+      }
+    }
+
+    /* --- Product page (product.html — «Как работает Amigo») --- */
+
+    /* header logo is an <a> here (links home) — on index.html it is a
+       non-link <div>; keep the site look: dark, no underline. */
+    header a.logo {
+      color: var(--text-dark);
+      text-decoration: none;
+    }
+
+    /* In-page section navigator (FR-1b/2a): static strip under the header,
+       NOT sticky; wraps to multiple rows on narrow widths; active item
+       underlined (scroll-spy via .is-active set in main.js). */
+    .product-nav {
+      width: 100%;
+      max-width: 56rem;
+      margin: 0 auto;
+      padding: var(--spacing-sm) var(--spacing-md);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      gap: 0.75rem 2rem;
+      box-sizing: border-box;
+      position: relative;
+    }
+    /* gray rule under the nav, aligned with the first item (i.e.
+       starts at the inner left padding edge, not at the nav's outer
+       border) so it lines up with the h1 left edge */
+    .product-nav::after {
+      content: '';
+      position: absolute;
+      left: var(--spacing-md);
+      right: var(--spacing-md);
+      bottom: 0;
+      height: 1px;
+      background: var(--guide-gray-dark);
+    }
+
+    .product-nav a {
+      font-family: var(--font-ui);
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-decoration: none;
+      padding-bottom: 2px;
+      border-bottom: 2px solid transparent;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .product-nav a:hover {
+      color: var(--text-dark);
+    }
+
+    .product-nav a.is-active {
+      color: var(--text-dark);
+      border-bottom-color: var(--text-dark);
+    }
+
+    .product-page {
+      width: 100%;
+      max-width: 56rem;
+      margin: 0 auto;
+      padding: var(--spacing-lg) var(--spacing-md) var(--spacing-xl);
+      font-family: var(--font-sans);
+      color: var(--text-dark);
+      line-height: 1.7;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+
+    .product-hero {
+      padding-bottom: var(--spacing-md);
+      margin-bottom: var(--spacing-md);
+      border-bottom: 1px solid var(--guide-gray-dark);
+    }
+
+    .product-hero h1 {
+      font-family: var(--font-hero);
+      font-size: clamp(2rem, 5vw, 3rem);
+      line-height: 1.15;
+      color: var(--text-dark);
+      margin-bottom: 0.75rem;
+    }
+
+    .product-hero__subtitle {
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .product-hero__lead {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 44rem;
+    }
+
+    .product-section {
+      margin-top: var(--spacing-lg);
+      /* breathing room when reached via an in-page anchor */
+      scroll-margin-top: var(--spacing-md);
+    }
+
+    .product-section h2 {
+      font-family: var(--font-ui);
+      font-size: clamp(1.3rem, 3vw, 1.7rem);
+      color: var(--text-dark);
+      margin-bottom: var(--spacing-sm);
+    }
+
+    /* "Актуальность данных" heading uses the hero font, matching the
+       "Как работает Amigo" h1 */
+    #freshness h2 {
+      font-family: var(--font-hero);
+      font-size: clamp(2rem, 5vw, 3rem);
+      line-height: 1.15;
+    }
+
+    /* extra breathing room above "Дашборды для разных пользователей"
+       so it doesn't crowd the freshness hub block above */
+    #monitoring {
+      margin-top: calc(var(--spacing-lg) * 2);
+    }
+    /* a bit more space between the freshness intro paragraph and the
+       hub/items grid below it */
+    #freshness .int-grid-container {
+      margin-top: var(--spacing-md);
+    }
+    /* final CTA: 3 buttons in a single row on desktop, wrap to
+       multi-line on narrow viewports where a single row would overflow */
+    .product-cta__buttons {
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: center;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: var(--spacing-sm);
+    }
+    .product-cta__buttons .p-btn {
+      white-space: nowrap;
+    }
+    @media (max-width: 768px) {
+      .product-cta__buttons {
+        flex-wrap: wrap;
+      }
+      .product-cta__buttons .p-btn {
+        width: 100%;
+      }
+    }
+    /* picture icons inside the int-icon-box (e.g. calendar.svg) fit
+       the 4rem box with a small inset, replacing the iconify glyph */
+    #freshness .int-icon-box img {
+      width: 2.5rem;
+      height: 2.5rem;
+      object-fit: contain;
+      display: block;
+    }
+    /* freshness items lay out the icon and text side-by-side instead
+       of the stacked default used on the home-page Единая экосистема:
+       a 2-col grid puts the icon-box left and stacks h3 + desc on the
+       right, all vertically centred next to the icon */
+    #freshness .int-item {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      column-gap: 1rem;
+      row-gap: 0.25rem;
+      align-items: center;
+      text-align: left;
+    }
+    #freshness .int-item .int-icon-box {
+      grid-column: 1;
+      grid-row: 1 / span 2;
+      margin-bottom: 0;
+      align-self: center;
+    }
+    #freshness .int-item h3 {
+      grid-column: 2;
+      grid-row: 1;
+      margin-bottom: 0;
+    }
+    #freshness .int-item .int-desc {
+      grid-column: 2;
+      grid-row: 2;
+      font-family: var(--font-mono);
+    }
+    /* right-column freshness cards (2 = Перезапись периодов,
+       4 = Проверка данных): icon on the right of the text block —
+       swap grid columns and right-align the text */
+    #freshness .int-item:nth-child(2),
+    #freshness .int-item:nth-child(4) {
+      grid-template-columns: 1fr auto;
+      text-align: right;
+    }
+    #freshness .int-item:nth-child(2) .int-icon-box,
+    #freshness .int-item:nth-child(4) .int-icon-box {
+      grid-column: 2;
+    }
+    #freshness .int-item:nth-child(2) h3,
+    #freshness .int-item:nth-child(2) .int-desc,
+    #freshness .int-item:nth-child(4) h3,
+    #freshness .int-item:nth-child(4) .int-desc {
+      grid-column: 1;
+    }
+    /* central hub icon swapped for actual_data.svg (multi-color blue
+       cylinders); switch the dark int-core background to white so the
+       dark-blue center cylinder stays visible, and size the img to
+       fit the 4rem circle with a small inset */
+    #freshness .int-core {
+      background: var(--bg-color);
+      padding: 0.4rem;
+    }
+    #freshness .int-core img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+    /* central caption beneath the hub core: keep the core at the
+       exact geometric centre of the hub (default int-hub flex layout
+       is preserved) and position the label absolutely a bit below it */
+    #freshness .int-hub__label {
+      position: absolute;
+      left: 50%;
+      top: calc(50% + 3.25rem);
+      transform: translateX(-50%);
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      text-align: center;
+      letter-spacing: 0.02em;
+      z-index: 25;
+      white-space: nowrap;
+    }
+
+
+    .product-section p {
+      color: var(--text-muted);
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .product-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 var(--spacing-sm);
+    }
+
+    .product-list li {
+      position: relative;
+      padding-left: 1.5rem;
+      margin-bottom: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    .product-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.6rem;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--guide-blue);
+    }
+
+    .product-list li strong {
+      color: var(--text-dark);
+    }
+
+    .product-list--grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0 var(--spacing-md);
+    }
+
+    .product-steps {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 var(--spacing-sm);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: stretch;
+      gap: 0.6rem;
+      counter-reset: product-step;
+    }
+
+    .product-steps li {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1rem;
+      border: 1px solid var(--guide-gray);
+      border-radius: 10px;
+      font-family: var(--font-ui);
+      font-size: 0.95rem;
+      color: var(--text-dark);
+      background: var(--bg-color);
+    }
+
+    .product-steps li::before {
+      counter-increment: product-step;
+      content: counter(product-step);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.4rem;
+      height: 1.4rem;
+      flex-shrink: 0;
+      border-radius: 50%;
+      background: var(--text-dark);
+      color: var(--primary-btn-text);
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .product-figure {
+      margin: var(--spacing-md) 0 0;
+      text-align: center;
+    }
+
+    .product-figure img {
+      max-width: 100%;
+      height: auto;
+      border: 1px solid var(--guide-gray-dark);
+      border-radius: 14px;
+      padding: var(--spacing-sm);
+      background: var(--bg-color);
+    }
+
+    .product-cta {
+      text-align: center;
+      margin-top: var(--spacing-xl);
+      padding-top: var(--spacing-lg);
+      border-top: 1px solid var(--guide-gray-dark);
+    }
+
+    .product-cta p {
+      max-width: 32rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .product-cta .p-btn {
+      margin-top: 0.5rem;
+    }
+
+    .product-cta__secondary {
+      margin-top: var(--spacing-md);
+      font-size: 0.9rem;
+    }
+
+    .product-cta__secondary a {
+      color: var(--text-dark);
+    }
+
+    /* #data-flow reuses the index .advantages-* card system, but its
+       content is sparser. Stop the grid from height-equalising rows and
+       let each .card-visual hug its mockup, so cards aren't stretched
+       tall. Scoped to #data-flow — index.html cards keep their look. */
+    /* heading matches the "Как работает Amigo" hero (.product-hero h1):
+       same typeface and same size/line-height, per request */
+    #data-flow h2 {
+      font-family: var(--font-hero);
+      font-size: clamp(2rem, 5vw, 3rem);
+      line-height: 1.15;
+    }
+
+    /* intro paragraph intentionally left to inherit .product-section p
+       (Golos Text, base size) — matches the "Что такое Amigo" block. */
+
+    /* cards 1–5 descriptions use Space Mono (explicit choice). */
+    #data-flow .advantage-card.span-2 .card-desc,
+    #data-flow .advantages-grid > .advantage-card:nth-child(2) .card-desc,
+    #data-flow .advantages-grid > .advantage-card:nth-child(3) .card-desc,
+    #data-flow .advantages-grid > .advantage-card:nth-child(4) .card-desc,
+    #data-flow .advantages-grid > .advantage-card:nth-child(5) .card-desc {
+      font-family: var(--font-mono);
+    }
+
+    /* card 2: brand logo to the right of the title */
+    #data-flow .card-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+    #data-flow .card-title-row .card-title {
+      margin-bottom: 0;
+    }
+    #data-flow .card-title-logo {
+      height: 1.75rem;
+      width: auto;
+      flex-shrink: 0;
+    }
+
+    /* source logos in card 1's free left space (skips Hybrid — no asset) */
+    /* one logo per row; the stacked column lifts card 1 to roughly the
+       height of card 2 (Data Lake) in the same grid row */
+    /* logos spread evenly over the full column height (first at top,
+       last at bottom), so card 1's left side stays balanced */
+    #data-flow .src-logos {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-between;
+      height: 100%;
+      margin-top: 0;
+    }
+
+    /* card 1 header sits above the 2-col row at full card width; the
+       inner row grows to fill the rest of the (stretched) card so the
+       logo column has height to distribute over */
+    #data-flow .card-horizontal-inner {
+      height: auto;
+      flex: 1;
+      /* logos column shrinks to its content; the mockup takes all the
+         freed space on its left (was a 1fr/1fr split) */
+      grid-template-columns: max-content 1fr;
+    }
+    /* on narrow viewports overrride the side-by-side layout so the
+       Источники card stacks logos column above the mockup */
+    @media (max-width: 900px) {
+      #data-flow .card-horizontal-inner {
+        grid-template-columns: 1fr;
+      }
+      #data-flow .src-logos {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 0.5rem;
+        height: auto;
+      }
+      #data-flow .src-logos img {
+        height: 28px;
+      }
+    }
+
+    #data-flow .src-logos img {
+      height: 34px;
+      width: auto;
+      max-width: 100%;
+      object-fit: contain;
+      display: block;
+      /* transparent border reserved so the active state adds no layout
+         shift; padding/radius give the button-like frame */
+      border: 1px solid transparent;
+      border-radius: 7px;
+      padding: 5px 10px;
+      /* clearly gradual fade-in/out of the active border */
+      transition: border-color 0.55s ease-in-out;
+    }
+
+    /* per-logo brand colour for the active border */
+    #data-flow .src-logos .lg-direct   { --lg: rgba(252, 63, 29, 0.65); }
+    #data-flow .src-logos .lg-metrika  { --lg: rgba(255, 160, 0, 0.70); }
+    #data-flow .src-logos .lg-vkads    { --lg: rgba(0, 119, 255, 0.65); }
+    #data-flow .src-logos .lg-mytarget { --lg: rgba(230, 51, 42, 0.65); }
+    #data-flow .src-logos .lg-rtb      { --lg: rgba(123, 97, 255, 0.70); }
+    #data-flow .src-logos .lg-ecom     { --lg: rgba(26, 115, 232, 0.65); }
+
+    /* reverse hover-link: hovering a mockup block gives the matching
+       logo(s) a thin button-like border in its own colour. No layout
+       shift (border reserved above). Interactive, kept on (Variant B). */
+    #data-flow .src-logos img.is-logo-active {
+      border-color: var(--lg);
+    }
+
+    #data-flow .advantages-grid {
+      align-items: start;
+      /* align the grid box to the section's heading/intro (flush-left,
+         full content width) instead of the index centred 75rem box */
+      max-width: none;
+      margin: 0;
+    }
+
+    /* card 1 (span-2) stretches to its grid-row height so it ends up
+       exactly as tall as card 2 (Data Lake) beside it; row-2 cards
+       (3, 4, 5) also stretch so they share a uniform height */
+    #data-flow .advantage-card.span-2,
+    #data-flow .advantages-grid > .advantage-card:nth-child(3),
+    #data-flow .advantages-grid > .advantage-card:nth-child(4),
+    #data-flow .advantages-grid > .advantage-card:nth-child(5) {
+      align-self: stretch;
+    }
+
+    /* card 5: triangle layout — DB top centered, Excel bottom-left,
+       dashboard bottom-right. Existing straight flow-line divs hidden;
+       diagonal SVG lines draw DB→Excel and DB→Dashboard. Icon percent
+       positions match the SVG viewBox coords (50/17, 22/83, 78/83) so
+       lines anchor cleanly under the icon centers. */
+    #data-flow .advantages-grid > .advantage-card:nth-child(5) .tri-flow {
+      position: relative;
+      width: 100%;
+      height: 9rem;
+    }
+    #data-flow .advantages-grid > .advantage-card:nth-child(5) .tri-flow .flow-line {
+      display: none;
+    }
+    #data-flow .advantages-grid > .advantage-card:nth-child(5) .tri-flow .flow-icon {
+      position: absolute;
+      z-index: 1;
+    }
+    #data-flow .advantages-grid > .advantage-card:nth-child(5) .tri-flow .flow-icon:nth-child(2) {
+      top: 17%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    #data-flow .advantages-grid > .advantage-card:nth-child(5) .tri-flow .flow-icon:nth-child(4) {
+      top: 83%;
+      left: 22%;
+      transform: translate(-50%, -50%);
+    }
+    #data-flow .advantages-grid > .advantage-card:nth-child(5) .tri-flow .flow-icon:nth-child(6) {
+      top: 83%;
+      left: 78%;
+      transform: translate(-50%, -50%);
+    }
+    #data-flow .advantages-grid > .advantage-card:nth-child(5) .tri-flow__lines {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+    /* line look mirrors the home-page `.flow-line` (1px dashed, 50%
+       opacity, --guide-blue), just drawn diagonally inside the SVG */
+    #data-flow .advantages-grid > .advantage-card:nth-child(5) .tri-flow__lines line {
+      stroke: var(--guide-blue);
+      stroke-width: 1px;
+      stroke-dasharray: 4 4;
+      opacity: 0.5;
+      vector-effect: non-scaling-stroke;
+    }
+    /* the straight horizontal flow-line elements remain hidden in tri
+       layout; suppress only the packet-on-line animation on them, since
+       they're display:none anyway but the rule keeps any animation cost
+       off */
+    .advantage-card:hover .tri-flow .flow-line::after {
+      animation: none !important;
+    }
+    /* node pulse on hover, same look as home-page card 3 (`flowNode`),
+       but with the icon-centering translate baked into every keyframe
+       so the icons no longer jump out of their triangle slots */
+    @keyframes triNode {
+      0%   { box-shadow: 0 0 0 0.375rem rgba(74, 180, 217, 0.1); transform: translate(-50%, -50%) scale(1); }
+      5%   { box-shadow: 0 0 0 0.6rem rgba(74, 180, 217, 0.30); transform: translate(-50%, -50%) scale(1.07); }
+      14%  { box-shadow: 0 0 0 0.375rem rgba(74, 180, 217, 0.1); transform: translate(-50%, -50%) scale(1); }
+      100% { box-shadow: 0 0 0 0.375rem rgba(74, 180, 217, 0.1); transform: translate(-50%, -50%) scale(1); }
+    }
+    .advantage-card:hover #data-flow .advantages-grid > .advantage-card:nth-child(5) .tri-flow .flow-icon,
+    #data-flow .advantages-grid > .advantage-card:nth-child(5):hover .tri-flow .flow-icon {
+      animation: triNode 2.4s ease-in-out infinite;
+    }
+    /* Excel + Dashboard pulse when their packets arrive (~92% of the
+       2.4s cycle); delay shifts each icon's own cycle so its 5% peak
+       lands ~that moment */
+    #data-flow .advantages-grid > .advantage-card:nth-child(5):hover .tri-flow .flow-icon:nth-child(4),
+    #data-flow .advantages-grid > .advantage-card:nth-child(5):hover .tri-flow .flow-icon:nth-child(6) {
+      animation-delay: 2.05s;
+    }
+    /* SVG/img icons inside the tri-flow nodes fit the circle */
+    #data-flow .advantages-grid > .advantage-card:nth-child(5) .tri-flow .flow-icon img {
+      width: 2.5rem;
+      height: 2.5rem;
+      object-fit: contain;
+      display: block;
+    }
+    #data-flow .advantages-grid > .advantage-card:nth-child(5) .tri-flow .flow-icon img[src*="mysql_dolphin"] {
+      width: 2rem;
+      height: 2rem;
+    }
+
+    /* tri-flow packets: two dots emit from the DB icon (top center) and
+       travel simultaneously to the Excel (bottom-left) and Dashboard
+       (bottom-right) icons on card hover. Mirrors the home-page card 5
+       packet feel but along the two diagonal lines. */
+    #data-flow .advantages-grid > .advantage-card:nth-child(5) .tri-flow .tri-packet {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #1E3A8A;
+      box-shadow: 0 0 6px 2px rgba(30, 58, 138, 0.75);
+      top: 34.8%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+    @keyframes triPacketLeft {
+      0%   { top: 34.8%; left: 42.4%; opacity: 0; }
+      8%   { opacity: 1; }
+      92%  { opacity: 1; }
+      100% { top: 65.2%; left: 29.6%; opacity: 0; }
+    }
+    @keyframes triPacketRight {
+      0%   { top: 34.8%; left: 57.6%; opacity: 0; }
+      8%   { opacity: 1; }
+      92%  { opacity: 1; }
+      100% { top: 65.2%; left: 70.4%; opacity: 0; }
+    }
+    .advantage-card:hover .tri-flow .tri-packet--left {
+      animation: triPacketLeft 2.4s ease-in-out infinite;
+    }
+    .advantage-card:hover .tri-flow .tri-packet--right {
+      animation: triPacketRight 2.4s ease-in-out infinite;
+    }
+
+    #data-flow .card-visual {
+      flex: 0 0 auto;
+      min-height: 0;
+    }
+
+    /* cards 3/4/5 share the same row — equalise text height so the
+       mockups all start at the same vertical level, and force the
+       mockups themselves to a uniform 9rem height (tri-flow's height) */
+    #data-flow .advantages-grid > .advantage-card:nth-child(3) .card-text,
+    #data-flow .advantages-grid > .advantage-card:nth-child(4) .card-text,
+    #data-flow .advantages-grid > .advantage-card:nth-child(5) .card-text {
+      min-height: 7.875rem;
+    }
+    #data-flow .advantages-grid > .advantage-card:nth-child(3) .mockup-box,
+    #data-flow .advantages-grid > .advantage-card:nth-child(4) .mockup-list {
+      height: 9rem;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    #data-flow .mockup-code-block {
+      width: 100%;
+      /* fill the cell height so the mockup is as tall as the logo
+         column instead of hugging its 8 lines of content */
+      height: 100%;
+      box-sizing: border-box;
+      /* shrunk so all 3 source blocks fit within card 2's height,
+         keeping card 1 = card 2 (align-self: stretch then equalises) */
+      font-size: 0.62rem;
+      line-height: 1.4;
+      overflow: hidden;
+      /* blocks distributed down the full box height (no empty top/
+         bottom), small minimum gap so they stay separated */
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.3rem;
+    }
+
+    /* long source lines wrap inside the box instead of the index
+       single-line nowrap (which clipped the text on the right) */
+    #data-flow .mockup-code-block .mockup-code-line {
+      white-space: normal;
+      overflow-wrap: break-word;
+      border-radius: 4px;
+      transition: background-color 0.18s ease, color 0.18s ease;
+    }
+
+    /* hovering a source logo highlights its matching block (set by JS).
+       Hover-gated/interactive — kept on under reduced-motion (Variant B). */
+    #data-flow .mockup-code-block .mockup-code-line.is-src-active {
+      background: rgba(74, 180, 217, 0.16);
+      color: var(--text-dark);
+    }
+
+    /* indent the detail lines under each "-- Source" header */
+    #data-flow .mockup-code-block .mc-sub {
+      padding-left: 1.1rem;
+    }
+
+    /* keep mockup rows to a single line so cards stay compact */
+    #data-flow .mockup-item span {
+      min-width: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    #data-flow .mockup-box-header {
+      white-space: nowrap;
+    }
+
+    /* NB: product-page motion (chip hover, nav transitions, smooth anchor
+       scroll in main.js) is intentionally NOT suppressed under
+       prefers-reduced-motion — Variant B site-wide decision. */
+
+    @media (max-width: 768px) {
+      .product-nav {
+        padding: var(--spacing-sm);
+        gap: 0.6rem 1.25rem;
+      }
+      .product-nav a {
+        font-size: 0.875rem;
+      }
+      .product-page {
+        padding: var(--spacing-md) var(--spacing-sm) var(--spacing-lg);
+      }
+      .product-list--grid {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+      .product-figure img {
+        padding: 0.5rem;
       }
     }
