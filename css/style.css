@@ -597,6 +597,14 @@
       .trusted-by {
         max-width: 100%;
       }
+
+      /* hide the architectural-mockup decorations too: without the
+         side strips the orange measurement guide / 420 px badges
+         dangle out of context, so they go away with the strips */
+      .horizontal-guide,
+      .measure-badge {
+        display: none;
+      }
     }
 
     @media (max-width: 768px) {
