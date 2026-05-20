@@ -2621,9 +2621,10 @@
     /* intro paragraph intentionally left to inherit .product-section p
        (Golos Text, base size) — matches the "Что такое Amigo" block. */
 
-    /* cards 1 & 2 descriptions use Space Mono (explicit choice). */
+    /* cards 1, 2 & 3 descriptions use Space Mono (explicit choice). */
     #data-flow .advantage-card.span-2 .card-desc,
-    #data-flow .advantages-grid > .advantage-card:nth-child(2) .card-desc {
+    #data-flow .advantages-grid > .advantage-card:nth-child(2) .card-desc,
+    #data-flow .advantages-grid > .advantage-card:nth-child(3) .card-desc {
       font-family: var(--font-mono);
     }
 
