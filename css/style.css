@@ -2493,6 +2493,12 @@
       font-size: clamp(2rem, 5vw, 3rem);
       line-height: 1.15;
     }
+
+    /* extra breathing room above "Дашборды для разных пользователей"
+       so it doesn't crowd the freshness hub block above */
+    #monitoring {
+      margin-top: calc(var(--spacing-lg) * 2);
+    }
     /* picture icons inside the int-icon-box (e.g. calendar.svg) fit
        the 4rem box with a small inset, replacing the iconify glyph */
     #freshness .int-icon-box img {
