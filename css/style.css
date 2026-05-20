@@ -94,6 +94,18 @@
       right: 8%;
     }
 
+    /* product.html uses this modifier so the side stripe persists
+       across scroll on the long page (instead of being clipped to
+       .bg-guides' 100vh height). position: fixed pins it to the
+       viewport so it's always visible. */
+    .pattern-col--full {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
     /* The huge circular arc in the background */
     .hero-arc {
       position: absolute;
