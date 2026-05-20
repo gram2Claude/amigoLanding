@@ -582,6 +582,14 @@
       .pattern-col {
         display: none;
       }
+
+      /* once the side pattern-cols are hidden, the trusted-by ticker
+         no longer needs `calc(100vw - 34rem)` reservation — relax it
+         so the marquee uses the full available width (fixes a too-narrow
+         track at viewports between 768 and 1024px, e.g. 814×903) */
+      .trusted-by {
+        max-width: 100%;
+      }
     }
 
     @media (max-width: 768px) {
