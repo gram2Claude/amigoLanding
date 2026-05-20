@@ -57,15 +57,17 @@
     }
 
     /* --- Background Architectural Guides --- */
-    /* height pinned to the viewport (100vh), not 100% of the body —
-       otherwise on long pages body-height grows and `.horizontal-guide`
-       at `top: 8%` ends up hundreds of px down, far past the hero */
+    /* fixed-height (not 100% of body): horizontal-guide at top:340px
+       and measure-badges land where the hero wants them regardless of
+       page length. height is also enough to host the side pattern-col
+       stripes down past the "Почему выбирают Amigo" advantages section
+       (~2015 px on 1366×768) — bumped to 2200 px with buffer */
     .bg-guides {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
-      height: 100vh;
+      height: 2200px;
       z-index: -1;
       pointer-events: none;
       overflow: hidden;
