@@ -366,6 +366,8 @@ const initPageInteractions = () => {
       }
     };
 
+    appendBotMessage('Привет! Какой вопрос тебя интересует?');
+
     chatFab.setAttribute('aria-controls', 'chatWindow');
     chatFab.setAttribute('aria-expanded', 'false');
 
