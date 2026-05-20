@@ -224,6 +224,16 @@
       opacity: 0.6;
     }
 
+    /* nav item that matches the current page — shown muted, no link */
+    nav .nav-current {
+      font-size: 0.875rem;
+      font-weight: 500;
+      font-family: var(--font-ui);
+      color: var(--text-muted);
+      opacity: 0.5;
+      cursor: default;
+    }
+
     a:focus-visible,
     button:focus-visible,
     input:focus-visible {
