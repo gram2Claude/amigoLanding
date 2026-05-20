@@ -1305,6 +1305,16 @@
       background: #1e40af;
     }
 
+    @media (max-width: 1300px) {
+      .advantages-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .advantage-card.span-2 {
+        grid-column: span 2;
+      }
+    }
+
     @media (max-width: 900px) {
       .advantages-grid {
         grid-template-columns: 1fr;
