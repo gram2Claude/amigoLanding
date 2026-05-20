@@ -2529,6 +2529,19 @@
       grid-row: 2;
       font-family: var(--font-mono);
     }
+    /* 2nd freshness card (Перезапись периодов): icon on the right of
+       the text block — swap grid columns and right-align the text */
+    #freshness .int-item:nth-child(2) {
+      grid-template-columns: 1fr auto;
+      text-align: right;
+    }
+    #freshness .int-item:nth-child(2) .int-icon-box {
+      grid-column: 2;
+    }
+    #freshness .int-item:nth-child(2) h3,
+    #freshness .int-item:nth-child(2) .int-desc {
+      grid-column: 1;
+    }
 
 
     .product-section p {
