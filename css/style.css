@@ -2486,6 +2486,23 @@
       margin-bottom: var(--spacing-sm);
     }
 
+    /* "Актуальность данных" heading uses the hero font, matching the
+       "Как работает Amigo" h1 */
+    #freshness h2 {
+      font-family: var(--font-hero);
+      font-size: clamp(2rem, 5vw, 3rem);
+      line-height: 1.15;
+    }
+    /* picture icons inside the int-icon-box (e.g. calendar.svg) fit
+       the 4rem box with a small inset, replacing the iconify glyph */
+    #freshness .int-icon-box img {
+      width: 2.5rem;
+      height: 2.5rem;
+      object-fit: contain;
+      display: block;
+    }
+
+
     .product-section p {
       color: var(--text-muted);
       margin-bottom: var(--spacing-sm);
