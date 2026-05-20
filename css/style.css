@@ -2499,6 +2499,23 @@
     #monitoring {
       margin-top: calc(var(--spacing-lg) * 2);
     }
+    /* a bit more space between the freshness intro paragraph and the
+       hub/items grid below it */
+    #freshness .int-grid-container {
+      margin-top: var(--spacing-md);
+    }
+    /* final CTA: 3 buttons in a single row, no wrapping */
+    .product-cta__buttons {
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: center;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: var(--spacing-sm);
+    }
+    .product-cta__buttons .p-btn {
+      white-space: nowrap;
+    }
     /* picture icons inside the int-icon-box (e.g. calendar.svg) fit
        the 4rem box with a small inset, replacing the iconify glyph */
     #freshness .int-icon-box img {
