@@ -2720,9 +2720,151 @@
       align-self: stretch;
     }
 
+    /* card 5: triangle layout — DB top centered, Excel bottom-left,
+       dashboard bottom-right. Existing straight flow-line divs hidden;
+       diagonal SVG lines draw DB→Excel and DB→Dashboard. Icon percent
+       positions match the SVG viewBox coords (50/17, 22/83, 78/83) so
+       lines anchor cleanly under the icon centers. */
+    #data-flow .advantages-grid > .advantage-card:nth-child(5) .tri-flow {
+      position: relative;
+      width: 100%;
+      height: 9rem;
+    }
+    #data-flow .advantages-grid > .advantage-card:nth-child(5) .tri-flow .flow-line {
+      display: none;
+    }
+    #data-flow .advantages-grid > .advantage-card:nth-child(5) .tri-flow .flow-icon {
+      position: absolute;
+      z-index: 1;
+    }
+    #data-flow .advantages-grid > .advantage-card:nth-child(5) .tri-flow .flow-icon:nth-child(2) {
+      top: 17%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    #data-flow .advantages-grid > .advantage-card:nth-child(5) .tri-flow .flow-icon:nth-child(4) {
+      top: 83%;
+      left: 22%;
+      transform: translate(-50%, -50%);
+    }
+    #data-flow .advantages-grid > .advantage-card:nth-child(5) .tri-flow .flow-icon:nth-child(6) {
+      top: 83%;
+      left: 78%;
+      transform: translate(-50%, -50%);
+    }
+    #data-flow .advantages-grid > .advantage-card:nth-child(5) .tri-flow__lines {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+    /* line look mirrors the home-page `.flow-line` (1px dashed, 50%
+       opacity, --guide-blue), just drawn diagonally inside the SVG */
+    #data-flow .advantages-grid > .advantage-card:nth-child(5) .tri-flow__lines line {
+      stroke: var(--guide-blue);
+      stroke-width: 1px;
+      stroke-dasharray: 4 4;
+      opacity: 0.5;
+      vector-effect: non-scaling-stroke;
+    }
+    /* the straight horizontal flow-line elements remain hidden in tri
+       layout; suppress only the packet-on-line animation on them, since
+       they're display:none anyway but the rule keeps any animation cost
+       off */
+    .advantage-card:hover .tri-flow .flow-line::after {
+      animation: none !important;
+    }
+    /* node pulse on hover, same look as home-page card 3 (`flowNode`),
+       but with the icon-centering translate baked into every keyframe
+       so the icons no longer jump out of their triangle slots */
+    @keyframes triNode {
+      0%   { box-shadow: 0 0 0 0.375rem rgba(74, 180, 217, 0.1); transform: translate(-50%, -50%) scale(1); }
+      5%   { box-shadow: 0 0 0 0.6rem rgba(74, 180, 217, 0.30); transform: translate(-50%, -50%) scale(1.07); }
+      14%  { box-shadow: 0 0 0 0.375rem rgba(74, 180, 217, 0.1); transform: translate(-50%, -50%) scale(1); }
+      100% { box-shadow: 0 0 0 0.375rem rgba(74, 180, 217, 0.1); transform: translate(-50%, -50%) scale(1); }
+    }
+    .advantage-card:hover #data-flow .advantages-grid > .advantage-card:nth-child(5) .tri-flow .flow-icon,
+    #data-flow .advantages-grid > .advantage-card:nth-child(5):hover .tri-flow .flow-icon {
+      animation: triNode 2.4s ease-in-out infinite;
+    }
+    /* Excel + Dashboard pulse when their packets arrive (~92% of the
+       2.4s cycle); delay shifts each icon's own cycle so its 5% peak
+       lands ~that moment */
+    #data-flow .advantages-grid > .advantage-card:nth-child(5):hover .tri-flow .flow-icon:nth-child(4),
+    #data-flow .advantages-grid > .advantage-card:nth-child(5):hover .tri-flow .flow-icon:nth-child(6) {
+      animation-delay: 2.05s;
+    }
+    /* SVG/img icons inside the tri-flow nodes fit the circle */
+    #data-flow .advantages-grid > .advantage-card:nth-child(5) .tri-flow .flow-icon img {
+      width: 2.5rem;
+      height: 2.5rem;
+      object-fit: contain;
+      display: block;
+    }
+    #data-flow .advantages-grid > .advantage-card:nth-child(5) .tri-flow .flow-icon img[src*="mysql_dolphin"] {
+      width: 2rem;
+      height: 2rem;
+    }
+
+    /* tri-flow packets: two dots emit from the DB icon (top center) and
+       travel simultaneously to the Excel (bottom-left) and Dashboard
+       (bottom-right) icons on card hover. Mirrors the home-page card 5
+       packet feel but along the two diagonal lines. */
+    #data-flow .advantages-grid > .advantage-card:nth-child(5) .tri-flow .tri-packet {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #1E3A8A;
+      box-shadow: 0 0 6px 2px rgba(30, 58, 138, 0.75);
+      top: 34.8%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+    @keyframes triPacketLeft {
+      0%   { top: 34.8%; left: 42.4%; opacity: 0; }
+      8%   { opacity: 1; }
+      92%  { opacity: 1; }
+      100% { top: 65.2%; left: 29.6%; opacity: 0; }
+    }
+    @keyframes triPacketRight {
+      0%   { top: 34.8%; left: 57.6%; opacity: 0; }
+      8%   { opacity: 1; }
+      92%  { opacity: 1; }
+      100% { top: 65.2%; left: 70.4%; opacity: 0; }
+    }
+    .advantage-card:hover .tri-flow .tri-packet--left {
+      animation: triPacketLeft 2.4s ease-in-out infinite;
+    }
+    .advantage-card:hover .tri-flow .tri-packet--right {
+      animation: triPacketRight 2.4s ease-in-out infinite;
+    }
+
     #data-flow .card-visual {
       flex: 0 0 auto;
       min-height: 0;
+    }
+
+    /* cards 3/4/5 share the same row — equalise text height so the
+       mockups all start at the same vertical level, and force the
+       mockups themselves to a uniform 9rem height (tri-flow's height) */
+    #data-flow .advantages-grid > .advantage-card:nth-child(3) .card-text,
+    #data-flow .advantages-grid > .advantage-card:nth-child(4) .card-text,
+    #data-flow .advantages-grid > .advantage-card:nth-child(5) .card-text {
+      min-height: 7.875rem;
+    }
+    #data-flow .advantages-grid > .advantage-card:nth-child(3) .mockup-box,
+    #data-flow .advantages-grid > .advantage-card:nth-child(4) .mockup-list {
+      height: 9rem;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
     #data-flow .mockup-code-block {
