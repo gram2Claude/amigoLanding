@@ -2547,6 +2547,20 @@
     #freshness .int-item:nth-child(4) .int-desc {
       grid-column: 1;
     }
+    /* central hub icon swapped for actual_data.svg (multi-color blue
+       cylinders); switch the dark int-core background to white so the
+       dark-blue center cylinder stays visible, and size the img to
+       fit the 4rem circle with a small inset */
+    #freshness .int-core {
+      background: var(--bg-color);
+      padding: 0.4rem;
+    }
+    #freshness .int-core img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
 
 
     .product-section p {
