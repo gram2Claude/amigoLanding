@@ -2621,10 +2621,11 @@
     /* intro paragraph intentionally left to inherit .product-section p
        (Golos Text, base size) — matches the "Что такое Amigo" block. */
 
-    /* cards 1, 2 & 3 descriptions use Space Mono (explicit choice). */
+    /* cards 1–4 descriptions use Space Mono (explicit choice). */
     #data-flow .advantage-card.span-2 .card-desc,
     #data-flow .advantages-grid > .advantage-card:nth-child(2) .card-desc,
-    #data-flow .advantages-grid > .advantage-card:nth-child(3) .card-desc {
+    #data-flow .advantages-grid > .advantage-card:nth-child(3) .card-desc,
+    #data-flow .advantages-grid > .advantage-card:nth-child(4) .card-desc {
       font-family: var(--font-mono);
     }
 
@@ -2709,9 +2710,12 @@
     }
 
     /* card 1 (span-2) stretches to its grid-row height so it ends up
-       exactly as tall as card 2 (Data Lake) beside it; other rows keep
-       their content height via the align-items: start above */
-    #data-flow .advantage-card.span-2 {
+       exactly as tall as card 2 (Data Lake) beside it; row-2 cards
+       (3, 4, 5) also stretch so they share a uniform height */
+    #data-flow .advantage-card.span-2,
+    #data-flow .advantages-grid > .advantage-card:nth-child(3),
+    #data-flow .advantages-grid > .advantage-card:nth-child(4),
+    #data-flow .advantages-grid > .advantage-card:nth-child(5) {
       align-self: stretch;
     }
 
