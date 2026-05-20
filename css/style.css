@@ -2500,12 +2500,15 @@
     }
 
     .product-page {
+      width: 100%;
       max-width: 56rem;
       margin: 0 auto;
       padding: var(--spacing-lg) var(--spacing-md) var(--spacing-xl);
       font-family: var(--font-sans);
       color: var(--text-dark);
       line-height: 1.7;
+      min-width: 0;
+      box-sizing: border-box;
     }
 
     .product-hero {
@@ -2566,7 +2569,8 @@
     #freshness .int-grid-container {
       margin-top: var(--spacing-md);
     }
-    /* final CTA: 3 buttons in a single row, no wrapping */
+    /* final CTA: 3 buttons in a single row on desktop, wrap to
+       multi-line on narrow viewports where a single row would overflow */
     .product-cta__buttons {
       display: flex;
       flex-wrap: nowrap;
@@ -2577,6 +2581,14 @@
     }
     .product-cta__buttons .p-btn {
       white-space: nowrap;
+    }
+    @media (max-width: 768px) {
+      .product-cta__buttons {
+        flex-wrap: wrap;
+      }
+      .product-cta__buttons .p-btn {
+        width: 100%;
+      }
     }
     /* picture icons inside the int-icon-box (e.g. calendar.svg) fit
        the 4rem box with a small inset, replacing the iconify glyph */
@@ -2849,6 +2861,23 @@
       /* logos column shrinks to its content; the mockup takes all the
          freed space on its left (was a 1fr/1fr split) */
       grid-template-columns: max-content 1fr;
+    }
+    /* on narrow viewports overrride the side-by-side layout so the
+       Источники card stacks logos column above the mockup */
+    @media (max-width: 900px) {
+      #data-flow .card-horizontal-inner {
+        grid-template-columns: 1fr;
+      }
+      #data-flow .src-logos {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 0.5rem;
+        height: auto;
+      }
+      #data-flow .src-logos img {
+        height: 28px;
+      }
     }
 
     #data-flow .src-logos img {
