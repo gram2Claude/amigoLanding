@@ -6,16 +6,20 @@ A detailed contributor guide exists in `AGENTS.md` (structure, coding style, man
 
 ## What this is
 
-A static, single-page Russian-language marketing landing for "Amigo". No package manager, no build step, no test suite, no framework. The site is `index.html` + `css/style.css` + `js/main.js` + `privacy.html`, plus image assets and external CDNs (Google Fonts, Iconify).
+A static Russian-language marketing site for "Amigo". No package manager, no build step, no test suite, no framework. Pages: `index.html` (the landing), `product.html` ("Как работает Amigo" — the product/how-it-works page), `privacy.html` (ПДн policy); shared `css/style.css` + `js/main.js`; plus image assets and external CDNs (Google Fonts, Iconify).
+
+`product.html` deliberately **reuses `index.html`'s component system** — the `.advantages-section` / `.advantages-grid` / `.advantage-card` card grid and the `mockup-*` visuals (`mockup-code-block`, `mockup-list`, `mockup-box`, `mockup-flow`). When restyling those for the product page, scope overrides under `#data-flow` (or the relevant section id) so `index.html` is not affected — the stylesheet is shared. `js/main.js` is loaded by all three pages, so every `initX` must no-op when its elements are absent.
 
 ## Asset cache-busting (do this on EVERY change)
 
-`index.html` references `./css/style.css?v=N`, `./js/main.js?v=N`, and a `./privacy.html?v=N` link; `privacy.html` references `./css/style.css?v=N`. **Any edit to CSS/JS/HTML requires bumping `N` in all of those (currently `v=48`)** or returning visitors keep the cached old build. This is the single most common omission — treat the version bump as part of the edit, not an afterthought.
+All three HTML files carry `?v=N` query strings — on `css/style.css`, `js/main.js`, internal page links, **and every asset reference** (`product.html` has `?v=N` on its SVG logos etc.). **Any edit to CSS/JS/HTML requires bumping every `?v=N` occurrence across `index.html`, `privacy.html`, `product.html` in lockstep** (one shared N) or returning visitors keep the cached old build. This is the single most common omission — treat it as part of the edit, not an afterthought. The number only ever moves forward; don't assume a value, grep the current one.
+
+Do the bump with the Edit tool or a UTF-8-safe script (Python `io.open(..., encoding='utf-8')`). **Never** bump via PowerShell `Get-Content`/`Set-Content` — PS 5.1 misreads these UTF-8 files as ANSI and corrupts all Cyrillic into mojibake. See `memory/cache-bust-utf8-pitfall.md`.
 
 ## Running and verifying
 
-- Open locally: `Start-Process .\index.html` (PowerShell). Internet required for fonts/icons. Use `Ctrl+F5` to bypass cache.
-- No automated tests. The reliable way to verify visuals/interactions across viewports is the Playwright tooling in `tools/screenshots/` (gitignored, dev-only): `cd tools/screenshots && npm run shots`, or write a one-off `*.mjs` there. Use `reducedMotion: 'reduce'` in Playwright to reproduce the target environment (see below). Open a modal in scripts via `page.evaluate(() => document.querySelector('header .js-lead-open').click())` — header triggers are hidden behind the burger on ≤768px.
+- Open locally: `Start-Process .\index.html` / `Start-Process .\product.html` (PowerShell). Internet required for fonts/icons. Use `Ctrl+F5` to bypass cache — if a change "isn't showing", suspect the browser cache first.
+- No automated tests. The reliable way to verify visuals/interactions across viewports is the Playwright tooling in `tools/screenshots/` (gitignored from the main repo; it is its own separate git repo): `cd tools/screenshots && npm run shots`, or write/keep a one-off `_*.mjs` check there (e.g. `_cards_check.mjs`) that asserts computed styles/geometry and screenshots `#data-flow`. Use `reducedMotion: 'reduce'` in Playwright to reproduce the target environment (see below). Open a modal in scripts via `page.evaluate(() => document.querySelector('header .js-lead-open').click())` — header triggers are hidden behind the burger on ≤768px.
 - Regenerate logo PNGs (needs Pillow): `python process_logos.py`. `refactor.py` is historical — do not rerun.
 
 ## JavaScript architecture (`js/main.js`)
@@ -54,7 +58,7 @@ One large stylesheet in ordered sections (variables → global → nav → hero 
 
 ## Git & deploy
 
-- Repo not in a git subdir of `tools/screenshots` (gitignored) — run git from the **repo root**, or use `git -C "<repo root>"`. Work happens on branch `forms`; it is merged to `master` via PR.
+- `tools/screenshots` is gitignored from the main repo and is its **own** nested git repo — run main-repo git from the **repo root** (or `git -C "<repo root>"`), never from inside `tools/`. Feature work happens on a dedicated branch (varies per feature, e.g. `forms`, `page_about` — check `git branch --show-current`), merged to `master` via PR. The user owns all git add/commit/push/merge — do not run them unless explicitly asked.
 - Production (`http://45.159.79.57/`) mirrors `master`. **Manual deploy only, no auto-update.** After merging to `master`, on the server run `bash /opt/amigo-site/deploy/deploy.sh` (must invoke via `bash` — `git reset --hard` inside it can drop the exec bit). Full details in `deploy/README.md`; server credentials live in gitignored `.env.local`; see `memory/deploy-access.md`.
 
 ## Specs and planning docs
